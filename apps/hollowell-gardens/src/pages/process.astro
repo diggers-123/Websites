@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Botanical from '@/components/Botanical.astro';
+import { img } from '@/images';
+const stages = [
+  { n: '01', t: 'Consultation', time: 'Week 0', fee: '£295', img: 'designer', alt: 'Anna surveying a garden with a notebook', d: ['We walk the garden together for two hours. I ask a lot of questions: how you use it, who uses it, what you look at from which window, what you hate about it.', 'Within a week you get written recommendations — sometimes a full redesign, sometimes three small changes. The fee is credited if you commission a design within six months.'] },
+  { n: '02', t: 'Survey & concept', time: 'Weeks 1–4', fee: 'Within design fee', img: 'plan', alt: 'A hand-drawn garden plan on tracing paper', d: ['A measured survey (levels, boundaries, drains, trees) is the foundation of everything. Then a concept: a sketch plan, materials palette and mood images that show the character of the garden before any detail is drawn.', 'We meet once to review it. Most concepts go through one round of changes.'] },
+  { n: '03', t: 'Design & planting', time: 'Weeks 5–12', fee: 'From £2,400', img: 'seedheads', alt: 'Seed heads and grasses in autumn light', d: ['The master plan is drawn to scale with construction details — paving patterns, wall sections, lighting, drainage. The planting plan follows: every plant positioned, counted and scheduled.', 'You receive a drawing pack that any good landscape contractor can price and build from.'] },
+  { n: '04', t: 'Build & plant', time: 'Months 4–9', fee: 'Projects from £15,000', img: 'build', alt: 'Landscapers building a dry-stone wall', d: ['I tender the drawings to two or three contractors, compare like with like, and recommend one. During the build I visit at every key stage and make the decisions drawings can\'t.', 'I set out the plants myself. A year later I come back to see how it has settled and what to adjust.'] },
+];
+---
+<Base title="Process" description="How a Hollowell garden happens: consultation, survey and concept, design and planting plan, then a managed build. Timescales and fees at each stage.">
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-12 grid lg:grid-cols-[3fr_2fr] gap-10 items-end">
+    <div>
+      <p class="smallcaps text-terra">The process</p>
+      <h1 class="serif-xl mt-3">Four stages. Each with a fee, a timescale and an output.</h1>
+    </div>
+    <p class="lede text-ink/80">Good gardens are slow. A garden for next summer starts its design this autumn. Here is exactly how it goes.</p>
+  </section>
+
+  <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pb-24">
+    {stages.map((s, i) => (
+      <section class:list={['grid lg:grid-cols-12 gap-8 lg:gap-12 py-14 lg:py-20 border-t hairline items-start', i % 2 === 1 && 'lg:[&>*:first-child]:order-2']} data-reveal>
+        <div class="lg:col-span-5 relative aspect-[4/5] overflow-hidden rounded-sm">
+          <Image src={img(s.img)} alt={s.alt} widths={[640, 1024, 1400]} sizes="(min-width:1024px) 42vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
+        </div>
+        <div class:list={['lg:col-span-6', i % 2 === 0 ? 'lg:col-start-7' : 'lg:col-start-1']}>
+          <span class="serif-num text-sage-2 block">{s.n}</span>
+          <h2 class="serif-lg mt-2">{s.t}</h2>
+          <dl class="flex gap-10 mt-4 border-y hairline py-3 text-sm">
+            <div><dt class="smallcaps opacity-60">When</dt><dd class="font-serif text-lg">{s.time}</dd></div>
+            <div><dt class="smallcaps opacity-60">Fee</dt><dd class="font-serif text-lg">{s.fee}</dd></div>
+          </dl>
+          {s.d.map((p) => <p class="mt-5 text-[1.05rem] leading-relaxed text-ink/85 measure">{p}</p>)}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <section class="bg-moss text-linen on-moss py-20 relative overflow-hidden">
+    <div class="absolute -left-6 -bottom-10 w-[26vw] max-w-[320px] text-sage/40 pointer-events-none" aria-hidden="true"><Botanical kind="seedhead" /></div>
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 relative grid lg:grid-cols-2 gap-10 items-end">
+      <h2 class="serif-xl">Ready for stage one?</h2>
+      <div class="lg:text-right"><a href="/contact" class="btn btn-terra">Book a consultation — £295</a></div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import GardenCard from '@/components/GardenCard.astro';
+import { site } from '@/site.config';
+import { gardens } from '@/content';
+import { img } from '@/images';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '@site/core';
+
+export function getStaticPaths() {
+  return site.services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+const { service } = Astro.props;
+const url = `${site.seo.siteUrl}/services/${service.slug}`;
+const related = gardens.filter((g) => g.services.includes(service.name)).slice(0, 2);
+const schema = [
+  serviceSchema(site, service, url),
+  breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: 'Services', url: `${site.seo.siteUrl}/services` }, { name: service.name, url }]),
+  ...(service.faqs ? [faqSchema(service.faqs)] : []),
+];
+---
+<Base title={service.name} description={`${service.summary} ${service.price}. Hollowell Garden Design, Stroud — serving the Cotswolds, Cheltenham, Cirencester and Bath.`} {schema}>
+  <article>
+    <header class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-12 grid lg:grid-cols-[7fr_5fr] gap-10 lg:gap-16 items-end">
+      <div>
+        <p class="smallcaps text-terra"><a href="/services" class="hover:underline">Services</a></p>
+        <h1 class="serif-xl mt-3">{service.name}</h1>
+        <p class="lede mt-6 text-ink/80 max-w-xl">{service.summary}</p>
+      </div>
+      <div class="border-t hairline pt-5">
+        <p class="smallcaps opacity-60">Fee</p>
+        <p class="font-serif text-4xl mt-1">{service.price}</p>
+        {service.durationMins && <p class="text-sm opacity-70 mt-1">{service.durationMins / 60} hours on site</p>}
+        <a href={`/contact?service=${service.slug}`} class="btn btn-terra mt-6">Enquire about {service.name.toLowerCase()}</a>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
+      {service.image && (
+        <div class="relative aspect-[16/9] lg:aspect-[21/9] overflow-hidden rounded-sm">
+          <Image src={img(service.image.src)} alt={service.image.alt} widths={[768, 1200, 1600, 2048]} sizes="(min-width:1500px) 1400px, 94vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+        </div>
+      )}
+    </div>
+
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 py-16 lg:py-24 grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-20">
+      <aside class="lg:sticky lg:top-8 self-start">
+        <p class="smallcaps opacity-60">What's included</p>
+        <ul class="mt-4 flex flex-col">{service.includes?.map((inc) => <li class="border-b hairline py-2.5 flex gap-3"><span class="text-terra">—</span>{inc}</li>)}</ul>
+      </aside>
+      <div>
+        {service.description?.map((p) => <p class="text-[1.1rem] leading-relaxed text-ink/85 mb-6 measure">{p}</p>)}
+        {service.faqs && (
+          <dl class="mt-12 border-t hairline">
+            {service.faqs.map((f) => <div class="border-b hairline py-5"><dt class="serif-sm">{f.q}</dt><dd class="mt-2 text-ink/80">{f.a}</dd></div>)}
+          </dl>
+        )}
+      </div>
+    </div>
+
+    {related.length > 0 && (
+      <section class="bg-linen-2 py-16 lg:py-24">
+        <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
+          <h2 class="serif-lg mb-10">Gardens that used this</h2>
+          <div class="grid md:grid-cols-2 gap-8 lg:gap-12">{related.map((g, i) => <GardenCard garden={g} aspect="aspect-[3/2]" sizes="(min-width:768px) 48vw, 100vw" index={i} />)}</div>
+        </div>
+      </section>
+    )}
+  </article>
+</Base>

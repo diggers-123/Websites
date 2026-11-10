@@ -1,0 +1,39 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+interface Props { overlay?: boolean }
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class:list={['relative z-50', overlay ? 'absolute inset-x-0 top-0 text-linen' : 'bg-linen text-ink border-b hairline']}>
+  <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 h-[76px] lg:h-[92px] flex items-center justify-between">
+    <a href="/" class="hover:text-terra transition-colors" aria-label={`${site.name} — home`}>
+      <Logo class="text-[1.05rem] lg:text-[1.2rem]" />
+    </a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-9">
+      {site.nav.map((n) => (
+        <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}
+           class:list={['smallcaps !font-medium !text-[0.78rem] relative py-2 after:absolute after:left-0 after:bottom-0 after:h-px after:bg-current after:transition-[width] after:w-0 hover:after:w-full', isActive(n.href) && 'after:w-full']}>{n.label}</a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-4">
+      <a href={`tel:${site.phoneHref}`} class="hidden xl:inline font-serif text-lg hover:text-terra">{site.phone}</a>
+      <a href={site.primaryCta.href} class:list={['btn hidden sm:inline-flex', overlay ? 'btn-outline border-linen' : 'btn-terra']}>{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 inline-flex flex-col items-center justify-center gap-1.5 border border-current rounded-full" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span class="block w-5 h-px bg-current"></span><span class="block w-5 h-px bg-current"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] bg-moss text-linen overflow-y-auto on-moss" hidden>
+    <nav aria-label="Mobile" class="px-6 py-8 flex flex-col">
+      {site.nav.map((n, i) => (
+        <a href={n.href} class="serif-md py-4 border-b hairline-light flex items-baseline gap-4" aria-current={isActive(n.href) ? 'page' : undefined}>
+          <span class="smallcaps opacity-60">0{i + 1}</span>{n.label}
+        </a>
+      ))}
+      <a href={site.primaryCta.href} class="btn btn-terra mt-8 self-start">{site.primaryCta.label}</a>
+      <p class="mt-8 smallcaps opacity-70">{site.address.town} · <a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+---
+import { site } from '@/site.config';
+interface Props { limit?: number; tone?: 'linen' | 'moss' }
+const { limit = 3, tone = 'linen' } = Astro.props;
+const items = site.testimonials.slice(0, limit);
+---
+<section class:list={['py-20 lg:py-28', tone === 'moss' ? 'bg-moss text-linen on-moss' : 'bg-linen text-ink']} aria-labelledby="kind-words">
+  <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
+    <div class="flex items-baseline justify-between gap-6 mb-12">
+      <h2 id="kind-words" class="serif-lg">Kind words</h2>
+      <p class="smallcaps opacity-60 hidden sm:block">Fictional reviews for demonstration</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-x-12 gap-y-10">
+      {items.map((t, i) => (
+        <figure class="border-t hairline pt-6" data-reveal data-reveal-delay={i * 90}>
+          <blockquote class="font-serif text-[1.35rem] leading-snug" style="font-variation-settings:'opsz' 48, 'SOFT' 40">“{t.quote}”</blockquote>
+          <figcaption class="mt-5 smallcaps opacity-70">{t.name} — {t.context}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

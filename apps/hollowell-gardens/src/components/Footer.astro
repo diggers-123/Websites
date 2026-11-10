@@ -1,0 +1,47 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+import Botanical from './Botanical.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="bg-moss text-linen on-moss mt-auto relative overflow-hidden">
+  <div class="absolute right-0 bottom-0 w-[38vw] max-w-[520px] opacity-30 pointer-events-none translate-x-1/4 translate-y-1/4" aria-hidden="true">
+    <Botanical kind="grass" />
+  </div>
+  <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 py-16 lg:py-24 relative">
+    <div class="grid lg:grid-cols-[1.5fr_1fr_1fr] gap-12">
+      <div>
+        <h2 class="serif-lg max-w-xl">Tell me about your garden.</h2>
+        <p class="mt-5 lede opacity-85 max-w-md">A consultation is the easiest first step — a walk round, a conversation, and honest advice about what to do next.</p>
+        <a href={site.primaryCta.href} class="btn btn-terra mt-8">{site.primaryCta.label}</a>
+      </div>
+      <div>
+        <p class="smallcaps opacity-70 mb-4">Studio</p>
+        <address class="not-italic leading-relaxed">{site.address.line1}<br />{site.address.town}, {site.address.county}<br />{site.address.postcode}</address>
+        <p class="mt-4 flex flex-col gap-1">
+          <a class="underline hover:text-sage" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+          <a class="underline hover:text-sage break-all" href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+        <dl class="mt-5 text-sm opacity-80">
+          {lines.map((l) => <div class="flex justify-between gap-4 border-b hairline-light py-1"><dt>{l.days}</dt><dd>{l.time}</dd></div>)}
+        </dl>
+      </div>
+      <div>
+        <p class="smallcaps opacity-70 mb-4">Elsewhere</p>
+        <ul class="flex flex-col gap-1">
+          {Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize hover:text-sage" href={v as string} rel="noopener">{k === 'google' ? 'Google reviews' : k}</a></li>)}
+        </ul>
+        <ul class="mt-8 flex flex-col gap-1 text-sm">
+          {site.nav.map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}
+          {site.footerNav?.map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="mt-16 pt-6 border-t hairline-light flex flex-wrap justify-between gap-3 items-center">
+      <Logo class="text-[1rem]" />
+      <p class="text-sm opacity-70">© {year} {site.legal.legalName}. Garden design in Stroud and the Cotswolds.</p>
+    </div>
+  </div>
+</footer>

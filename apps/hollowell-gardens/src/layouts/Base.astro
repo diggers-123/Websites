@@ -1,0 +1,70 @@
+---
+import '@/styles/theme.css';
+import Head from '@site/core/components/Head.astro';
+import DemoBanner from '@site/core/components/DemoBanner.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site } from '@/site.config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  schema?: unknown[];
+  noindex?: boolean;
+  /** Transparent header over a dark hero. */
+  headerOverlay?: boolean;
+}
+const { title, description, image, schema, noindex, headerOverlay = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <Head {site} {title} {description} {image} {schema} {noindex} />
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <DemoBanner {site} />
+    <Header overlay={headerOverlay} />
+    <main id="main" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initReveal, initMobileNav } from '@site/core/components/reveal';
+      initReveal();
+      initMobileNav({ button: '[data-nav-toggle]', panel: '[data-nav-panel]' });
+
+      // Draw-on-scroll botanicals
+      const drawings = document.querySelectorAll<SVGElement>('svg.draw');
+      drawings.forEach((svg) => {
+        svg.querySelectorAll<SVGGeometryElement>('path, line, circle, ellipse').forEach((el) => {
+          const len = el.getTotalLength ? el.getTotalLength() : 1200;
+          el.style.setProperty('--len', String(len));
+        });
+      });
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); } }), { threshold: 0.2 });
+        drawings.forEach((d) => io.observe(d));
+      } else {
+        drawings.forEach((d) => d.classList.add('is-drawn'));
+      }
+
+      // Gentle parallax on [data-parallax] (desktop, no reduced motion)
+      const px = document.querySelectorAll<HTMLElement>('[data-parallax]');
+      if (px.length && !matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(min-width: 64rem)').matches) {
+        let ticking = false;
+        const update = () => {
+          px.forEach((el) => {
+            const r = el.getBoundingClientRect();
+            const centre = r.top + r.height / 2 - innerHeight / 2;
+            el.style.setProperty('--py', `${Math.round(centre * -0.08)}px`);
+          });
+          ticking = false;
+        };
+        addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
+        update();
+      }
+    </script>
+  </body>
+</html>

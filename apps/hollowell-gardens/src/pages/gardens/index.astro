@@ -1,0 +1,41 @@
+---
+import Base from '@/layouts/Base.astro';
+import GardenCard from '@/components/GardenCard.astro';
+import { gardens } from '@/content';
+const types = [...new Set(gardens.map((g) => g.type))];
+---
+<Base title="Gardens" description="A selection of gardens designed and built by Hollowell Garden Design across Stroud, Cheltenham, Cirencester, Tetbury and the Cotswolds — country, town, courtyard, walled and meadow gardens.">
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-10">
+    <p class="smallcaps text-terra">Portfolio</p>
+    <h1 class="serif-xl mt-3 max-w-3xl">Six gardens, six different answers.</h1>
+    <p class="lede mt-6 max-w-xl text-ink/80">Country, town, courtyard, walled and meadow. Each case study includes the brief, the budget band and the plants that made it work.</p>
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter by garden type">
+      <button type="button" class="choice" data-filter="all" aria-pressed="true">All</button>
+      {types.map((t) => <button type="button" class="choice" data-filter={t} aria-pressed="false">{t}</button>)}
+    </div>
+  </section>
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pb-24">
+    <div class="ed-grid" data-garden-grid>
+      {gardens.map((g, i) => (
+        <div class:list={['col-span-12 sm:col-span-6', i % 3 === 0 ? 'lg:col-span-7' : i % 3 === 1 ? 'lg:col-span-5 lg:pt-16' : 'lg:col-span-6 lg:col-start-4']} data-type={g.type}>
+          <GardenCard garden={g} aspect={i % 3 === 0 ? 'aspect-[3/2]' : 'aspect-[4/5]'} sizes={i % 3 === 0 ? '(min-width:1024px) 58vw, (min-width:640px) 50vw, 100vw' : '(min-width:1024px) 40vw, (min-width:640px) 50vw, 100vw'} index={i} eager={i < 2} />
+        </div>
+      ))}
+    </div>
+    <p class="mt-10 text-center hidden" data-empty>No gardens of that type yet.</p>
+  </section>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const items = document.querySelectorAll<HTMLElement>('[data-garden-grid] > [data-type]');
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      const f = b.dataset.filter!;
+      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      let shown = 0;
+      items.forEach((it) => { const show = f === 'all' || it.dataset.type === f; it.hidden = !show; if (show) shown++; });
+      document.querySelector<HTMLElement>('[data-empty]')!.classList.toggle('hidden', shown > 0);
+    }));
+  </script>
+</Base>
+<style>
+  .choice[aria-pressed='true'] { background: var(--color-moss); color: var(--color-linen); border-color: var(--color-moss); }
+</style>

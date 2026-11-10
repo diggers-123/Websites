@@ -43,6 +43,8 @@ export interface SocialLinks {
   x?: string;
   linkedin?: string;
   youtube?: string;
+  pinterest?: string;
+  houzz?: string;
   google?: string; // Google Business Profile / reviews link
   checkatrade?: string;
   trustpilot?: string;

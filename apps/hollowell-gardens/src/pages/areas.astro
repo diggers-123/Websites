@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { gardens } from '@/content';
+---
+<Base title="Areas covered" description="Garden design across Gloucestershire and the Cotswolds: Stroud, Painswick, Nailsworth, Cheltenham, Cirencester, Tetbury, Gloucester, Bath and Malmesbury. About 30 miles from the Stroud studio.">
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-24 grid lg:grid-cols-[2fr_3fr] gap-12">
+    <div>
+      <p class="smallcaps text-terra">Areas covered</p>
+      <h1 class="serif-xl mt-3">Thirty miles from Stroud.</h1>
+      <p class="lede mt-6 text-ink/80">Gardens need visiting — during design, during the build, and a year later. So I keep the radius tight and the visits frequent.</p>
+      <p class="mt-6 text-ink/80">Postcode areas: <strong>{site.postcodePrefixes?.join(', ')}</strong>. Larger projects further afield are considered — ask.</p>
+      <a href="/contact" class="btn btn-terra mt-8">Check your postcode</a>
+    </div>
+    <div>
+      <ul class="grid sm:grid-cols-2 border-t hairline">
+        {site.serviceAreas.map((a) => {
+          const g = gardens.find((x) => x.place === a);
+          return (
+            <li class="border-b hairline py-4 flex justify-between items-baseline gap-4 pr-4">
+              <span class="serif-sm">{a}</span>
+              {g ? <a href={`/gardens/${g.slug}`} class="text-sm underline hover:text-terra">See a garden</a> : <span class="smallcaps opacity-50">Design &amp; build</span>}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+</Base>

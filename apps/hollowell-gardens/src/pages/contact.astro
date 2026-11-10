@@ -1,0 +1,106 @@
+---
+import Base from '@/layouts/Base.astro';
+import Botanical from '@/components/Botanical.astro';
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+const lines = hoursLines(site);
+const mapsQuery = encodeURIComponent(`${site.address.line1}, ${site.address.town} ${site.address.postcode}`);
+---
+<Base title="Book a consultation" description={`Request a garden consultation with Hollowell Garden Design in Stroud. £295 for a two-hour visit and written recommendations, credited against a design. Call ${site.phone}.`}>
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-24 grid lg:grid-cols-[5fr_7fr] gap-12 lg:gap-20">
+    <div class="relative">
+      <div class="absolute -left-4 -top-4 w-24 text-moss/50 pointer-events-none" aria-hidden="true"><Botanical kind="seedhead" /></div>
+      <p class="smallcaps text-terra ml-20">Consultation request</p>
+      <h1 class="serif-xl mt-3">Tell me about your garden.</h1>
+      <p class="lede mt-6 text-ink/80">Fill this in and I'll reply within two working days to arrange a visit. Or just ring — I'm usually in the studio in the mornings.</p>
+      <dl class="mt-10 grid gap-5">
+        <div><dt class="smallcaps opacity-60">Phone</dt><dd class="font-serif text-2xl"><a class="hover:text-terra" href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div>
+        <div><dt class="smallcaps opacity-60">Email</dt><dd class="font-serif text-xl break-all"><a class="hover:text-terra" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt class="smallcaps opacity-60">Studio</dt><dd class="not-italic">{site.address.line1}, {site.address.town} {site.address.postcode}<br /><a class="underline text-sm" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">Directions ↗</a> · visits by appointment</dd></div>
+        <div><dt class="smallcaps opacity-60">Hours</dt><dd class="text-sm">{lines.map((l) => <span class="block">{l.days}: {l.time}</span>)}</dd></div>
+      </dl>
+      <p class="mt-8 text-sm text-ink/70 max-w-sm">Working radius is about 30 miles from Stroud — Gloucestershire, the Cotswolds, Bath and north Wiltshire. See <a class="underline" href="/areas">areas covered</a>.</p>
+    </div>
+
+    <form class="grid gap-7" data-consult-form name="consultation" method="post" novalidate>
+      <div class="grid sm:grid-cols-2 gap-7">
+        <div><label class="label" for="f-name">Your name</label><input class="field" id="f-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div>
+        <div><label class="label" for="f-email">Email</label><input class="field" id="f-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+        <div><label class="label" for="f-phone">Phone</label><input class="field" id="f-phone" name="phone" type="tel" autocomplete="tel" required /><span data-error-for="phone" hidden></span></div>
+        <div><label class="label" for="f-postcode">Garden postcode</label><input class="field" id="f-postcode" name="postcode" autocomplete="postal-code" placeholder="e.g. GL6 7QA" required /><span data-error-for="postcode" hidden></span><span class="text-sm mt-1 block" data-postcode-note aria-live="polite"></span></div>
+      </div>
+      <fieldset>
+        <legend class="label">What are you interested in?</legend>
+        <div class="flex flex-wrap gap-2 mt-2">
+          {site.services.map((s) => <label class="choice relative"><input type="radio" name="service" value={s.slug} />{s.name}</label>)}
+          <label class="choice relative"><input type="radio" name="service" value="not-sure" checked />Not sure yet</label>
+        </div>
+      </fieldset>
+      <div class="grid sm:grid-cols-2 gap-7">
+        <div>
+          <label class="label" for="f-size">Garden size</label>
+          <select class="field" id="f-size" name="size"><option value="">Choose…</option><option>Courtyard (under 50 m²)</option><option>Town garden (50–200 m²)</option><option>Large garden (200 m² – ½ acre)</option><option>Country garden (over ½ acre)</option></select>
+        </div>
+        <div>
+          <label class="label" for="f-budget">Build budget (if known)</label>
+          <select class="field" id="f-budget" name="budget"><option value="">Not sure yet</option><option>Under £15,000</option><option>£15,000 – £30,000</option><option>£30,000 – £60,000</option><option>£60,000 – £120,000</option><option>Over £120,000</option><option>Planting only</option></select>
+        </div>
+        <div>
+          <label class="label" for="f-when">Timeframe</label>
+          <select class="field" id="f-when" name="timeframe"><option>As soon as possible</option><option>Within 6 months</option><option>Within a year</option><option>Just exploring</option></select>
+        </div>
+        <div>
+          <label class="label" for="f-heard">How did you find me?</label>
+          <select class="field" id="f-heard" name="source"><option value="">Choose…</option><option>Google</option><option>Instagram</option><option>Recommendation</option><option>Saw a garden</option><option>Other</option></select>
+        </div>
+      </div>
+      <div><label class="label" for="f-msg">About the garden</label><textarea class="field" id="f-msg" name="message" rows="4" placeholder="What is it like now, and what would you like it to be?" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex flex-wrap items-center gap-5">
+        <button type="submit" class="btn btn-terra">Send request</button>
+        <p data-form-status role="status" aria-live="polite" class="text-sm max-w-md"></p>
+      </div>
+      <p class="text-xs text-ink/60">Your details are only used to reply to you. <a class="underline" href="/privacy">Privacy notice</a>.</p>
+    </form>
+  </section>
+
+  <section class="bg-moss text-linen on-moss py-16">
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 grid md:grid-cols-3 gap-8">
+      {[
+        ['Within 2 days', 'I reply by email or phone to arrange a date.'],
+        ['The visit', 'Two hours on site, usually on a weekday morning. £295, payable after.'],
+        ['Within 7 days', 'Written recommendations, sketches where useful, and a clear next step.'],
+      ].map(([t, d]) => <div class="border-t hairline-light pt-4"><p class="serif-md">{t}</p><p class="mt-2 opacity-85">{d}</p></div>)}
+    </div>
+  </section>
+
+  <script>
+    import { enhanceForm, postcodeInArea } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-consult-form]');
+    if (form) {
+      // Preselect service from ?service=
+      const pre = new URLSearchParams(location.search).get('service');
+      if (pre) (form.querySelector<HTMLInputElement>(`input[name=service][value="${pre}"]`) ?? null)?.click();
+      // Live postcode area check
+      const pc = form.querySelector<HTMLInputElement>('#f-postcode')!;
+      const note = form.querySelector<HTMLElement>('[data-postcode-note]')!;
+      pc.addEventListener('input', () => {
+        const r = postcodeInArea(pc.value, site.postcodePrefixes);
+        note.textContent = pc.value.length < 2 ? '' : r === true ? '✓ Within the usual working area' : r === false ? 'Outside the usual area — larger projects still considered' : '';
+        note.className = `text-sm mt-1 block ${r === false ? 'text-terra-2' : 'text-moss'}`;
+      });
+      enhanceForm(form, {
+        config: site.forms,
+        formName: 'consultation',
+        rules: {
+          name: [{ type: 'required', message: 'Please tell me your name' }],
+          email: [{ type: 'required', message: 'An email address to reply to' }, { type: 'email' }],
+          phone: [{ type: 'required', message: 'A phone number to arrange the visit' }, { type: 'ukPhone' }],
+          postcode: [{ type: 'required', message: 'The garden\'s postcode helps me plan the visit' }, { type: 'ukPostcode' }],
+          message: [{ type: 'required', message: 'A sentence or two about the garden' }, { type: 'minLength', value: 20, message: 'A little more detail helps' }],
+        },
+      });
+    }
+  </script>
+</Base>

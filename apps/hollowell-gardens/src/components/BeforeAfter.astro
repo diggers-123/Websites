@@ -1,0 +1,25 @@
+---
+/** Accessible before/after comparison: a range input drives a clip-path. Works without pointer events. */
+import { Image } from 'astro:assets';
+import { img } from '@/images';
+interface Props { before: { key: string; alt: string }; after: { key: string; alt: string }; class?: string }
+const { before, after, class: cls = '' } = Astro.props;
+---
+<div class={`ba aspect-[3/2] rounded-sm ${cls}`} style="--split:50%" data-ba>
+  <Image src={img(before.key)} alt={before.alt} widths={[640, 1024, 1536]} sizes="(min-width:1024px) 70vw, 100vw" class="absolute inset-0 w-full h-full object-cover" />
+  <div class="ba-after">
+    <Image src={img(after.key)} alt={after.alt} widths={[640, 1024, 1536]} sizes="(min-width:1024px) 70vw, 100vw" class="absolute inset-0 w-full h-full object-cover" />
+  </div>
+  <div class="ba-handle" aria-hidden="true"></div>
+  <span class="absolute top-3 left-3 smallcaps bg-linen/90 text-moss px-2.5 py-1 rounded-full pointer-events-none">Before</span>
+  <span class="absolute top-3 right-3 smallcaps bg-moss/90 text-linen px-2.5 py-1 rounded-full pointer-events-none">After</span>
+  <input type="range" min="0" max="100" value="50" aria-label="Compare before and after: drag to reveal" />
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((el) => {
+    const range = el.querySelector<HTMLInputElement>('input[type=range]')!;
+    const set = () => el.style.setProperty('--split', `${range.value}%`);
+    range.addEventListener('input', set);
+    set();
+  });
+</script>

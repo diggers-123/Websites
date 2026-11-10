@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Botanical from '@/components/Botanical.astro';
+import GardenCard from '@/components/GardenCard.astro';
+import Testimonials from '@/components/Testimonials.astro';
+import { site } from '@/site.config';
+import { gardens, posts } from '@/content';
+import { img } from '@/images';
+
+const recent = gardens.slice(0, 3);
+const latest = posts[0];
+const steps = [
+  { n: '01', t: 'Consultation', d: 'A two-hour walk round your garden and a written set of recommendations. £295, credited against a design.' },
+  { n: '02', t: 'Survey & concept', d: 'Measured survey, then a concept: the shape of the garden, materials, mood, how it will be used.' },
+  { n: '03', t: 'Design & planting', d: 'A scaled master plan, construction drawings and a full planting plan — everything a contractor needs.' },
+  { n: '04', t: 'Build & plant', d: 'Trusted contractors build it; I set out the plants myself and come back after the first year.' },
+];
+---
+<Base>
+  <!-- HERO: editorial split — tall type column left, bleed image right -->
+  <section class="relative bg-linen overflow-hidden">
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[5fr_7fr] min-h-[calc(100dvh-92px)]">
+      <div class="relative flex flex-col justify-between py-10 lg:py-16 lg:pr-12 z-10">
+        <div class="absolute -left-6 top-6 w-28 lg:w-40 text-moss/70 pointer-events-none" aria-hidden="true"><Botanical kind="seedhead" /></div>
+        <p class="smallcaps text-terra ml-24 lg:ml-36">Garden design · Stroud &amp; the Cotswolds</p>
+        <div class="mt-16 lg:mt-0">
+          <h1 class="serif-xl text-moss">Gardens that belong to their <em class="text-terra">landscape.</em></h1>
+          <p class="lede mt-8 max-w-md text-ink/80">Considered design, generous planting and builds that run to the week — for town gardens, farmhouse gardens and everything in between.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={site.primaryCta.href} class="btn btn-terra">{site.primaryCta.label}</a>
+            <a href={site.secondaryCta!.href} class="btn btn-outline">{site.secondaryCta!.label}</a>
+          </div>
+        </div>
+        <dl class="mt-12 grid grid-cols-3 gap-4 border-t hairline pt-5 max-w-md">
+          <div><dt class="smallcaps opacity-60">Since</dt><dd class="font-serif text-2xl">{site.founded}</dd></div>
+          <div><dt class="smallcaps opacity-60">Gardens</dt><dd class="font-serif text-2xl">140+</dd></div>
+          <div><dt class="smallcaps opacity-60">Radius</dt><dd class="font-serif text-2xl">30 mi</dd></div>
+        </dl>
+      </div>
+      <div class="relative -mx-5 sm:-mx-8 lg:mx-0 lg:-mr-12 min-h-[70vw] lg:min-h-0 overflow-hidden">
+        <div class="absolute inset-0 parallax" data-parallax>
+          <Image src={img('hero')} alt="Layered perennial borders either side of a gravel path, Cotswold stone wall and oak bench beyond" widths={[640, 1024, 1536, 2048]} sizes="(min-width:1024px) 60vw, 100vw" class="absolute -inset-y-[8%] inset-x-0 w-full h-[116%] object-cover" loading="eager" fetchpriority="high" />
+        </div>
+        <figcaption class="absolute bottom-5 left-5 lg:left-8 bg-linen/90 text-moss px-3 py-2 text-sm font-serif italic">Painswick farmhouse garden, 2024</figcaption>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT GARDENS: irregular editorial grid -->
+  <section class="py-20 lg:py-28">
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
+      <div class="flex items-end justify-between gap-6 mb-12 lg:mb-16">
+        <h2 class="serif-lg max-w-lg">Recent gardens</h2>
+        <a href="/gardens" class="arrow-link hover:text-terra">All gardens</a>
+      </div>
+      <div class="ed-grid">
+        <div class="col-span-12 md:col-span-5 self-end md:pb-10" data-reveal>
+          <p class="lede text-ink/85 measure">Every garden here started with a conversation and a walk round. Some needed rebuilding from the ground up; some needed better planting and nothing else. The job is knowing which.</p>
+          <a href="/services" class="arrow-link mt-6 hover:text-terra">What I do</a>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7"><GardenCard garden={recent[1]} aspect="aspect-[4/5]" sizes="(min-width:768px) 48vw, 100vw" index={0} /></div>
+        <div class="col-span-12 md:col-span-7 md:-mt-10"><GardenCard garden={recent[0]} aspect="aspect-[3/2]" sizes="(min-width:768px) 58vw, 100vw" index={1} /></div>
+        <div class="col-span-12 md:col-span-4 md:col-start-9 md:pt-24"><GardenCard garden={recent[2]} aspect="aspect-[4/5]" sizes="(min-width:768px) 33vw, 100vw" index={2} /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS: giant serif numerals -->
+  <section class="bg-moss text-linen on-moss py-20 lg:py-28 relative overflow-hidden">
+    <div class="absolute -right-10 -top-10 w-[30vw] max-w-[380px] text-sage/40 pointer-events-none" aria-hidden="true"><Botanical kind="allium" /></div>
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 relative">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-20">
+        <div>
+          <h2 class="serif-lg">How a garden happens</h2>
+          <p class="lede mt-6 opacity-85 max-w-sm">Four stages, each with a fixed fee and a clear output. No surprises, no vague "design packages".</p>
+          <a href="/process" class="btn btn-outline mt-8">The process in detail</a>
+        </div>
+        <ol class="grid sm:grid-cols-2 gap-x-10 gap-y-12">
+          {steps.map((s, i) => (
+            <li class="border-t hairline-light pt-5" data-reveal data-reveal-delay={i * 90}>
+              <span class="serif-num text-sage block">{s.n}</span>
+              <h3 class="serif-md mt-3">{s.t}</h3>
+              <p class="mt-3 opacity-85 leading-relaxed">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES: text-led list with hairlines -->
+  <section class="py-20 lg:py-28">
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-20">
+      <div>
+        <h2 class="serif-lg">Services</h2>
+        <p class="mt-5 text-ink/75 max-w-sm">From a half-day consultation to a fully managed build. Fees are fixed and quoted up front.</p>
+      </div>
+      <ul class="border-t hairline">
+        {site.services.map((s, i) => (
+          <li class="border-b hairline" data-reveal data-reveal-delay={i * 60}>
+            <a href={`/services/${s.slug}`} class="group grid sm:grid-cols-[1fr_auto] gap-x-8 gap-y-2 py-7 items-baseline">
+              <div>
+                <h3 class="serif-md group-hover:text-terra transition-colors">{s.name}</h3>
+                <p class="mt-2 text-ink/75 max-w-xl">{s.summary}</p>
+              </div>
+              <span class="font-serif italic text-lg whitespace-nowrap">{s.price}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- JOURNAL TEASER -->
+  <section class="bg-linen-2 py-20 lg:py-28">
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+      <a href={`/journal/${latest.slug}`} class="group block relative aspect-[3/2] overflow-hidden rounded-sm" data-reveal>
+        <Image src={img(latest.cover)} alt={latest.coverAlt} widths={[640, 1024, 1536]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.04]" />
+      </a>
+      <div data-reveal>
+        <p class="smallcaps text-terra">Season notes · {new Date(latest.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
+        <h2 class="serif-lg mt-4"><a href={`/journal/${latest.slug}`} class="hover:text-terra">{latest.title}</a></h2>
+        <p class="lede mt-5 text-ink/80">{latest.standfirst}</p>
+        <a href="/journal" class="arrow-link mt-6 hover:text-terra">Read the journal</a>
+      </div>
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <!-- CONSULTATION CTA -->
+  <section class="bg-terra text-linen py-20 lg:py-28 relative overflow-hidden">
+    <div class="absolute right-[8%] -bottom-16 w-[22vw] max-w-[260px] text-linen/25 pointer-events-none hidden lg:block" aria-hidden="true"><Botanical kind="fern" /></div>
+    <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[2fr_1fr] gap-10 items-end relative">
+      <div>
+        <h2 class="serif-xl">Start with a walk round.</h2>
+        <p class="lede mt-6 max-w-lg opacity-90">A consultation is £295, takes two hours, and comes with written recommendations. If you commission a design within six months, the fee is deducted.</p>
+      </div>
+      <div class="flex flex-col gap-3 lg:items-end">
+        <a href="/contact" class="btn bg-linen text-terra border-linen hover:bg-moss hover:text-linen hover:border-moss">Request a consultation</a>
+        <a href={`tel:${site.phoneHref}`} class="font-serif text-xl underline">{site.phone}</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { posts } from '@/content';
+import { img } from '@/images';
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Journal" description="Season notes from a Cotswold garden designer: when to start a garden design, what thrives on limestone soil, and what gardens honestly cost.">
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pt-14 lg:pt-24 pb-12">
+    <p class="smallcaps text-terra">Journal</p>
+    <h1 class="serif-xl mt-3">Season notes</h1>
+    <p class="lede mt-5 max-w-xl text-ink/80">Short, practical pieces on timing, soil, plants and money — the things clients ask about most.</p>
+  </section>
+  <section class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12 pb-24 border-t hairline">
+    {posts.map((p, i) => (
+      <article class="grid lg:grid-cols-12 gap-6 lg:gap-12 py-10 border-b hairline items-center" data-reveal>
+        <p class="lg:col-span-2 smallcaps opacity-60">{fmt(p.date)}<br />{p.readMins} min read</p>
+        <div class="lg:col-span-6">
+          <h2 class="serif-lg"><a href={`/journal/${p.slug}`} class="hover:text-terra">{p.title}</a></h2>
+          <p class="mt-4 text-ink/80 leading-relaxed">{p.standfirst}</p>
+          <a href={`/journal/${p.slug}`} class="arrow-link mt-5 hover:text-terra">Read</a>
+        </div>
+        <a href={`/journal/${p.slug}`} class="lg:col-span-4 relative aspect-[3/2] overflow-hidden rounded-sm block group">
+          <Image src={img(p.cover)} alt={p.coverAlt} widths={[480, 800, 1200]} sizes="(min-width:1024px) 30vw, 100vw" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.04]" loading={i === 0 ? 'eager' : 'lazy'} />
+        </a>
+      </article>
+    ))}
+  </section>
+</Base>

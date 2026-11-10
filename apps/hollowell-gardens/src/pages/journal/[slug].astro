@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { posts } from '@/content';
+import { img } from '@/images';
+import { site } from '@/site.config';
+
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, datePublished: post.date,
+  author: { '@type': 'Person', name: site.owner!.name }, publisher: { '@id': `${site.seo.siteUrl}/#business` },
+  description: post.standfirst, url: `${site.seo.siteUrl}/journal/${post.slug}`,
+}];
+const others = posts.filter((p) => p.slug !== post.slug).slice(0, 2);
+---
+<Base title={post.title} description={post.standfirst} {schema}>
+  <article>
+    <header class="mx-auto max-w-3xl px-5 sm:px-8 pt-14 lg:pt-24 pb-10 text-center">
+      <p class="smallcaps text-terra"><a href="/journal" class="hover:underline">Journal</a> · {fmt(post.date)} · {post.readMins} min</p>
+      <h1 class="serif-xl mt-4">{post.title}</h1>
+      <p class="lede mt-6 text-ink/80">{post.standfirst}</p>
+    </header>
+    <div class="mx-auto max-w-[1200px] px-5 sm:px-8">
+      <div class="relative aspect-[16/9] overflow-hidden rounded-sm">
+        <Image src={img(post.cover)} alt={post.coverAlt} widths={[768, 1200, 1600]} sizes="(min-width:1200px) 1100px, 94vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+    <div class="mx-auto max-w-2xl px-5 sm:px-8 py-14 lg:py-20">
+      {post.body.map((p, i) => <p class:list={['leading-relaxed text-ink/85 mb-6 text-[1.1rem]', i === 0 && 'first-letter:font-serif first-letter:text-6xl first-letter:float-left first-letter:mr-3 first-letter:leading-[0.8] first-letter:text-terra']}>{p}</p>)}
+      <p class="mt-10 pt-6 border-t hairline smallcaps opacity-60">By {site.owner!.name}, {site.owner!.title}</p>
+    </div>
+    <aside class="bg-linen-2 py-16">
+      <div class="mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
+        <h2 class="serif-md mb-8">More from the journal</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {others.map((o) => (
+            <a href={`/journal/${o.slug}`} class="group border-t hairline pt-4">
+              <p class="smallcaps opacity-60">{fmt(o.date)}</p>
+              <h3 class="serif-sm mt-2 group-hover:text-terra">{o.title}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </article>
+</Base>

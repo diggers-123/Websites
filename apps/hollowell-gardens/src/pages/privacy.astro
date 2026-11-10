@@ -1,0 +1,20 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal information from consultation requests and this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who I am</h2>
+  <p>{site.legal.legalName}, {site.address.line1}, {site.address.town} {site.address.postcode}. I am the data controller for the information described here. Contact: <a href={`mailto:${site.email}`}>{site.email}</a>, {site.phone}.</p>
+  <h2>What I collect and why</h2>
+  <ul>
+    <li><strong>Consultation requests:</strong> name, email, phone, garden postcode, project details. Used to reply, arrange a visit and prepare for it. Lawful basis: steps prior to a contract / legitimate interests.</li>
+    <li><strong>Clients:</strong> survey data, drawings, correspondence and invoices relating to your garden. Retained for 6 years for tax and professional-indemnity purposes.</li>
+    <li><strong>Website usage:</strong> no analytics or advertising cookies are set by default.</li>
+  </ul>
+  <h2>Sharing</h2>
+  <p>Project information is shared with landscape contractors and suppliers only as needed to price and build your garden. Form submissions are processed by the form provider configured for this site, acting as processor.</p>
+  <h2>Your rights</h2>
+  <p>You may request access, correction, deletion or restriction of your data, or object to processing, by emailing <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints can be made to the ICO at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+  <h2>Photography</h2>
+  <p>Photographs of completed gardens are only published with the owner's written consent and never include house numbers or identifying details without agreement.</p>
+</Legal>

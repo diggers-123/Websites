@@ -1,0 +1,57 @@
+---
+/**
+ * Single-weight botanical line drawings (custom SVG). `draw` class animates stroke on scroll
+ * (see Base.astro). Decorative: aria-hidden by default.
+ */
+interface Props { kind: 'seedhead' | 'grass' | 'fern' | 'allium'; class?: string; draw?: boolean }
+const { kind, class: cls = '', draw = true } = Astro.props;
+const common = `w-full h-auto ${draw ? 'draw' : ''} ${cls}`;
+---
+{kind === 'seedhead' && (
+  <svg class={common} viewBox="0 0 200 320" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true">
+    <path d="M100 318 C98 260 102 200 100 140" />
+    <path d="M100 140 c-6 -14 -2 -30 8 -36 c10 6 14 22 8 36 c-6 6 -10 6 -16 0z" />
+    <path d="M90 128 c-16 -4 -24 -20 -20 -34 c14 2 24 16 20 34z" />
+    <path d="M110 118 c16 -6 26 -22 20 -36 c-14 4 -22 20 -20 36z" />
+    <path d="M94 100 c-14 -10 -16 -30 -6 -40 c10 10 12 30 6 40z" />
+    <path d="M108 92 c12 -12 10 -32 -2 -40 c-8 12 -8 30 2 40z" />
+    <path d="M100 70 c-4 -14 2 -28 10 -32 c6 10 4 26 -10 32z" />
+    <path d="M100 190 c-18 -2 -32 -16 -34 -32 c18 2 30 16 34 32z" />
+    <path d="M100 230 c14 -6 24 -22 22 -40 c-14 6 -24 22 -22 40z" />
+  </svg>
+)}
+{kind === 'grass' && (
+  <svg class={common} viewBox="0 0 400 320" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true">
+    <path d="M200 320 C190 240 150 160 90 100" />
+    <path d="M205 320 C210 230 240 150 320 90" />
+    <path d="M198 320 C200 220 198 120 210 40" />
+    <path d="M210 40 c-8 -10 -4 -24 6 -28 c6 10 4 22 -6 28z" />
+    <path d="M90 100 c-10 -6 -14 -18 -8 -26 c10 4 12 16 8 26z" />
+    <path d="M320 90 c12 -4 20 -14 14 -24 c-10 2 -16 12 -14 24z" />
+    <path d="M196 320 C180 260 120 200 40 180" />
+    <path d="M208 320 C230 250 300 200 380 190" />
+    <path d="M202 300 C196 230 170 170 140 130" />
+    <path d="M206 300 C214 230 250 180 290 150" />
+  </svg>
+)}
+{kind === 'fern' && (
+  <svg class={common} viewBox="0 0 220 360" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true">
+    <path d="M110 358 C112 280 108 180 120 60 c4 -20 14 -36 30 -40" />
+    {Array.from({ length: 11 }).map((_, i) => {
+      const y = 320 - i * 26;
+      const w = 70 - i * 5;
+      return (<><path d={`M111 ${y} c-${w * 0.4} -6 -${w * 0.8} -4 -${w} 2 c${w * 0.6} 6 ${w * 0.8} 10 ${w} 16`} /><path d={`M113 ${y - 8} c${w * 0.4} -6 ${w * 0.8} -4 ${w} 2 c-${w * 0.6} 6 -${w * 0.8} 10 -${w} 16`} /></>);
+    })}
+  </svg>
+)}
+{kind === 'allium' && (
+  <svg class={common} viewBox="0 0 240 360" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true">
+    <path d="M120 358 C118 280 122 200 120 150" />
+    <circle cx="120" cy="90" r="58" stroke-dasharray="2 5" />
+    {Array.from({ length: 18 }).map((_, i) => {
+      const a = (i / 18) * Math.PI * 2;
+      const x2 = 120 + Math.cos(a) * 58; const y2 = 90 + Math.sin(a) * 58;
+      return (<><line x1="120" y1="90" x2={x2.toFixed(1)} y2={y2.toFixed(1)} /><circle cx={x2.toFixed(1)} cy={y2.toFixed(1)} r="3" /></>);
+    })}
+  </svg>
+)}
