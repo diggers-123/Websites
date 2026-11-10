@@ -1,0 +1,17 @@
+---
+import Base from '@/layouts/Base.astro';
+import DateCheck from '@/components/DateCheck.astro';
+import { site } from '@/site.config';
+---
+<Base title="Check your date" description="See whether your wedding or session date is free with Nell Ashworth Photography, Edinburgh, and send an enquiry in a minute.">
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-24 grid lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20">
+    <div>
+      <p class="caption">Enquiry</p>
+      <h1 class="serif-xl !text-[clamp(2.6rem,7vw,7rem)] mt-3">Check your date<span class="text-verm">.</span></h1>
+      <p class="mt-6 text-ink-2 max-w-sm leading-relaxed">Pick your date and I'll tell you straight away whether it's free. Then tell me about the day and I'll reply within two working days with availability confirmed, pricing and a few questions.</p>
+      <p class="mt-6 caption">Demo: availability is read from a list in the site config. In production, connect the photographer's calendar.</p>
+      <p class="mt-8 text-sm text-ink-2">{site.booking.policy}</p>
+    </div>
+    <DateCheck />
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+---
+import Base from '@/layouts/Base.astro';
+import Frames from '@/components/Frames.astro';
+import { frames, weddingFrames, familyFrames } from '@/content';
+const portraits = frames.filter((f) => ['bench', 'reading'].includes(f.key));
+---
+<Base title="Portfolio" description="Selected documentary wedding, family and portrait photographs by Nell Ashworth, Edinburgh.">
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-12 flex flex-wrap items-end justify-between gap-6">
+    <h1 class="serif-xl">Portfolio<span class="text-verm">.</span></h1>
+    <nav class="flex gap-6 caption" aria-label="Sections"><a href="#weddings" class="hover:text-verm">Weddings</a><a href="#families" class="hover:text-verm">Families</a><a href="#portraits" class="hover:text-verm">Portraits</a></nav>
+  </section>
+  <section id="weddings" class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-12 scroll-mt-10"><h2 class="serif-md mb-10">Weddings</h2><Frames frames={weddingFrames} start={1} total={frames.length} /></section>
+  <section id="families" class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-12 scroll-mt-10"><h2 class="serif-md mb-10">Families</h2><Frames frames={familyFrames} start={weddingFrames.length + 1} total={frames.length} /></section>
+  <section id="portraits" class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-12 pb-24 scroll-mt-10"><h2 class="serif-md mb-10">Portraits</h2><Frames frames={portraits} start={1} total={portraits.length} /></section>
+</Base>

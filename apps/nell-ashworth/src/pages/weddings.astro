@@ -1,0 +1,25 @@
+---
+import Base from '@/layouts/Base.astro';
+import Frames from '@/components/Frames.astro';
+import { site } from '@/site.config';
+import { weddingFrames } from '@/content';
+import { faqSchema } from '@site/core';
+const w = site.services.filter((s) => s.category === 'Weddings');
+const faqs = site.faqs.filter((f) => /documentary|ahead|rain|photos/.test(f.q));
+---
+<Base title="Documentary wedding photography" description="Documentary wedding photography in Edinburgh and across Scotland: full days from £2,400, half days from £1,500, elopements from £650. No posing, no lists." schema={[faqSchema(faqs)]}>
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-16 grid lg:grid-cols-[3fr_2fr] gap-10 items-end">
+    <h1 class="serif-xl">Weddings<span class="text-verm">,</span> as they <em>happened</em></h1>
+    <p class="text-ink-2 text-lg leading-relaxed max-w-md">I don't direct. I watch, and I'm quick. The photographs are of the day you actually had: the nerves, the weather, the speech that went on too long, your gran on the dance floor.</p>
+  </section>
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pb-24"><Frames frames={weddingFrames} /></section>
+  <section class="border-y hairline"><div class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-20 grid lg:grid-cols-[1fr_2fr] gap-10">
+    <h2 class="serif-lg">Three ways<span class="text-verm">.</span></h2>
+    <div class="grid sm:grid-cols-3 gap-8">{w.map((s) => <div class="border-t hairline pt-5"><p class="caption">{s.name}</p><p class="serif-md mt-2">{s.price}</p><p class="text-sm text-ink-2 mt-3">{s.summary}</p><ul class="mt-4 text-sm grid gap-1">{s.includes?.map((x) => <li class="flex gap-2"><span class="text-verm">—</span>{x}</li>)}</ul></div>)}</div>
+  </div></section>
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-20 grid lg:grid-cols-[1fr_2fr] gap-10">
+    <h2 class="serif-lg">Asked often<span class="text-verm">.</span></h2>
+    <dl class="border-t hairline">{faqs.map((f) => <div class="py-6 border-b hairline grid md:grid-cols-[1fr_2fr] gap-3"><dt class="serif-sm">{f.q}</dt><dd class="text-ink-2 leading-relaxed">{f.a}</dd></div>)}</dl>
+  </section>
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pb-24"><a href="/check-your-date" class="btn btn-verm">Check your date</a></section>
+</Base>

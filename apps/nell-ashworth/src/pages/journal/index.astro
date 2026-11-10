@@ -1,0 +1,13 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { posts } from '@/content';
+import { img } from '@/images';
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Journal" description="Notes on documentary wedding photography from Edinburgh: why there's no shot list, and why rain is better.">
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-12"><h1 class="serif-xl">Journal<span class="text-verm">.</span></h1></section>
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pb-24 border-t hairline">
+    {posts.map((p, i) => <article class="grid lg:grid-cols-12 gap-6 lg:gap-10 py-12 border-b hairline items-center"><p class="lg:col-span-2 caption">{fmt(p.date)}<br />{p.readMins} min</p><div class="lg:col-span-6"><h2 class="serif-lg"><a href={`/journal/${p.slug}`} class="hover:text-verm">{p.title}</a></h2><p class="mt-4 text-ink-2 leading-relaxed">{p.standfirst}</p><a href={`/journal/${p.slug}`} class="btn mt-5">Read</a></div><a href={`/journal/${p.slug}`} class="lg:col-span-4 relative aspect-[3/2] overflow-hidden bg-paper-2 block" data-view="Read"><Image src={img(p.cover)} alt={p.coverAlt} widths={[480, 800, 1200]} sizes="(min-width:1024px) 30vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} /></a></article>)}
+  </section>
+</Base>

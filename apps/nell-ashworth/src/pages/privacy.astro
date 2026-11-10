@@ -1,0 +1,17 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+---
+<Base title="Privacy notice" description={`How ${site.name} uses personal information from enquiries, bookings and this website.`}>
+  <section class="mx-auto max-w-2xl px-5 sm:px-8 pt-10 lg:pt-20 pb-24">
+    <h1 class="serif-lg">Privacy notice<span class="text-verm">.</span></h1><p class="caption mt-3">Last reviewed {site.legal.policiesReviewed}</p>
+    <div class="mt-6 border border-verm p-4 text-sm text-ink-2"><strong>Template notice.</strong> This document is a starting point based on ICO guidance. It must be reviewed and adapted for the actual business before going live. It is not legal advice.</div>
+    <div class="mt-8 grid gap-4 text-ink-2 leading-relaxed [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:text-ink [&_h2]:mt-6">
+      <h2>Who I am</h2><p>{site.legal.legalName}, {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}. Contact <a class="underline" href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      <h2>What I collect and why</h2><p><strong>Enquiries:</strong> names, email, date, venue and message — to reply and check availability (legitimate interests / pre-contract). <strong>Clients:</strong> contact details, venue, timings, family names and the photographs themselves, to deliver the service (contract). Galleries are retained for 2 years; contracts and invoices for 6 years.</p>
+      <h2>Photographs</h2><p>Photographs of you are personal data. I ask at booking whether I may use a selection for this website and social media; you can say no, or change your mind later, and I'll remove them. Photographs of guests at weddings are taken under the couple's booking and are not used publicly without a check with the couple.</p>
+      <h2>Sharing</h2><p>Galleries are hosted by a gallery provider; form submissions are processed by the provider configured for this site. Nothing is sold.</p>
+      <h2>Your rights</h2><p>Access, correction, deletion, restriction and objection: email <a class="underline" href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a class="underline" href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+    </div>
+  </section>
+</Base>

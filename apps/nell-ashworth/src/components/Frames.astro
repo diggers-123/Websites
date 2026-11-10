@@ -1,0 +1,25 @@
+---
+/** Asymmetric gallery: CSS grid with spans by orientation, film-frame numbering, cursor label. */
+import { Image } from 'astro:assets';
+import type { Frame } from '@/content';
+import { img } from '@/images';
+interface Props { frames: Frame[]; start?: number; total?: number; linkTo?: string }
+const { frames, start = 1, total, linkTo } = Astro.props;
+const n = total ?? frames.length;
+const span = (w: Frame['w'], i: number) => (w === 'wide' ? 'col-span-12 md:col-span-8' : w === 'tall' ? 'col-span-6 md:col-span-4' : 'col-span-6 md:col-span-4');
+const offset = (i: number) => (i % 4 === 1 ? 'md:mt-16' : i % 4 === 3 ? 'md:-mt-10' : '');
+---
+<div class="grid grid-cols-12 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-16 items-start">
+  {frames.map((f, i) => (
+    <figure class:list={[span(f.w, i), offset(i), i % 3 === 2 && 'md:col-start-7']} data-settle>
+      {linkTo ? (
+        <a href={linkTo} class="block" data-view="View">
+          <div class:list={['relative overflow-hidden bg-paper-2', f.w === 'wide' ? 'aspect-[3/2]' : f.w === 'tall' ? 'aspect-[4/5]' : 'aspect-square']}><Image src={img(f.key)} alt={f.alt} widths={[480, 800, 1200, 1600]} sizes={f.w === 'wide' ? '(min-width:768px) 66vw, 100vw' : '(min-width:768px) 33vw, 50vw'} class="absolute inset-0 w-full h-full object-cover" /></div>
+        </a>
+      ) : (
+        <div class:list={['relative overflow-hidden bg-paper-2', f.w === 'wide' ? 'aspect-[3/2]' : f.w === 'tall' ? 'aspect-[4/5]' : 'aspect-square']}><Image src={img(f.key)} alt={f.alt} widths={[480, 800, 1200, 1600]} sizes={f.w === 'wide' ? '(min-width:768px) 66vw, 100vw' : '(min-width:768px) 33vw, 50vw'} class="absolute inset-0 w-full h-full object-cover" /></div>
+      )}
+      <figcaption class="mt-3 flex justify-between gap-4"><span class="caption">{f.caption}</span><span class="frame-no text-grey">{String(start + i).padStart(3, '0')} / {String(n).padStart(3, '0')}</span></figcaption>
+    </figure>
+  ))}
+</div>

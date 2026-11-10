@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const nell = site.team![0];
+---
+<Base title="About Nell" description="Nell Ashworth is a documentary wedding and family photographer based in Edinburgh — a former photojournalist, two hundred weddings in, still the quietest person in the room.">
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-24 grid lg:grid-cols-12 gap-10 items-start">
+    <div class="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-paper-2" data-settle><Image src={img(nell.image!.src)} alt={nell.image!.alt} widths={[640, 1024, 1400]} sizes="(min-width:1024px) 40vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    <div class="lg:col-span-6 lg:col-start-7 lg:pt-16">
+      <h1 class="serif-xl !text-[clamp(2.6rem,7vw,7rem)]">The quiet one<span class="text-verm">.</span></h1>
+      <p class="mt-8 serif-md">{nell.bio}</p>
+      <div class="mt-8 grid gap-5 text-ink-2 leading-relaxed max-w-prose">
+        <p>I trained on a local paper, which means I learned to get the picture without being noticed and to never, ever miss the moment. Weddings turned out to be the best stories I'd ever been sent to — and nobody tried to stop me photographing them.</p>
+        <p>I shoot on two small cameras with no flash where I can help it, and I don't do group shots for an hour. Ten minutes, the families you need, then back to the day.</p>
+        <p>I live in Leith with a very old dog. When I'm not at a wedding I'm photographing families at home, or walking up hills in weather other people complain about.</p>
+      </div>
+      <dl class="mt-10 grid grid-cols-3 gap-6 border-t hairline pt-6">{site.credentials?.map((c) => <div><dt class="caption">{c.detail}</dt><dd class="serif-sm mt-1">{c.label}</dd></div>)}</dl>
+    </div>
+  </section>
+</Base>

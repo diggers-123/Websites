@@ -1,0 +1,37 @@
+---
+import '@/styles/theme.css';
+import Head from '@site/core/components/Head.astro';
+import DemoBanner from '@site/core/components/DemoBanner.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site } from '@/site.config';
+interface Props { title?: string; description?: string; image?: string; schema?: unknown[]; noindex?: boolean }
+const { title, description, image, schema, noindex } = Astro.props;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head><Head {site} {title} {description} {image} {schema} {noindex} /></head>
+  <body class="min-h-dvh flex flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <DemoBanner {site} />
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1"><slot /></main>
+    <Footer />
+    <div class="cursor-label" data-cursor-label aria-hidden="true">View</div>
+    <script>
+      import { initReveal, initMobileNav } from '@site/core/components/reveal';
+      document.querySelectorAll('[data-settle]').forEach((el) => el.setAttribute('data-reveal', ''));
+      initReveal();
+      initMobileNav({ button: '[data-nav-toggle]', panel: '[data-nav-panel]' });
+      // Cursor-follow label over gallery links (fine pointers only)
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        const label = document.querySelector<HTMLElement>('[data-cursor-label]')!;
+        document.querySelectorAll<HTMLElement>('[data-view]').forEach((el) => {
+          el.addEventListener('mouseenter', () => { label.textContent = el.dataset.view || 'View'; label.classList.add('is-on'); });
+          el.addEventListener('mouseleave', () => label.classList.remove('is-on'));
+        });
+        addEventListener('mousemove', (e) => { label.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%) scale(${label.classList.contains('is-on') ? 1 : 0})`; }, { passive: true });
+      }
+    </script>
+  </body>
+</html>

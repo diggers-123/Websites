@@ -1,0 +1,25 @@
+---
+import { site } from '@/site.config';
+const year = new Date().getFullYear();
+---
+<footer class="mt-auto border-t hairline">
+  <div class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-16 lg:py-24">
+    <div class="grid lg:grid-cols-[2fr_1fr_1fr] gap-10">
+      <div>
+        <p class="serif-lg max-w-2xl">Still reading? Tell me about your day<span class="text-verm">.</span></p>
+        <div class="mt-8 flex flex-wrap gap-6"><a href={site.primaryCta.href} class="btn btn-verm">{site.primaryCta.label}</a><a href={`mailto:${site.email}`} class="btn">{site.email}</a></div>
+      </div>
+      <div>
+        <p class="caption mb-4">Studio</p>
+        <address class="not-italic text-sm leading-relaxed text-ink-2">{site.address.line1}<br />{site.address.line2}<br />{site.address.town} {site.address.postcode}<br /><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a></address>
+        <p class="caption mt-6 mb-2">Elsewhere</p>
+        <ul class="text-sm flex gap-4">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k}</a></li>)}</ul>
+      </div>
+      <div>
+        <p class="caption mb-4">Pages</p>
+        <ul class="text-sm flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:text-verm" href={n.href}>{n.label}</a></li>)}</ul>
+      </div>
+    </div>
+    <p class="mt-16 caption">© {year} {site.legal.legalName} · Documentary wedding &amp; family photographer, Edinburgh · All photographs on this demonstration site are AI-generated and fictional.</p>
+  </div>
+</footer>

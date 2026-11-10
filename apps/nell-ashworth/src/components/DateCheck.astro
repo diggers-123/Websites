@@ -1,0 +1,56 @@
+---
+/** Date-availability enquiry: picks a date, shows demo availability from config, submits enquiry. */
+import { site } from '@/site.config';
+---
+<form class="grid gap-8" data-datecheck name="date-check" method="post" novalidate>
+  <div class="grid sm:grid-cols-[1fr_1fr] gap-8 items-end">
+    <div>
+      <label class="label" for="d-date">Your date</label>
+      <input class="field text-2xl font-serif" id="d-date" name="date" type="date" required />
+      <span data-error-for="date" hidden></span>
+    </div>
+    <p class="serif-md min-h-[2.5rem]" data-availability aria-live="polite"></p>
+  </div>
+  <fieldset>
+    <legend class="label">What kind of day?</legend>
+    <div class="flex flex-wrap gap-2 mt-2">
+      {['Wedding', 'Elopement', 'Family session', 'Newborn', 'Portrait', 'Something else'].map((t, i) => <label class="choice relative"><input type="radio" name="type" value={t} checked={i === 0} />{t}</label>)}
+    </div>
+  </fieldset>
+  <div class="grid sm:grid-cols-2 gap-8">
+    <div><label class="label" for="d-names">Your name(s)</label><input class="field" id="d-names" name="names" autocomplete="name" required /><span data-error-for="names" hidden></span></div>
+    <div><label class="label" for="d-email">Email</label><input class="field" id="d-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+    <div><label class="label" for="d-venue">Venue or place (if known)</label><input class="field" id="d-venue" name="venue" /></div>
+    <div><label class="label" for="d-heard">How did you find me?</label><select class="field" id="d-heard" name="source"><option value="">Choose…</option><option>Instagram</option><option>A friend's wedding</option><option>Google</option><option>Venue recommendation</option><option>Other</option></select></div>
+  </div>
+  <div><label class="label" for="d-msg">Tell me a little about the day</label><textarea class="field" id="d-msg" name="message" rows="4" placeholder="Where, who, what matters to you. Rough plans are fine." required></textarea><span data-error-for="message" hidden></span></div>
+  <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+  <div class="flex flex-wrap items-center gap-6"><button type="submit" class="btn btn-verm">Send enquiry</button><p data-form-status role="status" aria-live="polite" class="text-sm max-w-md text-ink-2"></p></div>
+  <p class="caption">Your details are only used to reply. <a class="underline" href="/privacy">Privacy</a>.</p>
+</form>
+<script>
+  import { enhanceForm } from '@site/core';
+  import { site, bookedDates, blackoutDates } from '@/site.config';
+  const form = document.querySelector<HTMLFormElement>('[data-datecheck]');
+  if (form) {
+    const date = form.querySelector<HTMLInputElement>('#d-date')!;
+    const out = form.querySelector<HTMLElement>('[data-availability]')!;
+    const today = new Date(); date.min = today.toISOString().slice(0, 10);
+    const pre = new URLSearchParams(location.search).get('date'); if (pre) date.value = pre;
+    const check = () => {
+      const v = date.value; if (!v) { out.textContent = ''; return; }
+      const d = new Date(v + 'T12:00:00');
+      if (blackoutDates.includes(v)) { out.innerHTML = 'I don\'t work that day — sorry<span class="text-verm">.</span>'; return; }
+      if (bookedDates.includes(v)) { out.innerHTML = 'Already booked<span class="text-verm">.</span> <span class="text-base text-ink-2 font-sans">Ask anyway — plans change.</span>'; return; }
+      const sat = d.getDay() === 6, summer = d.getMonth() >= 4 && d.getMonth() <= 8;
+      out.innerHTML = `${sat && summer ? 'Free, for now' : 'Free'}<span class="text-verm">.</span> <span class="text-base text-ink-2 font-sans">${sat && summer ? 'Summer Saturdays go quickly.' : d.getDay() === 0 || d.getDay() === 6 ? 'Weekend — good.' : 'A weekday — lovely light, fewer crowds.'}</span>`;
+    };
+    date.addEventListener('input', check); check();
+    enhanceForm(form, { config: site.forms, formName: 'date-check', rules: {
+      date: [{ type: 'required', message: 'Pick a date (a guess is fine)' }],
+      names: [{ type: 'required', message: 'Your name' }],
+      email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }],
+      message: [{ type: 'required', message: 'A sentence or two about the day' }, { type: 'minLength', value: 20, message: 'A little more helps me reply usefully' }],
+    } });
+  }
+</script>

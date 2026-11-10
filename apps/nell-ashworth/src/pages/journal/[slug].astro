@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { posts } from '@/content';
+import { img } from '@/images';
+import { site } from '@/site.config';
+export function getStaticPaths() { return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } })); }
+const { post } = Astro.props;
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const schema = [{ '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, datePublished: post.date, author: { '@type': 'Person', name: site.owner!.name }, publisher: { '@id': `${site.seo.siteUrl}/#business` }, description: post.standfirst, url: `${site.seo.siteUrl}/journal/${post.slug}` }];
+---
+<Base title={post.title} description={post.standfirst} {schema}>
+  <article class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-24">
+    <p class="caption"><a href="/journal" class="hover:text-verm">Journal</a> · {fmt(post.date)} · {post.readMins} min</p>
+    <h1 class="serif-xl !text-[clamp(2.4rem,6.5vw,6.5rem)] mt-4 max-w-5xl">{post.title}<span class="text-verm">.</span></h1>
+    <div class="mt-12 lg:ml-[25%] relative aspect-[3/2] overflow-hidden bg-paper-2"><Image src={img(post.cover)} alt={post.coverAlt} widths={[768, 1200, 1600]} sizes="(min-width:1024px) 70vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    <div class="mt-14 lg:ml-[25%] max-w-2xl"><p class="serif-md">{post.standfirst}</p>{post.body.map((p) => <p class="mt-6 text-[1.08rem] leading-relaxed text-ink-2">{p}</p>)}<p class="mt-10 caption">— {site.owner!.name}</p></div>
+  </article>
+</Base>

@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Frames from '@/components/Frames.astro';
+import { site } from '@/site.config';
+import { frames } from '@/content';
+import { img } from '@/images';
+const heroKeys = ['hillside', 'confetti', 'ceilidh'];
+const home = frames.filter((f) => ['father', 'rings', 'beach', 'buttons', 'speeches'].includes(f.key));
+const navReveal = [
+  { label: 'Weddings', href: '/weddings', key: 'confetti', alt: 'A couple laughing through confetti' },
+  { label: 'Families', href: '/families', key: 'reading', alt: 'A mother and toddler reading by a window' },
+  { label: 'Portraits', href: '/portfolio#portraits', key: 'bench', alt: 'An elderly couple laughing on a bench' },
+];
+---
+<Base>
+  <!-- HERO: photograph offset right, bleeding; huge italic serif overlapping bottom-left -->
+  <section class="relative overflow-x-clip">
+    <div class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 pt-4 lg:pt-8">
+      <div class="relative lg:ml-[18%] -mr-5 sm:-mr-8 lg:-mr-12">
+        <div class="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden bg-paper-2 xfade" data-xfade>
+          {heroKeys.map((k, i) => <Image src={img(k)} alt={{ hillside: 'A wedding party crossing a misty hillside above Edinburgh', confetti: 'A couple laughing through confetti on an Edinburgh close', ceilidh: 'A kilt mid-swing at a barn ceilidh' }[k]!} widths={[768, 1200, 1600, 2048]} sizes="(min-width:1024px) 80vw, 100vw" class:list={[i === 0 && 'is-active']} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />)}
+        </div>
+        <p class="absolute bottom-4 right-8 sm:right-12 caption text-paper mix-blend-difference">001 / {String(frames.length).padStart(3, '0')}</p>
+      </div>
+      <h1 class="serif-xl relative z-10 -mt-[0.8em] lg:-mt-[1.1em] max-w-[14ch]"><em>Photographs</em> for people who'd rather be living it<span class="text-verm">.</span></h1>
+      <div class="mt-10 lg:mt-14 grid lg:grid-cols-[1fr_1fr] gap-8 items-end">
+        <p class="max-w-md text-ink-2 text-lg leading-relaxed">Documentary wedding and family photography from Edinburgh. No posing, no lists, no "look here" — just your day, as it happened, photographed by someone paying attention.</p>
+        <div class="flex flex-wrap gap-8 lg:justify-end"><a href={site.primaryCta.href} class="btn btn-verm">{site.primaryCta.label}</a><a href={site.secondaryCta!.href} class="btn">{site.secondaryCta!.label}</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASYMMETRIC GALLERY -->
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-24 lg:py-36">
+    <Frames frames={home} start={2} total={frames.length} linkTo="/portfolio" />
+  </section>
+
+  <!-- OVERSIZED TEXT NAV WITH IMAGE REVEAL -->
+  <section class="border-y hairline overflow-x-clip">
+    <div class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-10 lg:py-16 reveal-nav" data-reveal-nav>
+      {navReveal.map((n, i) => (
+        <a href={n.href} class="group flex items-baseline gap-6 py-4 lg:py-6 border-b hairline last:border-0 hover:text-verm transition-colors" data-reveal-for={n.key}>
+          <span class="frame-no text-grey">0{i + 1}</span><span class="serif-xl !text-[clamp(2.5rem,8vw,8rem)]">{n.label}</span><span class="ml-auto caption hidden sm:inline group-hover:text-verm">View →</span>
+        </a>
+      ))}
+      {navReveal.map((n) => <div class="reveal-img hidden lg:block" data-reveal-img={n.key}><Image src={img(n.key)} alt={n.alt} widths={[480, 800]} sizes="32vw" class="w-full h-full object-cover" /></div>)}
+    </div>
+  </section>
+
+  <!-- PRICING FROM strip -->
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-20 lg:py-28 grid lg:grid-cols-[1fr_2fr] gap-10">
+    <h2 class="serif-lg">Pricing, plainly<span class="text-verm">.</span></h2>
+    <dl class="grid sm:grid-cols-3 gap-8 border-t hairline pt-8">
+      {[site.services[0], site.services[2], site.services[3]].map((s) => <div><dt class="caption">{s.category} · {s.name}</dt><dd class="serif-md mt-2">{s.price}</dd><dd class="text-sm text-ink-2 mt-2">{s.summary}</dd></div>)}
+      <div class="sm:col-span-3"><a href="/pricing" class="btn">Everything included, and what isn't</a></div>
+    </dl>
+  </section>
+
+  <!-- KIND WORDS -->
+  <section class="bg-ink text-paper py-20 lg:py-28">
+    <div class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
+      <div class="flex justify-between items-baseline gap-6 mb-12"><h2 class="serif-lg">Kind words</h2><span class="caption">Fictional reviews for demonstration</span></div>
+      <div class="grid md:grid-cols-2 gap-x-16 gap-y-12">
+        {site.testimonials.map((t, i) => <figure class:list={[i % 2 && 'md:mt-16']} data-reveal data-reveal-delay={i * 80}><blockquote class="serif-md">“{t.quote}”</blockquote><figcaption class="caption mt-4 !text-paper/60">{t.name} — {t.context}</figcaption></figure>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECK YOUR DATE -->
+  <section class="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 py-24 lg:py-36 grid lg:grid-cols-[3fr_2fr] gap-10 items-end">
+    <h2 class="serif-xl !text-[clamp(2.6rem,8vw,8rem)]">Is your date free<span class="text-verm">?</span></h2>
+    <div><p class="text-ink-2 max-w-sm">Summer Saturdays go a year ahead. The calendar on the next page is live — well, demo-live — and takes ten seconds.</p><a href="/check-your-date" class="btn btn-solid mt-6">Check your date</a></div>
+  </section>
+
+  <script>
+    // Hero crossfade
+    const x = document.querySelector<HTMLElement>('[data-xfade]');
+    if (x && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const imgs = Array.from(x.querySelectorAll('img')); let i = 0;
+      setInterval(() => { imgs[i].classList.remove('is-active'); i = (i + 1) % imgs.length; imgs[i].classList.add('is-active'); }, 5000);
+    }
+    // Image-reveal nav
+    const nav = document.querySelector<HTMLElement>('[data-reveal-nav]');
+    if (nav) {
+      const imgs = nav.querySelectorAll<HTMLElement>('[data-reveal-img]');
+      nav.querySelectorAll<HTMLElement>('[data-reveal-for]').forEach((a) => {
+        const show = () => imgs.forEach((im) => im.classList.toggle('is-on', im.dataset.revealImg === a.dataset.revealFor));
+        const hide = () => imgs.forEach((im) => im.classList.remove('is-on'));
+        a.addEventListener('mouseenter', show); a.addEventListener('focus', show); a.addEventListener('mouseleave', hide); a.addEventListener('blur', hide);
+      });
+    }
+  </script>
+</Base>
