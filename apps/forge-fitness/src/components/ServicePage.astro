@@ -1,0 +1,25 @@
+---
+/** Shared layout for the three programme pages (content differs; structure shared within this site only). */
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '@site/core';
+interface Props { title: string; description: string; kicker: string; headline: string; intro: string; serviceSlugs: string[]; image: string; imageAlt: string; points: [string, string][]; faqs?: { q: string; a: string }[]; path: string; ctaType?: 'studio' | 'call' }
+const { title, description, kicker, headline, intro, serviceSlugs, image, imageAlt, points, faqs = [], path, ctaType = 'studio' } = Astro.props;
+const services = site.services.filter((s) => serviceSlugs.includes(s.slug));
+const url = `${site.seo.siteUrl}${path}`;
+const schema = [...services.map((s) => serviceSchema(site, s, url)), breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: title, url }]), ...(faqs.length ? [faqSchema(faqs)] : [])];
+---
+<Base {title} {description} {schema}>
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-8 grid lg:grid-cols-[1.1fr_1fr] gap-8 items-end">
+      <div><p class="kicker text-cobalt">{kicker}</p><h1 class="display-xl mt-3">{headline}</h1><p class="mt-5 text-lg text-coal/80 max-w-lg">{intro}</p><a href={`/book?type=${ctaType}`} class="btn btn-volt mt-7">{site.primaryCta.label}</a></div>
+      <div class="relative aspect-[4/5] max-h-[560px] cut-tl duo"><Image src={img(image)} alt={imageAlt} widths={[640, 1024, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    </div>
+  </section>
+  <section class="bg-coal text-bone cut-tl -mt-[6vw] pt-[10vw] pb-16"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">{points.map(([t, b], i) => <div class="border-t-[3px] border-volt pt-4" data-reveal data-reveal-delay={i * 70}><h2 class="display-sm">{t}</h2><p class="mt-2 text-bone/80 text-sm">{b}</p></div>)}</div></section>
+  <section class="py-16 lg:py-24"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8"><h2 class="display-lg mb-8">Options &amp; prices</h2><div class="grid md:grid-cols-3 gap-8">{services.map((s, i) => <div class:list={['card p-6 flex flex-col', i === 1 && 'card-volt']}><h3 class="display-md">{s.name}</h3><p class="font-display text-3xl mt-3">{s.price}</p><p class="mt-3 text-coal/75 flex-1">{s.summary}</p><ul class="mt-4 text-sm grid gap-1">{s.includes?.map((x) => <li class="flex gap-2"><span class="text-cobalt font-bold">+</span>{x}</li>)}</ul></div>)}</div></div></section>
+  {faqs.length > 0 && <section class="bg-bone-2 py-16"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10"><h2 class="display-lg">Questions</h2><dl class="divide-y-[3px] divide-coal/10">{faqs.map((f) => <div class="py-5"><dt class="display-sm">{f.q}</dt><dd class="mt-2 text-coal/80">{f.a}</dd></div>)}</dl></div></section>}
+  <slot />
+</Base>

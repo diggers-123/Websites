@@ -1,0 +1,31 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site, timetable } from '@/site.config';
+const sessions = timetable.flatMap((d) => d.sessions.map((s) => `${d.day} ${s.time} ${s.name}`));
+---
+<Base title="Small-group timetable" description="Weekly small-group strength and conditioning timetable at Forge, Cardiff Bay: early, lunchtime and evening sessions, beginners' sessions Tuesday and Thursday, Bay sessions Saturday.">
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-10 grid lg:grid-cols-[1fr_1fr] gap-8 items-end"><div><p class="kicker text-cobalt">Small group · max 6</p><h1 class="display-xl mt-3">Timetable</h1></div><p class="text-coal/80 max-w-md">£15 a session or £95 a month unlimited. First session free if you've had a consult. Book by picking a session below.</p></section>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pb-16 overflow-x-auto">
+    <table class="w-full min-w-[720px] border-[3px] border-coal bg-white text-sm"><caption class="sr-only">Weekly timetable</caption>
+      <thead><tr class="bg-coal text-bone">{timetable.map((d) => <th scope="col" class="p-3 text-left display-sm">{d.day}</th>)}</tr></thead>
+      <tbody><tr class="align-top">{timetable.map((d) => <td class="p-2 border-r-[3px] border-coal/10 last:border-0">{d.sessions.map((s) => <div class:list={['p-3 mb-2 border-[3px] border-coal', s.where === 'Bay' ? 'bg-volt' : s.name.startsWith('Beginners') ? 'bg-cobalt text-white' : 'bg-bone']}><p class="font-bold">{s.time}</p><p class="display-sm">{s.name}</p><p class="text-xs mt-1 opacity-80">{s.focus} · {s.where}</p></div>)}</td>)}</tr></tbody>
+    </table>
+    <p class="mt-3 kicker text-mute">Cobalt = beginners · Volt = outdoor Bay session (Apr–Oct)</p>
+  </section>
+  <section class="bg-coal text-bone py-16"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1.2fr] gap-10">
+    <div><h2 class="display-lg">Join a session</h2><p class="mt-4 text-bone/80 max-w-sm">Tell me which one and I'll confirm there's a space. New to lifting? Pick a beginners' session.</p></div>
+    <form class="grid gap-4 border-[3px] border-bone p-6" data-join-form name="join-session" method="post" novalidate>
+      <div><label class="label text-bone" for="j-session">Session</label><select id="j-session" class="field" name="session" required><option value="">Choose a session…</option>{sessions.map((s) => <option>{s}</option>)}</select><span data-error-for="session" hidden></span></div>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label text-bone" for="j-name">Name</label><input id="j-name" class="field" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label text-bone" for="j-email">Email</label><input id="j-email" class="field" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div></div>
+      <div><label class="label text-bone" for="j-exp">Experience</label><select id="j-exp" class="field" name="experience"><option>None — first time lifting</option><option>Some</option><option>Plenty</option></select></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-volt">Request a space</button><p data-form-status role="status" aria-live="polite" class="text-sm text-bone/80"></p></div>
+    </form>
+  </div></section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-join-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'join-session', rules: { session: [{ type: 'required', message: 'Pick a session' }], name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to confirm to' }, { type: 'email' }] } });
+  </script>
+</Base>

@@ -50,10 +50,12 @@
 @utility stripes-volt { background-image: repeating-linear-gradient(135deg, var(--color-volt) 0 2px, transparent 2px 14px); }
 
 /* Duotone (cobalt) photo */
+@layer components {
 .duo { position: relative; }
 .duo img { filter: grayscale(1) contrast(1.15) brightness(0.95); }
 .duo::after { content: ''; position: absolute; inset: 0; background: var(--color-cobalt); mix-blend-mode: screen; opacity: 0.55; pointer-events: none; }
 .duo::before { content: ''; position: absolute; inset: 0; background: var(--color-coal); mix-blend-mode: multiply; opacity: 0.35; pointer-events: none; z-index: 1; }
+}
 
 /* Buttons: skew on hover */
 @utility btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.9rem 1.6rem; font-family: var(--font-display); text-transform: uppercase; font-size: 1rem; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.2s, color 0.2s; }
@@ -73,6 +75,7 @@
 [data-count] { font-variant-numeric: tabular-nums; }
 
 /* Forms */
+@layer components {
 .field { width: 100%; background: white; border: 3px solid var(--color-coal); color: var(--color-coal); padding: 0.75rem 0.9rem; font: inherit; min-height: 48px; }
 .field:focus { outline: none; border-color: var(--color-cobalt); box-shadow: 4px 4px 0 var(--color-volt); }
 .field::placeholder { color: var(--color-mute); }
@@ -81,5 +84,6 @@
 .choice:has(input:checked) { background: var(--color-cobalt); color: white; }
 .choice:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 2px; }
 .choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+}
 
 html.nav-open { overflow: hidden; }

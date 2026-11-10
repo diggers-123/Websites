@@ -1,0 +1,8 @@
+---
+import ServicePage from '@/components/ServicePage.astro';
+import { site, timetable } from '@/site.config';
+const faqs = site.faqs.filter((f) => /Where are you|cancellation|How often/.test(f.q));
+---
+<ServicePage title="Small group training" description="Coached small-group strength sessions in Cardiff Bay, six people max. £15 a session or £95 a month unlimited. Beginners' sessions twice a week." kicker="Small group · max 6" headline="A class with coaching." intro="Six people, one coach, a progressive strength programme on a fixed timetable. You get corrected, you get pushed, and you get to know the other five." serviceSlugs={['small-group', 'small-group-unlimited']} image="group" imageAlt="A small group doing sled pushes on the Bay waterfront at sunrise" points={[['Max six', 'Small enough that every rep gets seen.'], ['Progressive', 'Same lifts, heavier over the block. You will get stronger.'], ['Beginners welcome', 'Tuesday and Thursday 18:00 are teaching sessions.'], ['Bay sessions', 'Saturday 08:30 outdoors on the waterfront, April to October.']]} {faqs} path="/small-group">
+  <section class="py-16 lg:py-24"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8"><div class="flex items-end justify-between gap-6 mb-8"><h2 class="display-lg">The week</h2><a href="/timetable" class="btn btn-cobalt">Join a session</a></div><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">{timetable.map((d) => <div class="card p-4"><p class="display-sm">{d.day}</p><ul class="mt-2 text-sm divide-y divide-coal/10">{d.sessions.map((s) => <li class="py-1.5"><span class="font-bold">{s.time}</span> {s.name} <span class="text-mute">· {s.focus}</span></li>)}</ul></div>)}</div></div></section>
+</ServicePage>

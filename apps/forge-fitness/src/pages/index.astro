@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, timetable, results } from '@/site.config';
+import { img } from '@/images';
+const audiences = [
+  ['Never trained', 'You\'ve joined gyms and never gone. We start with how to move, not how much to lift.', 'Beginners'],
+  ['Stuck', 'You train but nothing changes. You need a programme and someone watching your form.', 'Intermediate'],
+  ['Over 40', 'Strength is the thing that keeps you doing what you love. We build it carefully and permanently.', 'Masters'],
+];
+const programmes = site.services.filter((s) => ['pt-block-10', 'small-group', 'online'].includes(s.slug));
+const today = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
+---
+<Base>
+  <!-- HERO: diagonal split -->
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-10 lg:pb-0 relative z-10 grid lg:grid-cols-[1.1fr_1fr]">
+      <div class="lg:pb-24">
+        <p class="kicker text-cobalt">Personal training · Cardiff Bay</p>
+        <h1 class="display-xl mt-4">Stronger in 12 weeks.<br /><span class="bg-volt px-2 -mx-1 box-decoration-clone">No nonsense.</span></h1>
+        <p class="mt-6 max-w-md text-lg text-coal/80">1:1 coaching, six-person small groups and online programmes from a private studio five minutes from Cardiff Central. Start with a free consult.</p>
+        <div class="mt-8 flex flex-wrap gap-4"><a href={site.primaryCta.href} class="btn btn-volt">{site.primaryCta.label}</a><a href={site.secondaryCta!.href} class="btn btn-outline">{site.secondaryCta!.label}</a></div>
+        <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-2 kicker text-mute">{site.credentials?.map((c) => <li>{c.label}</li>)}</ul>
+      </div>
+    </div>
+    <div class="relative lg:absolute lg:right-0 lg:bottom-0 lg:w-[52%] h-[70vw] lg:h-[82%] cut-tl duo mt-6 lg:mt-0">
+      <Image src={img('hero')} alt="Marcus coaching a client through a kettlebell swing in the studio" widths={[640, 1024, 1536, 2048]} sizes="(min-width:1024px) 52vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+    </div>
+  </section>
+
+  <!-- WHO I TRAIN -->
+  <section class="bg-coal text-bone cut-tl -mt-[6vw] pt-[10vw] pb-16 lg:pb-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-6 mb-10"><div><p class="kicker text-volt">Who I train</p><h2 class="display-lg mt-2">Three kinds of people.</h2></div><p class="hidden md:block kicker text-bone/50">No bodybuilders, no bootcamps</p></div>
+      <div class="grid md:grid-cols-3 gap-5">{audiences.map(([t, b, k], i) => <div class="border-[3px] border-bone p-6 relative" data-reveal data-reveal-delay={i * 80}><span class="absolute -top-3 left-5 bg-volt text-coal kicker px-2 py-1">{k}</span><h3 class="display-md mt-3">{t}</h3><p class="mt-3 text-bone/80">{b}</p></div>)}</div>
+    </div>
+  </section>
+
+  <!-- PROGRAMMES as index cards -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-6 mb-10"><div><p class="kicker text-cobalt">Programmes</p><h2 class="display-lg mt-2">Pick your lane.</h2></div><a href="/pricing" class="btn btn-outline hidden sm:inline-flex">All pricing</a></div>
+      <div class="grid md:grid-cols-3 gap-8">
+        {programmes.map((s, i) => <a href={['/personal-training', '/small-group', '/online'][i]} class:list={['card p-6 flex flex-col hover:-translate-y-1 transition-transform', i === 1 && 'card-volt md:-mt-6']} data-reveal data-reveal-delay={i * 80}><p class="kicker text-cobalt">{s.category}</p><h3 class="display-md mt-2">{s.name}</h3><p class="font-display text-3xl mt-3">{s.price}</p><p class="mt-3 text-coal/75 flex-1">{s.summary}</p><ul class="mt-4 text-sm grid gap-1">{s.includes?.map((x) => <li class="flex gap-2"><span class="text-cobalt font-bold">+</span>{x}</li>)}</ul><span class="kicker mt-5 text-cobalt">Details →</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS count-ups on cobalt -->
+  <section class="bg-cobalt text-white cut-both py-[10vw]">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+      {results.map((r) => { const m = r.stat.match(/^(\d+)(.*)$/); return <div class="border-l-[3px] border-volt pl-4"><p class="stat" data-count={m ? m[1] : undefined} data-suffix={m ? m[2] : ''}>{r.stat}</p><p class="mt-3 text-white/80 max-w-[18ch]">{r.label}</p></div>; })}
+    </div>
+  </section>
+
+  <!-- TIMETABLE teaser -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1.3fr] gap-10 items-start">
+      <div><p class="kicker text-cobalt">Small group</p><h2 class="display-lg mt-2">This week.</h2><p class="mt-4 text-coal/75 max-w-sm">Coached strength sessions, six people max, £15 a go or £95 unlimited. Beginners' sessions Tuesday and Thursday.</p><a href="/timetable" class="btn btn-cobalt mt-6">Full timetable</a></div>
+      <div class="grid sm:grid-cols-2 gap-3">{timetable.slice(0, 4).map((d) => <div class:list={['card p-4', d.day === today && 'card-volt']}><p class="display-sm">{d.day}{d.day === today && <span class="kicker text-cobalt ml-2">today</span>}</p><ul class="mt-2 text-sm divide-y divide-coal/10">{d.sessions.map((s) => <li class="py-1.5 flex justify-between gap-3"><span><span class="font-bold">{s.time}</span> {s.name}</span><span class="text-mute">{s.where}</span></li>)}</ul></div>)}</div>
+    </div>
+  </section>
+
+  <!-- GROUP PHOTO strip + testimonials -->
+  <section class="bg-bone-2 py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
+      <div class="relative aspect-[3/2] cut-br"><Image src={img('group')} alt="A small-group session with sleds and battle ropes on the Cardiff Bay waterfront at sunrise" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      <div>
+        <div class="flex items-baseline justify-between gap-4"><p class="kicker text-cobalt">Results</p><span class="kicker text-mute">Fictional reviews for demonstration</span></div>
+        <div class="mt-4 grid gap-5">{site.testimonials.slice(0, 3).map((t) => <figure class="border-l-[3px] border-volt pl-4"><blockquote class="font-display uppercase text-[1.05rem] leading-snug">“{t.quote}”</blockquote><figcaption class="kicker text-mute mt-2">{t.name} · {t.context}</figcaption></figure>)}</div>
+        <a href="/results" class="btn btn-outline mt-6">More results</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-coal text-bone cut-tl pt-[10vw] pb-16 lg:pb-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_auto] gap-8 items-end">
+      <div><h2 class="display-xl">Start with a free consult.</h2><p class="mt-4 text-bone/75 max-w-md">Thirty minutes, studio or video call. You leave with a plan either way.</p></div>
+      <a href="/book" class="btn btn-volt !text-lg">Book now →</a>
+    </div>
+  </section>
+</Base>

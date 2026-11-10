@@ -1,0 +1,13 @@
+---
+import Base from '@/layouts/Base.astro';
+import ConsultBooking from '@/components/booking/ConsultBooking';
+import { site } from '@/site.config';
+---
+<Base title="Book a free consultation" description="Book a free 30-minute consultation with Forge Personal Training in Cardiff Bay — in the studio or on a video call. No sales pitch." hideBookBar>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 pb-20">
+    <p class="kicker text-cobalt">Free · 30 minutes · no hard sell</p>
+    <h1 class="display-xl mt-2">Book a consult</h1>
+    <p class="mt-3 text-coal/80 max-w-xl">Tell me where you are and where you want to be. You leave with a plan, whether or not it involves me.</p>
+    <div class="mt-8"><ConsultBooking client:load hours={site.hours} booking={site.booking} phone={site.phone} policy={site.booking.policy} /></div>
+  </section>
+</Base>

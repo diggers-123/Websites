@@ -1,0 +1,6 @@
+---
+import ServicePage from '@/components/ServicePage.astro';
+import { site } from '@/site.config';
+const faqs = site.faqs.filter((f) => /never trained|How often|blocks expire|cancellation/.test(f.q));
+---
+<ServicePage title="Personal training" description="1:1 personal training in Cardiff Bay: £55 a session, 10-session blocks £480, 20 for £880. Private studio, programme in the app, honest coaching." kicker="Personal training" headline="One coach. One plan. Yours." intro="Sixty minutes in a private studio with nobody else on the floor. A programme built around your body, your diary and what you actually want — then adjusted every week as you change." serviceSlugs={['pt-single', 'pt-block-10', 'pt-block-20']} image="coach" imageAlt="Marcus, arms crossed, in the studio" points={[['Technique first', 'The first two sessions are about moving well. Load comes after.'], ['Programme in the app', 'Every session logged; your plan for the week on your phone.'], ['Nutrition that sticks', 'Protein, calories and habits — not a meal plan you\'ll bin by Thursday.'], ['Honest check-ins', 'Monthly measurements if you want them. Progress photos only if you do.']]} {faqs} path="/personal-training" />

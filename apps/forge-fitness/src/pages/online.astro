@@ -1,0 +1,6 @@
+---
+import ServicePage from '@/components/ServicePage.astro';
+import { site } from '@/site.config';
+const faqs = site.faqs.filter((f) => /nutrition|never trained/.test(f.q));
+---
+<ServicePage title="Online coaching" description="Online strength coaching from Cardiff, anywhere in the UK: personal programme, weekly video check-ins, form reviews. £120 a month." kicker="Online coaching" headline="Your gym. My programme." intro="For people who train somewhere else — a commercial gym, a garage, a hotel on a Tuesday — and want proper coaching without a studio. A programme written for your kit and your week, with a real check-in every seven days." serviceSlugs={['online']} image="hands" imageAlt="Chalked hands on a barbell before a deadlift" points={[['Written for your kit', 'Tell me what you\'ve got; the programme fits it.'], ['Weekly video call', 'Fifteen minutes, every week, not a monthly email.'], ['Form reviews', 'Film a set, send it, get it fixed within a day.'], ['Nutrition targets', 'Calories and protein set for your goal, adjusted monthly.']]} {faqs} path="/online" ctaType="call" />

@@ -1,0 +1,11 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Terms" description={`Session blocks, cancellations, health and payment terms for ${site.name}.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Blocks and validity</h2><p>Ten-session blocks are valid for 12 weeks and twenty-session blocks for 24 weeks from the first session. Validity pauses for holidays and injuries when you tell me in advance. Unlimited small-group membership is monthly rolling; cancel by the 25th for the following month.</p>
+  <h2>Cancellations</h2><p>Personal training: 24 hours notice, or the session is used. Small group: 2 hours. Consultations are free; please give 24 hours notice if you can't make it.</p>
+  <h2>Health</h2><p>You confirm at your first session that you have completed the health questionnaire honestly and will tell me about any change. If I think you should see a doctor or physio before training, I will say so and may pause training until you have.</p>
+  <h2>Payment</h2><p>Blocks are paid in advance by card or bank transfer. Online coaching and unlimited membership are monthly by direct debit. Refunds for unused sessions are at my discretion, except where I cancel.</p>
+  <h2>Business</h2><p>{site.legal.legalName}, {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>

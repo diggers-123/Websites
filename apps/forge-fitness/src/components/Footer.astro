@@ -1,0 +1,32 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="bg-coal text-bone mt-auto">
+  <div class="stripes-volt h-3 opacity-60" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-14 grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10">
+    <div>
+      <Logo class="text-[1.4rem] text-bone" />
+      <p class="mt-4 max-w-sm text-bone/75">{site.seo.defaultDescription}</p>
+      <a href={site.primaryCta.href} class="btn btn-volt mt-6">{site.primaryCta.label}</a>
+    </div>
+    <div>
+      <p class="kicker text-volt mb-3">Studio</p>
+      <address class="not-italic text-bone/85">{site.address.line1}<br />{site.address.town} {site.address.postcode}</address>
+      <p class="mt-3 flex flex-col text-sm"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p>
+    </div>
+    <div>
+      <p class="kicker text-volt mb-3">Hours</p>
+      <dl class="text-sm">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-bone/10 py-1.5"><dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'text-bone/50']}>{l.time}</dd></div>)}</dl>
+    </div>
+    <div>
+      <p class="kicker text-volt mb-3">Pages</p>
+      <ul class="text-sm flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:text-volt" href={n.href}>{n.label}</a></li>)}</ul>
+      <ul class="mt-5 flex gap-4 text-sm">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k}</a></li>)}</ul>
+    </div>
+  </div>
+  <div class="border-t border-bone/10"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between gap-2 kicker !text-bone/50 !tracking-[0.12em]"><span>© {year} {site.legal.legalName}</span><span>Cardiff · online anywhere</span></div></div>
+</footer>
