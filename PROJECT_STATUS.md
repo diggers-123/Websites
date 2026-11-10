@@ -1,48 +1,48 @@
 # PROJECT_STATUS.md — live progress tracker
 
-_Last updated: 2026-11-10 (Fable session 1, after site 4 + portfolio index)_
+_Last updated: 2026-11-10 21:40 UTC — end of Fable session. Opus takes over from here._
 
 ## Overall
 | Area | Status |
 |------|--------|
 | Research & strategy | ✅ |
 | Ten businesses + creative briefs | ✅ BUSINESS_PORTFOLIO.md |
-| Monorepo + @site/core | ✅ (config, booking engine incl. same-day notice rule, forms, SEO, smoke test, OG + screenshot scripts) |
-| Imagery pipeline | ✅ Figma `generate_image` → curl → sharp (see HANDOVER §5) |
-| Portfolio index (`apps/portfolio`) | ✅ built; `pnpm --filter portfolio shots` recaptures thumbnails from built sites |
-| Sites complete | **4 / 10** |
+| Monorepo + @site/core | ✅ config, booking engine (same-day notice rule), forms, SEO, smoke test, OG + screenshot scripts |
+| Imagery pipelines | ✅ Figma `generate_image` (primary) · ✅ Canva create-design → export (fallback). **Both quotas exhausted at 21:30 UTC 10 Nov; Figma resets 00:00 UTC 11 Nov.** |
+| Portfolio index (`apps/portfolio`) | ✅ built; manifest lists 7 built + 3 planned; rerun `pnpm --filter portfolio shots` after each new site |
+| Sites complete | **7 / 10** (+ Forge scaffolded with imagery, ~25% written) |
+| Root `pnpm build` | ✅ all 9 apps build (Forge builds with 0 pages) |
 
 ## Per-site status
 Legend: ✅ complete & tested · 🟡 in progress · ⬜ not started
 
 | # | Site | Port | Pages | Booking / enquiry | Imagery | Tests | README | Status |
 |---|------|------|-------|-------------------|---------|-------|--------|--------|
-| 1 | kingpin-barbers | 4301 | 12 | Slot wizard (barber→cut→date→time) | 13 gen | build ✓ check ✓ smoke ✓ e2e ✓ | ✅ | ✅ |
-| 2 | hollowell-gardens | 4302 | 24 | Consultation form + postcode check; before/after slider; filters | 12 gen | ✓ ✓ ✓ ✓ | ✅ | ✅ |
-| 3 | cinder-and-salt | 4303 | 17 | Live quote calculator (guests/package/extras/travel/peak/min-spend) | 10 gen | ✓ ✓ ✓ ✓ | ✅ | ✅ |
-| 4 | muddy-paws | 4304 | 12 | Size/coat-priced groom wizard; illustrated size picker | 8 gen + 5 SVG dogs | ✓ ✓ ✓ ✓ | ✅ | ✅ |
-| 5 | bramley-electrical | 4305 | ⬜ | Quote request (job type, photos) + emergency lane | ⬜ | ⬜ | ⬜ | ⬜ |
-| 6 | nell-ashworth | 4306 | ⬜ | Date-availability enquiry (seeded booked dates) | ⬜ | ⬜ | ⬜ | ⬜ |
-| 7 | lumen-skin | 4307 | ⬜ | Treatment booking (Cal.com-ready) + consult checklist | ⬜ | ⬜ | ⬜ | ⬜ |
-| 8 | forge-fitness | 4308 | ⬜ | Free consult booking + timetable enquiry | ⬜ | ⬜ | ⬜ | ⬜ |
-| 9 | northgate-garage | 4309 | ⬜ | MOT/service slot booking w/ reg-plate input | ⬜ | ⬜ | ⬜ | ⬜ |
-| 10 | bright-spark | 4310 | ⬜ | Free assessment call (20-min slots) + enquiry | ⬜ | ⬜ | ⬜ | ⬜ |
+| 1 | kingpin-barbers | 4301 | 12 | Slot wizard (barber→cut→date→time) | 13 | build ✓ check ✓ smoke ✓ e2e ✓ | ✅ | ✅ |
+| 2 | hollowell-gardens | 4302 | 24 | Consultation form + postcode check; before/after; filters | 12 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 3 | cinder-and-salt | 4303 | 17 | Live quote calculator | 10 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 4 | muddy-paws | 4304 | 12 | Size/coat-priced groom wizard; SVG dogs | 8 + SVG | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 5 | bramley-electrical | 4305 | 18 | Quote request (photos, postcode) + emergency lane | 10 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 6 | nell-ashworth | 4306 | 14 | Date-availability enquiry | 12 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 7 | northgate-garage | 4309 | 19 | Reg-plate booking wizard, job card | 9 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
+| 8 | forge-fitness | 4308 | 0 | Free-consult booking (not written) | 5 ✅ saved | — | ⬜ | 🟡 see HANDOVER §2 |
+| 9 | lumen-skin | 4307 | ⬜ | Treatment booking (Cal.com-ready) + consult checklist | ⬜ needs ~10 | ⬜ | ⬜ | ⬜ |
+| 10 | bright-spark | 4310 | ⬜ | Free assessment call (20-min slots) + enquiry | ⬜ needs ~8 | ⬜ | ⬜ | ⬜ |
 
 ## Current priorities (in order)
-1. `bramley-electrical` (brief #3) — quote request with job type + urgency, emergency red lane,
-   label-tag photo annotations, grid-paper sections, fixed-price table.
-2. `nell-ashworth` (brief #5) — photography-dominant; needs ~12 generated documentary wedding/
-   family images; date-check enquiry against seeded booked dates in config.
-3. `northgate-garage` (brief #9) — reg-plate input, job-card hero, slot booking (reuse engine).
-4. `forge-fitness`, `lumen-skin`, `bright-spark`.
-5. Root README; side-by-side distinctiveness review of all ten; refresh portfolio shots; push.
+1. **Finish `forge-fitness`** — config, theme, images.ts, Base, Logo, Header already written and
+   building. Missing: Footer, booking island, all pages, favicon, OG, README. Brief #8.
+2. **`lumen-skin`** (brief #7) — generate ~10 images when Figma credits reset (00:00 UTC), then build.
+3. **`bright-spark`** (brief #10) — generate ~8 images, then build.
+4. Flip `status` for 8–10 in `apps/portfolio/src/projects.ts`; `pnpm --filter portfolio shots`.
+5. Side-by-side review of all ten (HANDOVER §8), root README polish, push.
 
 ## Known issues / notes
-- `git push` returns 403: the Claude GitHub App is not installed on `diggers-123/Websites`.
-  All work is committed locally on `claude/uk-small-business-websites-my7lc2`. The user needs to
-  install the app (https://github.com/apps/claude/installations/select_target) or reconnect
-  GitHub, then `git push -u origin claude/uk-small-business-websites-my7lc2`.
-- Figma asset URLs expire 7 days after generation — all generated images are already saved
-  into each app's `src/assets/photos`, so nothing depends on those URLs.
-- Portfolio thumbnails must be recaptured (`pnpm --filter portfolio shots`) after any home-page
-  change; they are committed JPEGs.
+- `git push` returns 403: the Claude GitHub App is not installed on `diggers-123/Websites`. All work
+  is committed locally on `claude/uk-small-business-websites-my7lc2`. The user must install the
+  app (https://github.com/apps/claude/installations/select_target) or reconnect GitHub; then
+  `git push -u origin claude/uk-small-business-websites-my7lc2`.
+- Figma AI credits: "Insufficient Figma AI credits … resets at 2026-11-11T00:00:00Z". Canva:
+  "User has exceeded their credit quota" (reset time unknown; likely daily).
+- All generated image URLs from this session have been downloaded; nothing depends on them.
+- Portfolio thumbnails are committed JPEGs; recapture after any home-page change.

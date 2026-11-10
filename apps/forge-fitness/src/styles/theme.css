@@ -1,0 +1,85 @@
+/*
+  FORGE — design tokens.
+  Palette: off-white (dominant) · cobalt (secondary) · volt (accent). Supporting near-black.
+  Type: Archivo Black (display) · Archivo (body) with tabular numerals.
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource/archivo-black/400.css';
+@import '@fontsource-variable/archivo';
+
+@theme {
+  --color-bone: #f4f3ee;
+  --color-bone-2: #e9e7df;
+  --color-cobalt: #1f3bff;
+  --color-cobalt-2: #1630cc;
+  --color-volt: #e8ff47;
+  --color-volt-2: #d2ea2e;
+  --color-coal: #101114;
+  --color-coal-2: #2a2c33;
+  --color-mute: #6f7280;
+  --color-focus: #1f3bff;
+  --color-error: #d2322d;
+
+  --font-display: 'Archivo Black', 'Arial Black', sans-serif;
+  --font-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+}
+
+@layer base {
+  html { background: var(--color-bone); color: var(--color-coal); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-volt); color: var(--color-coal); }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.95; }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(2.6rem, 8vw, 7.4rem); line-height: 0.9; letter-spacing: -0.03em; }
+@utility display-lg { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(2rem, 4.6vw, 4.2rem); line-height: 0.95; letter-spacing: -0.025em; }
+@utility display-md { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.3rem, 2.4vw, 2rem); line-height: 1; letter-spacing: -0.015em; }
+@utility display-sm { font-family: var(--font-display); text-transform: uppercase; font-size: 1.05rem; line-height: 1.1; }
+@utility stat { font-family: var(--font-display); font-size: clamp(3.5rem, 9vw, 8rem); line-height: 0.85; letter-spacing: -0.04em; }
+@utility kicker { font-family: var(--font-sans); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* Diagonal section cuts */
+@utility cut-tl { clip-path: polygon(0 6vw, 100% 0, 100% 100%, 0 100%); }
+@utility cut-br { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%); }
+@utility cut-both { clip-path: polygon(0 6vw, 100% 0, 100% calc(100% - 6vw), 0 100%); }
+
+/* Stripe pattern */
+@utility stripes { background-image: repeating-linear-gradient(135deg, var(--color-coal) 0 2px, transparent 2px 14px); }
+@utility stripes-volt { background-image: repeating-linear-gradient(135deg, var(--color-volt) 0 2px, transparent 2px 14px); }
+
+/* Duotone (cobalt) photo */
+.duo { position: relative; }
+.duo img { filter: grayscale(1) contrast(1.15) brightness(0.95); }
+.duo::after { content: ''; position: absolute; inset: 0; background: var(--color-cobalt); mix-blend-mode: screen; opacity: 0.55; pointer-events: none; }
+.duo::before { content: ''; position: absolute; inset: 0; background: var(--color-coal); mix-blend-mode: multiply; opacity: 0.35; pointer-events: none; z-index: 1; }
+
+/* Buttons: skew on hover */
+@utility btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.9rem 1.6rem; font-family: var(--font-display); text-transform: uppercase; font-size: 1rem; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.2s, color 0.2s; }
+.btn:hover, .btn:focus-visible { transform: skewX(-6deg); }
+@utility btn-volt { background: var(--color-volt); color: var(--color-coal); }
+.btn-volt:hover, .btn-volt:focus-visible { background: var(--color-volt-2); }
+@utility btn-cobalt { background: var(--color-cobalt); color: white; }
+.btn-cobalt:hover, .btn-cobalt:focus-visible { background: var(--color-cobalt-2); }
+@utility btn-coal { background: var(--color-coal); color: var(--color-volt); }
+@utility btn-outline { background: transparent; color: currentColor; border-color: currentColor; }
+
+/* Index card */
+@utility card { background: white; border: 3px solid var(--color-coal); box-shadow: 8px 8px 0 var(--color-cobalt); }
+@utility card-volt { box-shadow: 8px 8px 0 var(--color-volt); }
+
+/* Count-up numbers (JS sets data-count) */
+[data-count] { font-variant-numeric: tabular-nums; }
+
+/* Forms */
+.field { width: 100%; background: white; border: 3px solid var(--color-coal); color: var(--color-coal); padding: 0.75rem 0.9rem; font: inherit; min-height: 48px; }
+.field:focus { outline: none; border-color: var(--color-cobalt); box-shadow: 4px 4px 0 var(--color-volt); }
+.field::placeholder { color: var(--color-mute); }
+.label { display: block; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.choice { display: flex; gap: 0.6rem; align-items: center; padding: 0.7rem 0.9rem; border: 3px solid var(--color-coal); background: white; cursor: pointer; font-weight: 600; }
+.choice:has(input:checked) { background: var(--color-cobalt); color: white; }
+.choice:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 2px; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+html.nav-open { overflow: hidden; }

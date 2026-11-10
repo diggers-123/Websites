@@ -1,0 +1,10 @@
+---
+/** FORGE wordmark; the O is a weight plate. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<span class={`inline-flex items-center font-display uppercase tracking-tight leading-none ${cls}`} aria-hidden="true">
+  <span class="text-[1.6em]">F</span>
+  <svg class="h-[1.25em] w-auto mx-[0.03em]" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="currentColor"/><circle cx="20" cy="20" r="11" fill="none" stroke="#e8ff47" stroke-width="2.5"/><circle cx="20" cy="20" r="4.5" fill="#e8ff47"/></svg>
+  <span class="text-[1.6em]">RGE</span>
+</span>

@@ -66,7 +66,10 @@ Primary source: original AI-generated photography via the Figma MCP `generate_im
 immediately (expires in 7 days), convert to JPEG q82 with sharp into `src/assets/photos`.
 Prompt for documentary realism, UK settings, no readable text/logos, brand-appropriate grading.
 Each site's `/credits` page states images are generated and must be replaced with client photos.
-Fallback: `packages/core/scripts/fetch-images.mjs` (Openverse CC0/CC-BY) — quality is poor; avoid.
+Fallback when Figma credits are exhausted: Canva `create-design` (brief: "A single full-bleed
+photograph filling the whole page, no text…") → poll → `export-design` jpg → download; see
+HANDOVER §5. Last resort: `packages/core/scripts/fetch-images.mjs` (Openverse) — quality is poor; avoid.
+Wizard islands: apply URL presets in `useEffect`, never in `useState` initialisers (hydration).
 
 ## Git
 Commit after every meaningful milestone with descriptive messages. Branch:

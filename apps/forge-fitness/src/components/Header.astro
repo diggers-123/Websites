@@ -1,0 +1,25 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="relative z-50 bg-bone border-b-[3px] border-coal">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 h-[70px] lg:h-[84px] flex items-center justify-between gap-6">
+    <a href="/" class="text-coal" aria-label={`${site.name} — home`}><Logo class="text-[1.1rem] lg:text-[1.3rem]" /><span class="sr-only">{site.name}</span></a>
+    <nav aria-label="Primary" class="hidden xl:flex items-center gap-6">
+      {site.nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['kicker py-2 border-b-[3px] border-transparent hover:border-volt', isActive(n.href) && '!border-cobalt']}>{n.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={site.primaryCta.href} class="btn btn-volt hidden sm:inline-flex !py-2.5 !px-4 !text-sm">{site.primaryCta.label}</a>
+      <button type="button" class="xl:hidden size-11 border-[3px] border-coal inline-flex flex-col items-center justify-center gap-1.5 bg-white" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="block w-5 h-[3px] bg-coal"></span><span class="block w-5 h-[3px] bg-coal"></span></button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="xl:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] bg-cobalt text-white overflow-y-auto" hidden>
+    <nav aria-label="Mobile" class="px-5 py-6 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b-[3px] border-white/20" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href="/contact" class="display-md py-3.5">Contact</a>
+      <a href={site.primaryCta.href} class="btn btn-volt mt-6 self-start">{site.primaryCta.label}</a>
+    </nav>
+  </div>
+</header>
