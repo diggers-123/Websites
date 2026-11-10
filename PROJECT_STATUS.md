@@ -10,7 +10,7 @@ _Last updated: 2026-11-10 21:40 UTC — end of Fable session. Opus takes over fr
 | Monorepo + @site/core | ✅ config, booking engine (same-day notice rule), forms, SEO, smoke test, OG + screenshot scripts |
 | Imagery pipelines | ✅ Figma `generate_image` (primary) · ✅ Canva create-design → export (fallback). **Both quotas exhausted at 21:30 UTC 10 Nov; Figma resets 00:00 UTC 11 Nov.** |
 | Portfolio index (`apps/portfolio`) | ✅ built; manifest lists 7 built + 3 planned; rerun `pnpm --filter portfolio shots` after each new site |
-| Sites complete | **7 / 10** (+ Forge scaffolded with imagery, ~25% written) |
+| Sites complete | **8 / 10** (Lumen + Bright Spark scaffolded with placeholder images) |
 | Root `pnpm build` | ✅ all 9 apps build (Forge builds with 0 pages) |
 
 ## Per-site status
@@ -25,15 +25,17 @@ Legend: ✅ complete & tested · 🟡 in progress · ⬜ not started
 | 5 | bramley-electrical | 4305 | 18 | Quote request (photos, postcode) + emergency lane | 10 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
 | 6 | nell-ashworth | 4306 | 14 | Date-availability enquiry | 12 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
 | 7 | northgate-garage | 4309 | 19 | Reg-plate booking wizard, job card | 9 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
-| 8 | forge-fitness | 4308 | 0 | Free-consult booking (not written) | 5 ✅ saved | — | ⬜ | 🟡 see HANDOVER §2 |
+| 8 | forge-fitness | 4308 | 14 | Free-consult wizard (studio/call), join-session form, count-ups | 5 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
 | 9 | lumen-skin | 4307 | ⬜ | Treatment booking (Cal.com-ready) + consult checklist | ⬜ needs ~10 | ⬜ | ⬜ | ⬜ |
 | 10 | bright-spark | 4310 | ⬜ | Free assessment call (20-min slots) + enquiry | ⬜ needs ~8 | ⬜ | ⬜ | ⬜ |
 
 ## Current priorities (in order)
-1. **Finish `forge-fitness`** — config, theme, images.ts, Base, Logo, Header already written and
-   building. Missing: Footer, booking island, all pages, favicon, OG, README. Brief #8.
-2. **`lumen-skin`** (brief #7) — generate ~10 images when Figma credits reset (00:00 UTC), then build.
-3. **`bright-spark`** (brief #10) — generate ~8 images, then build.
+1. **`lumen-skin`** (brief #7) — scaffolded with brand-coloured PLACEHOLDER JPEGs in
+   `src/assets/photos` (keys: hero, room, facialist, led, serum, texture, exterior, before, after,
+   hands). Build the site against them, then replace the files by name with generated photos.
+2. **`bright-spark`** (brief #10) — same, placeholders: hero, tutor, laptop, flatlay, online,
+   kitchen, whiteboard, papers.
+3. Generate real imagery for both when Figma credits reset (00:00 UTC 11 Nov); see HANDOVER §5.
 4. Flip `status` for 8–10 in `apps/portfolio/src/projects.ts`; `pnpm --filter portfolio shots`.
 5. Side-by-side review of all ten (HANDOVER §8), root README polish, push.
 

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /credits
+
+Sitemap: https://brightsparktuition.example.co.uk/sitemap-index.xml
