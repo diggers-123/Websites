@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { events } from '@/content';
+import { site } from '@/site.config';
+import { img } from '@/images';
+import { breadcrumbSchema } from '@site/core';
+export function getStaticPaths() { return events.map((e) => ({ params: { slug: e.slug }, props: { event: e } })); }
+const { event } = Astro.props;
+const typeParam = { weddings: 'Wedding', 'private-parties': 'Private party', corporate: 'Corporate', festivals: 'Festival / market' }[event.slug] ?? 'Other';
+const others = events.filter((e) => e.slug !== event.slug);
+const schema = [breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: 'Events', url: `${site.seo.siteUrl}/events` }, { name: event.name, url: `${site.seo.siteUrl}/events/${event.slug}` }])];
+---
+<Base title={`${event.name} pizza catering`} description={`${event.strap} Wood-fired pizza for ${event.name.toLowerCase()} across Norfolk & Suffolk — typically ${event.typical.guests} guests, ${event.typical.spend}.`} {schema}>
+  <section class="relative bg-char">
+    <div class="relative h-[60vh] min-h-[380px]">
+      <Image src={img(event.cover)} alt={event.coverAlt} widths={[768, 1200, 1600, 2048]} sizes="100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-t from-char via-char/40 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pb-10">
+        <p class="eyebrow text-kraft"><a href="/events" class="hover:underline">Events</a></p>
+        <h1 class="display-xl text-cream mt-2">{event.name}</h1>
+        <p class="hand text-flame text-3xl mt-2 -rotate-1">{event.strap}</p>
+      </div>
+    </div>
+  </section>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-[2fr_1fr] gap-12">
+    <div>
+      {event.intro.map((p, i) => <p class:list={['text-cream/85 leading-relaxed mb-6', i === 0 ? 'text-xl' : 'text-[1.05rem]']}>{p}</p>)}
+      <h2 class="display-md text-cream mt-10 mb-5">Three things worth knowing</h2>
+      <ul class="grid gap-4">{event.tips.map((t, i) => <li class="flex gap-4 bg-char-2 rounded-md p-4"><span class="font-display font-800 text-flame text-xl">{i + 1}</span><span class="text-cream/85">{t}</span></li>)}</ul>
+    </div>
+    <aside class="kraft-paper on-kraft rounded-md p-6 self-start lg:sticky lg:top-6 rotate-[0.6deg]">
+      <p class="hand text-2xl">Typical {event.name.toLowerCase()}</p>
+      <dl class="mt-4 divide-y divide-char/15">
+        <div class="py-3 flex justify-between gap-3"><dt class="text-char/70">Guests</dt><dd class="font-display font-700 text-right">{event.typical.guests}</dd></div>
+        <div class="py-3 flex justify-between gap-3"><dt class="text-char/70">Service</dt><dd class="font-display font-700 text-right">{event.typical.service}</dd></div>
+        <div class="py-3 flex justify-between gap-3"><dt class="text-char/70">Spend</dt><dd class="font-display font-700 text-right">{event.typical.spend}</dd></div>
+      </dl>
+      <a href={`/quote?type=${encodeURIComponent(typeParam)}`} class="btn btn-flame w-full mt-6">Estimate my {event.slug === 'festivals' ? 'event' : event.name.toLowerCase().replace(/s$/, '').replace('private partie', 'party')}</a>
+      <p class="text-xs text-char/60 mt-3">Festivals are quoted individually — use the form to tell us about yours.</p>
+    </aside>
+  </section>
+  <section class="kraft-paper on-kraft torn-top py-16" style="--torn-color: var(--color-kraft)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+      <p class="eyebrow text-char/60 mb-6">Also</p>
+      <ul class="grid sm:grid-cols-3 gap-4">{others.map((o) => <li><a href={`/events/${o.slug}`} class="block bg-cream rounded-md p-5 hover:-translate-y-1 transition-transform"><span class="display-sm">{o.name}</span><span class="block text-sm text-char/70 mt-1">{o.strap}</span></a></li>)}</ul>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,39 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+const lines = hoursLines(site);
+---
+<Base title="Contact" description={`Contact Cinder & Salt wood-fired pizza catering, Norwich. Call ${site.phone}, email, or send a message. For prices use the instant quote calculator.`}>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-20 pb-24 grid lg:grid-cols-2 gap-12">
+    <div>
+      <p class="hand text-kraft text-3xl -rotate-1">say hello</p>
+      <h1 class="display-xl text-cream mt-1">Contact</h1>
+      <p class="mt-5 text-lg text-cream/80 max-w-md">For a price, the <a class="underline text-kraft" href="/quote">quote calculator</a> is quickest. For everything else:</p>
+      <dl class="mt-8 grid gap-5">
+        <div><dt class="eyebrow text-ash">Phone (office hours)</dt><dd class="font-display font-700 text-2xl text-cream"><a class="hover:text-flame" href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div>
+        <div><dt class="eyebrow text-ash">Email</dt><dd class="font-display font-700 text-xl text-cream break-all"><a class="hover:text-flame" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt class="eyebrow text-ash">Yard (by appointment)</dt><dd class="text-cream/85 not-italic">{site.address.line1}, {site.address.line2}<br />{site.address.town} {site.address.postcode}</dd></div>
+        <div><dt class="eyebrow text-ash">Office hours</dt><dd class="text-cream/85 text-sm">{lines.map((l) => <span class="block">{l.days}: {l.time}</span>)}</dd></div>
+      </dl>
+    </div>
+    <form class="kraft-paper on-kraft rounded-md p-6 sm:p-8 grid gap-5 rotate-[0.5deg] shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-contact-form name="contact" method="post" novalidate>
+      <h2 class="display-md">Send a message</h2>
+      <div><label class="label" for="c-name">Name</label><input class="field" id="c-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div>
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div><label class="label" for="c-email">Email</label><input class="field" id="c-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+        <div><label class="label" for="c-phone">Phone <span class="font-normal opacity-60">(optional)</span></label><input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div>
+      </div>
+      <div><label class="label" for="c-msg">Message</label><textarea class="field" id="c-msg" name="message" rows="5" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-flame">Send</button><p data-form-status role="status" aria-live="polite" class="text-sm"></p></div>
+      <p class="text-xs text-char/60">Only used to reply. <a class="underline" href="/privacy">Privacy</a>.</p>
+    </form>
+  </section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'contact', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], message: [{ type: 'required', message: 'What can we help with?' }, { type: 'minLength', value: 10, message: 'A little more detail helps' }] } });
+  </script>
+</Base>

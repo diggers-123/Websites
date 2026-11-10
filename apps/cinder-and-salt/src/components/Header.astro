@@ -1,0 +1,32 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="relative z-50 bg-char text-cream border-b border-char-3">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 h-[72px] lg:h-[84px] flex items-center justify-between gap-6">
+    <a href="/" class="hover:text-kraft transition-colors" aria-label={`${site.name} — home`}><Logo class="text-[1.05rem] lg:text-[1.2rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-7">
+      {site.nav.map((n) => (
+        <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}
+           class:list={['font-display font-700 text-[1.02rem] tracking-tight relative py-2 hover:text-flame transition-colors', isActive(n.href) && 'text-flame underline decoration-2 underline-offset-8']}>{n.label}</a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={`tel:${site.phoneHref}`} class="hidden xl:inline font-display font-700 hover:text-flame">{site.phone}</a>
+      <a href={site.primaryCta.href} class="btn btn-flame hidden sm:inline-flex !py-2.5 !px-4 !text-base">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 rounded-md border-2 border-kraft text-kraft inline-flex flex-col items-center justify-center gap-1.5" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span class="block w-5 h-0.5 bg-current rounded"></span><span class="block w-5 h-0.5 bg-current rounded"></span><span class="block w-5 h-0.5 bg-current rounded"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] kraft-paper on-kraft overflow-y-auto torn-top" style="--torn-color: var(--color-kraft)" hidden>
+    <nav aria-label="Mobile" class="px-6 py-8 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b-2 border-char/15" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href="/contact" class="display-md py-3.5 border-b-2 border-char/15">Contact</a>
+      <a href={site.primaryCta.href} class="btn btn-flame mt-8 self-start">{site.primaryCta.label}</a>
+      <p class="mt-8 hand text-char/80">Ring Rosa: <a href={`tel:${site.phoneHref}`} class="underline">{site.phone}</a></p>
+    </nav>
+  </div>
+</header>

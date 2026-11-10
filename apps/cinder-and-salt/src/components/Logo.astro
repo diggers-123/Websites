@@ -1,0 +1,13 @@
+---
+/** Wordmark with ampersand-flame mark. */
+interface Props { class?: string; markOnly?: boolean }
+const { class: cls = '', markOnly = false } = Astro.props;
+---
+<span class={`inline-flex items-center gap-2 ${cls}`}>
+  <svg class="h-[1.9em] w-auto shrink-0" viewBox="0 0 40 48" aria-hidden="true">
+    <path class="flicker" d="M20 2 c3 8 10 11 10 20 c0 4 -1 6 -3 8 c1 -5 -1 -8 -4 -10 c0 6 -3 9 -6 11 c-2 -4 -1 -7 1 -10 c-4 2 -7 6 -6 12 c-4 -4 -5 -10 -3 -15 c2 -5 7 -9 11 -16z" fill="#ff5a1f"/>
+    <path d="M12 46 c-4 0 -7 -3 -7 -7 c0 -4 4 -7 9 -7 l6 0 c4 0 7 3 7 7 c0 4 -3 7 -7 7z" fill="currentColor"/>
+    <path d="M14 42 c4 -2 8 -6 10 -10" stroke="#1c1a17" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </svg>
+  {!markOnly && <span class="font-display font-800 tracking-tight text-[1.4em] leading-none">Cinder <span class="text-flame">&amp;</span> Salt</span>}
+</span>

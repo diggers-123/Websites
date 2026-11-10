@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { menu } from '@/content';
+import { img } from '@/images';
+const tagLabel = { v: 'Vegetarian', ve: 'Vegan', gf: 'Gluten-free' };
+---
+<Base title="Menu" description="The Cinder & Salt wood-fired pizza menu: ten pizzas on 48-hour sourdough, sides and fire-baked desserts. Vegan and gluten-free on every pizza.">
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-20 pb-10 grid lg:grid-cols-[1fr_1fr] gap-10 items-end">
+    <div><p class="hand text-kraft text-3xl -rotate-1">48-hour sourdough, 90 seconds in the fire</p><h1 class="display-xl text-cream mt-1">The menu</h1></div>
+    <p class="text-lg text-cream/80 max-w-md">You choose five pizzas for your event. Sides and desserts come with the bigger packages. Everything can be vegan; everything can be gluten-free.</p>
+  </section>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pb-24 grid lg:grid-cols-[1.3fr_1fr] gap-10 items-start">
+    <div class="chalkboard rounded-md p-7 sm:p-10 lg:p-12">
+      {menu.map((sec) => (
+        <div class="mb-12 last:mb-0">
+          <h2 class="display-lg text-kraft">{sec.title}</h2>
+          {sec.footnote && <p class="hand text-cream/70 text-xl mt-1">{sec.footnote}</p>}
+          <ul class="mt-6 divide-y divide-cream/15">
+            {sec.items.map((p) => (
+              <li class="py-4 grid sm:grid-cols-[1fr_auto] gap-x-6 gap-y-1 items-baseline">
+                <div><span class="font-display font-700 text-cream text-xl">{p.name}</span>{p.note && <span class="ml-3 hand text-flame text-xl">{p.note}</span>}<p class="text-cream/65 mt-0.5">{p.desc}</p></div>
+                {p.tags && <ul class="flex gap-1.5">{p.tags.map((t) => <li class="text-[10px] font-bold uppercase tracking-widest border border-kraft/60 text-kraft px-1.5 py-0.5 rounded" title={tagLabel[t]}>{t}</li>)}</ul>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="mt-8 text-xs text-cream/50">V vegetarian · VE vegan · GF gluten-free available. Allergen sheet supplied with every booking.</p>
+    </div>
+    <div class="grid gap-4 lg:sticky lg:top-6">
+      {[['pizza', 'Nduja & honey, leopard-spotted'], ['dough', 'The dough: 48 hours, no shortcuts'], ['dessert', 'Chocolate calzone, torn and shared']].map(([k, cap], i) => (
+        <figure class:list={['relative rounded-md overflow-hidden scorch', i === 0 ? 'aspect-square' : 'aspect-[4/3]']}><Image src={img(k)} alt={cap} widths={[480, 800, 1200]} sizes="(min-width:1024px) 40vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /><figcaption class="absolute bottom-3 left-3 hand text-cream text-xl drop-shadow">{cap}</figcaption></figure>
+      ))}
+      <a href="/quote" class="btn btn-flame">Price it for my event →</a>
+    </div>
+  </section>
+</Base>

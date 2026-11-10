@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { gallery } from '@/content';
+import { img } from '@/images';
+import { site } from '@/site.config';
+---
+<Base title="Gallery" description="Photos from Cinder & Salt events: weddings, garden parties, corporate summer dos and festivals across Norfolk and Suffolk.">
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-20 pb-10 flex flex-wrap items-end justify-between gap-6">
+    <div><p class="hand text-kraft text-3xl -rotate-1">proof it happened</p><h1 class="display-xl text-cream mt-1">Gallery</h1></div>
+    <p class="text-cream/75 max-w-sm">Fresh ones every weekend on <a class="underline text-kraft" href={site.social.instagram} rel="noopener">Instagram</a>.</p>
+  </section>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pb-24 grid grid-cols-2 lg:grid-cols-4 gap-3 auto-rows-[42vw] sm:auto-rows-[30vw] lg:auto-rows-[20vw]">
+    {gallery.map((g, i) => (
+      <figure class:list={['relative rounded-md overflow-hidden scorch group', g.wide && 'col-span-2', i % 5 === 2 && 'row-span-2']} data-reveal data-reveal-delay={(i % 4) * 60}>
+        <Image src={img(g.key)} alt={g.alt} widths={[480, 800, 1200]} sizes={g.wide ? '(min-width:1024px) 50vw, 100vw' : '(min-width:1024px) 25vw, 50vw'} class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <figcaption class="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-char/90 to-transparent hand text-cream text-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">{g.alt}</figcaption>
+      </figure>
+    ))}
+  </section>
+</Base>

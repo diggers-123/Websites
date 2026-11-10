@@ -1,0 +1,20 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal information from quote requests, bookings and this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who we are</h2>
+  <p>{site.legal.legalName}, {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}. Contact <a href={`mailto:${site.email}`}>{site.email}</a> or {site.phone}.</p>
+  <h2>What we collect and why</h2>
+  <ul>
+    <li><strong>Quote requests:</strong> name, email, phone, event date, venue postcode, guest numbers and package choices — to price and reply. Lawful basis: steps prior to a contract.</li>
+    <li><strong>Bookings:</strong> the above plus venue details, dietary requirements you tell us about guests (we hold these only as counts and types, not names, unless you provide them), invoices and payments. Retained for 6 years for tax purposes.</li>
+    <li><strong>Website:</strong> no analytics or advertising cookies are set by default.</li>
+  </ul>
+  <h2>Sharing</h2>
+  <p>Form submissions are processed by the form provider configured for this site. Payment details are handled by our payment provider; we never see full card numbers. We do not sell data.</p>
+  <h2>Your rights</h2>
+  <p>Access, correction, deletion, restriction and objection: email <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+  <h2>Photography at events</h2>
+  <p>We sometimes photograph our set-up at events for social media. We will not publish identifiable photos of guests without the host's agreement, and will remove any image on request.</p>
+</Legal>

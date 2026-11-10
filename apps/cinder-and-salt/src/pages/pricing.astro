@@ -1,0 +1,77 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site, pricing } from '@/site.config';
+import { faqSchema } from '@site/core';
+const gbp = (p: number) => `£${(p / 100).toLocaleString('en-GB', { minimumFractionDigits: p % 100 ? 2 : 0, maximumFractionDigits: p % 100 ? 2 : 0 })}`;
+const examples = [
+  { who: '60 guests, Thursday garden party', pkg: pricing.packages[0], guests: 60, extras: 0, note: 'Weekday minimum applies' },
+  { who: '120 guests, Saturday wedding in June', pkg: pricing.packages[1], guests: 120, extras: 0, note: 'Peak Saturday +10% on food' },
+  { who: '200 guests, Saturday wedding + Evening Feast', pkg: pricing.packages[2], guests: 200, extras: 900 * 140, note: 'Second oven included' },
+];
+const pfaqs = site.faqs.filter((f) => /quote|travel|many people/.test(f.q));
+---
+<Base title="Pricing & packages" description="Wood-fired pizza catering prices: The Feast £16.50 a head, Feast + Sides £19.50, The Full Works £23. Minimum spend, travel, extras and worked examples." schema={[faqSchema(pfaqs)]}>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-20 pb-12">
+    <p class="hand text-kraft text-3xl -rotate-1">no hidden anything</p>
+    <h1 class="display-xl text-cream mt-1">Pricing</h1>
+    <p class="mt-5 max-w-xl text-lg text-cream/80">Per head, unlimited pizza, two hours of service. Pick a package, add extras if you like, and the calculator does the sums.</p>
+  </section>
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pb-20 grid md:grid-cols-3 gap-5">
+    {pricing.packages.map((p, i) => {
+      const svc = site.services[i];
+      return (
+        <div class:list={['rounded-md p-7 flex flex-col', i === 1 ? 'kraft-paper on-kraft -rotate-[0.6deg] shadow-[0_20px_50px_rgba(0,0,0,0.4)]' : 'bg-char-2 text-cream border-2 border-char-3']} data-reveal data-reveal-delay={i * 80}>
+          {i === 1 && <span class="stamp self-start mb-3">Most booked</span>}
+          <h2 class="display-md">{p.name}</h2>
+          <p class="font-display font-800 text-5xl mt-3">{gbp(p.perHead)}<span class="text-base font-sans font-normal opacity-70"> / head</span></p>
+          <p class="mt-4 opacity-80">{p.summary}</p>
+          <ul class="mt-5 grid gap-1.5 text-sm flex-1">{svc.includes?.map((x) => <li class="flex gap-2"><span class="text-flame">●</span>{x}</li>)}</ul>
+          <a href={`/quote?package=${p.slug}`} class:list={['btn mt-7', i === 1 ? 'btn-flame' : 'btn-kraft']}>Estimate with {p.name}</a>
+        </div>
+      );
+    })}
+  </section>
+  <section class="kraft-paper on-kraft torn-top py-20" style="--torn-color: var(--color-kraft)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-12">
+      <div>
+        <h2 class="display-lg">The small print, large</h2>
+        <dl class="mt-8 divide-y divide-char/15">
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Minimum spend</dt><dd class="text-right">{gbp(pricing.minSpend.weekend)} Fri–Sun · {gbp(pricing.minSpend.weekday)} Mon–Thu</dd></div>
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Peak Saturdays (May–Sep)</dt><dd class="text-right">+{pricing.peakUplift * 100}% on the food</dd></div>
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Travel</dt><dd class="text-right">Free within {pricing.travel.freeMiles} miles of Norwich, then {gbp(pricing.travel.perMile)}/mile (return)</dd></div>
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Deposit</dt><dd class="text-right">{pricing.depositRate * 100}% to hold the date; balance 14 days before</dd></div>
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Guests</dt><dd class="text-right">{pricing.minGuests} minimum · second oven over 120 · {pricing.maxGuests}+ by arrangement</dd></div>
+          <div class="py-4 grid sm:grid-cols-[1fr_auto] gap-2"><dt class="font-display font-700">Kids under 10</dt><dd class="text-right">Half price</dd></div>
+        </dl>
+        <h3 class="display-md mt-12">Extras</h3>
+        <ul class="mt-4 divide-y divide-char/15">{pricing.extras.map((x) => <li class="py-3 flex justify-between gap-4"><span><span class="font-display font-700">{x.name}</span><span class="block text-sm text-char/70">{x.note}</span></span><span class="font-display font-700 whitespace-nowrap">{gbp(x.price)}{x.perHead ? '/head' : ''}</span></li>)}</ul>
+      </div>
+      <div>
+        <h2 class="display-lg">Three real-ish examples</h2>
+        <div class="mt-8 grid gap-5">
+          {examples.map((ex) => {
+            const food = ex.pkg.perHead * ex.guests;
+            const d = ex.who.includes('June') || ex.who.includes('Saturday');
+            const peak = ex.who.includes('June') ? Math.round(food * pricing.peakUplift) : 0;
+            const oven = ex.guests > 120 ? 25000 : 0;
+            const total = Math.max(food + peak + oven + ex.extras, d ? pricing.minSpend.weekend : pricing.minSpend.weekday);
+            return (
+              <div class="bg-cream rounded-md p-6 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+                <p class="hand text-2xl">{ex.who}</p>
+                <p class="mt-2 text-sm text-char/70">{ex.pkg.name} · {ex.note}</p>
+                <p class="display-md mt-3">{gbp(total)} <span class="text-base font-sans font-normal text-char/60">≈ {gbp(Math.round(total / ex.guests))} a head</span></p>
+              </div>
+            );
+          })}
+        </div>
+        <a href="/quote" class="btn btn-flame mt-8">Run my numbers →</a>
+      </div>
+    </div>
+  </section>
+  <section class="bg-char py-20">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <h2 class="display-lg text-cream">Money questions</h2>
+      <dl class="divide-y divide-char-3">{pfaqs.map((f) => <div class="py-5"><dt class="display-sm text-cream">{f.q}</dt><dd class="mt-2 text-cream/75">{f.a}</dd></div>)}</dl>
+    </div>
+  </section>
+</Base>

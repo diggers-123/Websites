@@ -1,0 +1,22 @@
+---
+import Base from '@/layouts/Base.astro';
+import QuoteCalculator from '@/components/quote/QuoteCalculator';
+import { site, pricing } from '@/site.config';
+---
+<Base title="Get an event quote" description="Instant estimate for wood-fired pizza catering: pick guests, package, date and venue postcode. Confirmed price by email within one working day." hideQuoteTab>
+  <section class="bg-char">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-16 pb-24">
+      <p class="hand text-kraft text-3xl -rotate-1">no sales call, promise</p>
+      <h1 class="display-xl text-cream mt-1">Get a quote</h1>
+      <p class="mt-5 max-w-xl text-lg text-cream/80">Five quick questions. The estimate updates as you go; we confirm the exact price by email.</p>
+      <div class="mt-12">
+        <QuoteCalculator client:load pricing={pricing} forms={site.forms} closedDates={site.booking.closedDates ?? []} phone={site.phone} postcodePrefixes={site.postcodePrefixes ?? []} isDemo={site.forms.provider === 'demo'} />
+      </div>
+      <div class="mt-16 grid md:grid-cols-3 gap-8 border-t border-char-3 pt-10 text-cream/80">
+        <div><h2 class="display-sm text-cream mb-2">Minimum spend</h2><p>£950 Friday–Sunday, £750 Monday–Thursday. Below that we still come — you just pay the minimum.</p></div>
+        <div><h2 class="display-sm text-cream mb-2">Deposit &amp; balance</h2><p>{site.booking.policy}</p></div>
+        <div><h2 class="display-sm text-cream mb-2">Rather talk?</h2><p>Ring Rosa on <a class="underline text-kraft" href={`tel:${site.phoneHref}`}>{site.phone}</a>, office hours.</p></div>
+      </div>
+    </div>
+  </section>
+</Base>

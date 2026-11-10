@@ -1,0 +1,20 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site, pricing } from '@/site.config';
+---
+<Legal title="Booking terms" description={`Booking terms, deposits and cancellation policy for ${site.name} event catering.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Quotes and confirmation</h2>
+  <p>Estimates from the website calculator are indicative (±5%). A booking exists only once we have confirmed the price in writing and received the deposit.</p>
+  <h2>Deposit, balance and numbers</h2>
+  <p>{site.booking.policy} Final guest numbers and dietary requirements are due 7 days before the event; the invoice is based on the greater of the confirmed number or the number catered for.</p>
+  <h2>Minimum spend</h2>
+  <p>£{pricing.minSpend.weekend / 100} Friday–Sunday and £{pricing.minSpend.weekday / 100} Monday–Thursday, inclusive of the package but excluding travel.</p>
+  <h2>Cancellation</h2>
+  <p>More than 60 days before: full refund less the deposit. 30–60 days: 50% of the balance due. Under 30 days: full balance due. If we have to cancel (vehicle failure, illness with no cover) you receive a full refund including the deposit.</p>
+  <h2>Site requirements and weather</h2>
+  <p>You are responsible for venue permission for open-fire cooking and for a suitable, accessible pitch. We cook in rain; we will not operate in winds above 40 mph or where the venue withdraws fire permission, in which case we will offer an alternative date or refund.</p>
+  <h2>Food safety and allergens</h2>
+  <p>Allergen information is supplied with every booking. Guests with severe allergies should speak to the crew on the day; while we take care, our kitchen handles gluten, dairy and nuts.</p>
+  <h2>Company</h2>
+  <p>{site.legal.legalName}{site.legal.companyNumber ? `, company number ${site.legal.companyNumber}` : ''}. Registered office: {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>

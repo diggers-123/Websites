@@ -1,0 +1,35 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+const year = new Date().getFullYear();
+---
+<footer class="kraft-paper on-kraft torn-top mt-auto relative" style="--torn-color: var(--color-kraft)">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-16 pb-10">
+    <div class="grid lg:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10">
+      <div>
+        <Logo class="text-[1.4rem]" />
+        <p class="mt-4 max-w-sm text-char/80">{site.tagline}. Unlimited pizza packages from {site.services[0].price}. Travel free within 20 miles of Norwich.</p>
+        <div class="mt-6 flex flex-wrap gap-2">{site.credentials?.map((c) => <span class="stamp text-char/80">{c.label}</span>)}</div>
+      </div>
+      <div>
+        <p class="eyebrow text-char/60 mb-3">Find us</p>
+        <address class="not-italic text-char/85">{site.address.line1}<br />{site.address.line2}<br />{site.address.town} {site.address.postcode}</address>
+        <p class="mt-3 flex flex-col"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p class="mt-3 text-sm text-char/70">Office Mon–Fri 9–5. Events most weekends, March to October.</p>
+      </div>
+      <div>
+        <p class="eyebrow text-char/60 mb-3">Pages</p>
+        <ul class="flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <p class="eyebrow text-char/60 mb-3">We cover</p>
+        <ul class="flex flex-wrap gap-x-3 gap-y-1 text-sm text-char/80">{site.serviceAreas.map((a) => <li>{a}</li>)}</ul>
+        <p class="eyebrow text-char/60 mt-6 mb-2">Elsewhere</p>
+        <ul class="flex gap-4">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k === 'google' ? 'Google' : k}</a></li>)}</ul>
+      </div>
+    </div>
+    <div class="mt-12 pt-5 border-t-2 border-char/15 flex flex-wrap justify-between gap-2 text-sm text-char/70">
+      <span>© {year} {site.legal.legalName}</span><span class="hand text-char/70">made with fire in Norfolk</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,137 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, pricing } from '@/site.config';
+import { events, menu } from '@/content';
+import { img } from '@/images';
+const pizzas = menu[0].items.slice(0, 6);
+const steps = [
+  ['Get an estimate', 'Guests, package, date, postcode — the calculator gives you a number in thirty seconds.'],
+  ['Hold the date', 'We confirm the exact price by email; a 25% deposit secures it.'],
+  ['Pick your five', 'Choose your pizzas and tell us the dietaries a week before.'],
+  ['We bring the fire', 'Set up two hours before, serve for two, leave it spotless.'],
+];
+---
+<Base>
+  <!-- HERO: dark, oven image bleeding right, flame headline, hand-written note -->
+  <section class="relative overflow-hidden bg-char">
+    <div class="absolute inset-0 lg:left-[38%]">
+      <Image src={img('hero')} alt="Jack sliding a pizza into the wood-fired oven at a dusk wedding, festoon lights above" widths={[768, 1200, 1600, 2048]} sizes="(min-width:1024px) 62vw, 100vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-r from-char via-char/80 lg:via-char/30 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-char via-transparent to-transparent"></div>
+    </div>
+    <div class="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 min-h-[calc(100dvh-84px)] flex flex-col justify-end pb-14 lg:pb-20 pt-24">
+      <p class="hand text-kraft text-2xl lg:text-3xl -rotate-2 mb-3">Norfolk's wood-fired wedding &amp; party pizza</p>
+      <h1 class="display-xl text-cream max-w-[12ch]">Fire. Dough. <span class="text-flame">Your lot.</span></h1>
+      <p class="mt-6 max-w-lg text-lg lg:text-xl text-cream/85">Unlimited wood-fired pizza for weddings, parties and work dos across Norfolk and Suffolk. From {site.services[0].price}. Instant estimate, no sales call.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={site.primaryCta.href} class="btn btn-flame !text-lg">{site.primaryCta.label} →</a>
+        <a href={site.secondaryCta!.href} class="btn btn-outline !text-lg">{site.secondaryCta!.label}</a>
+      </div>
+      <div class="mt-10 flex flex-wrap gap-3">{site.credentials?.map((c) => <span class="stamp text-kraft">{c.label}</span>)}</div>
+    </div>
+  </section>
+
+  <!-- EVENTS: torn kraft cards -->
+  <section class="kraft-paper on-kraft torn-top relative" style="--torn-color: var(--color-kraft)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-20 pb-20">
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-10">
+        <h2 class="display-lg max-w-xl">What are we feeding?</h2>
+        <p class="hand text-2xl text-char/70 -rotate-1">pick one, we've done them all</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {events.map((e, i) => (
+          <a href={`/events/${e.slug}`} class:list={['group bg-cream text-char rounded-md shadow-[0_10px_30px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col', i % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]', i === 1 && 'lg:mt-10', i === 3 && 'lg:mt-10']} data-reveal data-reveal-delay={i * 80}>
+            <div class="relative aspect-[4/3] overflow-hidden scorch"><Image src={img(e.cover)} alt={e.coverAlt} widths={[480, 800]} sizes="(min-width:1024px) 23vw, (min-width:640px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
+            <div class="p-5 flex-1 flex flex-col">
+              <h3 class="display-md group-hover:text-flame-2 transition-colors">{e.name}</h3>
+              <p class="mt-2 text-char/75 text-sm flex-1">{e.strap}</p>
+              <p class="mt-4 eyebrow text-char/60">Typically {e.typical.guests} guests</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU BOARD (chalkboard) + fire image -->
+  <section class="bg-char py-20 lg:py-28 torn-top" style="--torn-color: var(--color-char)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-center">
+      <div class="relative aspect-[4/5] rounded-md overflow-hidden scorch order-2 lg:order-1">
+        <Image src={img('pizza')} alt="A nduja and honey pizza fresh from the oven, crust leopard-spotted" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="absolute inset-0 w-full h-full object-cover" />
+        <p class="absolute bottom-5 left-5 hand text-cream text-3xl -rotate-3 drop-shadow">the nduja &amp; honey one →</p>
+      </div>
+      <div class="chalkboard rounded-md p-8 sm:p-10 lg:p-12 order-1 lg:order-2">
+        <p class="hand text-kraft text-3xl">Tonight's board</p>
+        <h2 class="display-lg text-cream mt-1">Choose five.</h2>
+        <ul class="mt-8 divide-y divide-cream/15">
+          {pizzas.map((p) => (
+            <li class="py-3.5 flex items-baseline justify-between gap-4">
+              <div><span class="font-display font-700 text-cream text-lg">{p.name}</span>{p.tags && <span class="ml-2 text-xs uppercase tracking-widest text-kraft">{p.tags.join(' · ')}</span>}<p class="text-cream/65 text-sm">{p.desc}</p></div>
+              {p.note && <span class="hand text-flame text-xl -rotate-6 whitespace-nowrap">{p.note}</span>}
+            </li>
+          ))}
+        </ul>
+        <div class="mt-8 flex flex-wrap items-center gap-4"><a href="/menu" class="btn btn-kraft">Full menu</a><span class="text-cream/70 text-sm">Every pizza vegan or gluten-free on request.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTIMATOR TEASER -->
+  <section class="bg-flame text-char py-20 lg:py-24 torn-top torn-bottom relative z-10" style="--torn-color: var(--color-flame)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+      <div>
+        <h2 class="display-xl">How much for<br />80 people?</h2>
+        <p class="mt-6 text-xl max-w-lg">About <strong class="font-display font-800">£{Math.round((pricing.packages[1].perHead * 80) / 100).toLocaleString('en-GB')}</strong> for Feast + Sides on a weekday. Move the slider, change the package, add a dessert — the quote page works it out live.</p>
+        <a href="/quote?guests=80" class="btn bg-char text-cream mt-8 hover:bg-cream hover:text-char">Try the calculator →</a>
+      </div>
+      <ul class="grid grid-cols-3 gap-3">
+        {pricing.packages.map((p) => (
+          <li class="bg-char text-cream rounded-md p-4 lg:p-5 text-center"><p class="display-sm">{p.name}</p><p class="font-display font-800 text-3xl mt-2">£{p.perHead % 100 ? (p.perHead / 100).toFixed(2) : p.perHead / 100}</p><p class="text-xs text-ash mt-1">per head</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="bg-char py-24 lg:py-32">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+      <h2 class="display-lg text-cream mb-12">How booking works</h2>
+      <ol class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {steps.map(([t, d], i) => (
+          <li class="relative pl-14" data-reveal data-reveal-delay={i * 80}>
+            <span class="absolute left-0 top-0 size-10 rounded-full bg-flame text-char font-display font-800 grid place-items-center">{i + 1}</span>
+            <h3 class="display-sm text-cream">{t}</h3><p class="mt-2 text-cream/70">{d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- GALLERY STRIP -->
+  <section class="bg-char pb-20">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 px-2">
+      {['wedding', 'dough', 'fire', 'table'].map((k, i) => (
+        <div class:list={['relative overflow-hidden scorch', i % 2 === 0 ? 'aspect-[4/3]' : 'aspect-[4/3] lg:mt-6']}>
+          <Image src={img(k)} alt={{ wedding: 'Guests queuing at the pizza trailer at night', dough: 'Stretching sourdough by hand', fire: 'Oak burning in the oven', table: 'A table of pizzas at a garden party' }[k]!} widths={[480, 800]} sizes="(min-width:1024px) 25vw, 50vw" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+      ))}
+    </div>
+    <p class="text-center mt-6"><a href="/gallery" class="hand text-kraft text-2xl underline">more pictures →</a></p>
+  </section>
+
+  <!-- REVIEWS on kraft -->
+  <section class="kraft-paper on-kraft torn-top py-20" style="--torn-color: var(--color-kraft)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+      <div class="flex items-baseline justify-between gap-4 mb-10"><h2 class="display-lg">Word of mouth</h2><span class="eyebrow text-char/60 hidden sm:inline">Fictional reviews for demonstration</span></div>
+      <div class="grid md:grid-cols-2 gap-6">
+        {site.testimonials.map((t, i) => (
+          <figure class:list={['bg-cream rounded-md p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]', i % 2 ? 'rotate-[0.8deg]' : 'rotate-[-0.8deg]']} data-reveal data-reveal-delay={i * 70}>
+            <blockquote class="font-display font-700 text-xl leading-snug">“{t.quote}”</blockquote>
+            <figcaption class="mt-4 hand text-xl text-char/70">— {t.name}, {t.context}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

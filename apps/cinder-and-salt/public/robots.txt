@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /credits
+
+Sitemap: https://cinderandsalt.example.co.uk/sitemap-index.xml

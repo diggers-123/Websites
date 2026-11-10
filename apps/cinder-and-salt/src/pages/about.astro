@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+---
+<Base title="About" description="Cinder & Salt is Jack and Rosa Mellor: a chef, a spreadsheet, and a wood-fired oven on a trailer, feeding events across Norfolk since 2018.">
+  <section class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-12 lg:pt-20 pb-20 grid lg:grid-cols-[5fr_6fr] gap-10 lg:gap-16 items-center">
+    <div class="relative aspect-[4/5] rounded-md overflow-hidden rotate-[-1.5deg] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+      <Image src={img('team')} alt="Jack and Rosa Mellor in aprons in front of the oven trailer at sunset" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 42vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <p class="absolute bottom-4 left-4 hand text-cream text-2xl drop-shadow">Jack &amp; Rosa, Hethel, 2026</p>
+    </div>
+    <div>
+      <p class="hand text-kraft text-3xl -rotate-1">since {site.founded}</p>
+      <h1 class="display-xl text-cream mt-1">A chef, a spreadsheet, and a very hot oven.</h1>
+      <div class="mt-8 grid gap-5 text-cream/85 text-lg leading-relaxed">
+        <p>Jack cooked in restaurant kitchens for twelve years and wanted out. Rosa ran events for a hotel group and wanted the same. In 2018 we bought a second-hand horsebox, built an oven into it that took three attempts to get right, and did our first wedding for a mate in a field near Wymondham.</p>
+        <p>Four hundred events later the oven is on its third rebuild, the horsebox has been replaced by two trailers, and we still only do one thing. Wood-fired pizza, properly: 48-hour sourdough, real San Marzano tomatoes, and a fire that gets lit two hours before anyone's hungry.</p>
+        <p>We are a two-person company with a small crew of regulars for big weddings. If you email, you get Rosa. If you need the oven moved, you get Jack.</p>
+      </div>
+      <div class="mt-8 grid sm:grid-cols-2 gap-4">
+        {site.team!.map((m) => <div class="bg-char-2 rounded-md p-5"><p class="display-sm text-cream">{m.name}</p><p class="eyebrow text-kraft mt-1">{m.role}</p><p class="text-sm text-cream/70 mt-2">{m.bio}</p></div>)}
+      </div>
+    </div>
+  </section>
+  <section class="kraft-paper on-kraft torn-top py-16" style="--torn-color: var(--color-kraft)">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid sm:grid-cols-3 gap-6">
+      {site.credentials?.map((c) => <div class="bg-cream rounded-md p-6"><p class="display-md">{c.label}</p><p class="text-sm text-char/70 mt-1">{c.detail}{c.fictional ? ' · demo' : ''}</p></div>)}
+    </div>
+  </section>
+  <section class="bg-char py-20">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+      <div class="relative aspect-[4/3] rounded-md overflow-hidden"><Image src={img('fire')} alt="Oak logs burning inside the oven" widths={[640, 1024]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      <div>
+        <h2 class="display-lg text-cream">What we won't do</h2>
+        <ul class="mt-6 grid gap-4 text-cream/85 text-lg">
+          {['Gas. The oven burns seasoned Norfolk oak and nothing else.', 'Frozen bases, pre-grated cheese, or a "vegan option" that is just no cheese.', 'Leave your field, lawn or car park worse than we found it.', 'Take a booking we can\'t do well. Over 250 guests we bring a third oven or we say no.'].map((t, i) => <li class="flex gap-4"><span class="font-display font-800 text-flame">✕</span>{t}</li>)}
+        </ul>
+        <a href="/quote" class="btn btn-flame mt-8">Get a quote →</a>
+      </div>
+    </div>
+  </section>
+</Base>
