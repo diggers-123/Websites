@@ -109,7 +109,7 @@ const steps = [
         {site.testimonials.map((t, i) => (
           <div data-reveal data-reveal-delay={i * 80}>
             <blockquote class="bubble p-6 text-lg font-semibold">“{t.quote}”</blockquote>
-            <p class="mt-7 ml-4 flex items-center gap-3"><span class="inline-block w-14 shrink-0" aria-hidden="true"><Dog size={(['s', 'm', 'l', 'l'] as const)[i]} /></span><span class="font-display">{t.name} <span class="opacity-60 font-sans text-sm">· {t.context}</span></span></p>
+            <p class="mt-7 ml-4 flex items-center gap-3"><Dog size={(['s', 'm', 'l', 'l'] as const)[i]} class="w-16 shrink-0" /><span class="font-display">{t.name} <span class="opacity-60 font-sans text-sm">· {t.context}</span></span></p>
           </div>
         ))}
       </div>
