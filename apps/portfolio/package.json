@@ -1,0 +1,24 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev --port 4300",
+    "build": "astro build",
+    "preview": "astro preview --port 4300",
+    "check": "astro check",
+    "shots": "node ../../packages/core/scripts/portfolio-shots.mjs",
+    "test": "node ../../packages/core/scripts/smoke.mjs ./dist"
+  },
+  "dependencies": {
+    "@site/core": "workspace:*",
+    "astro": "^5.18.2",
+    "tailwindcss": "^4.3.5",
+    "@tailwindcss/vite": "^4.3.5",
+    "sharp": "^0.34.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0"
+  },
+  "devDependencies": { "@astrojs/check": "^0.9.12", "typescript": "^5.9.0" }
+}

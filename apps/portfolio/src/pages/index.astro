@@ -1,0 +1,121 @@
+---
+import '@/styles/theme.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { projects } from '@/projects';
+
+const shots = import.meta.glob<{ default: ImageMetadata }>('/src/assets/shots/*.jpg', { eager: true });
+const shot = (slug: string, kind: 'desktop' | 'mobile') => shots[`/src/assets/shots/${slug}-${kind}.jpg`]?.default;
+const built = projects.filter((p) => p.status === 'built');
+const planned = projects.filter((p) => p.status === 'planned');
+const sectors = [...new Set(projects.map((p) => p.sector))];
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ten UK small-business websites · portfolio</title>
+    <meta name="description" content="A portfolio of ten individually designed, fully functioning websites for UK sole traders and small businesses — each a reusable product ready to customise for a real client." />
+    <link rel="canonical" href="https://portfolio.example.co.uk/" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="min-h-dvh">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pt-8 flex items-baseline justify-between gap-6">
+      <p class="mono-label">Studio portfolio · {built.length} of {projects.length} built</p>
+      <nav class="mono-label flex gap-6"><a href="#built" class="hover:text-electric">Built</a><a href="#planned" class="hover:text-electric">In the pipeline</a><a href="#about" class="hover:text-electric">About</a></nav>
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pt-16 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-[3fr_2fr] gap-10 items-end">
+        <h1 class="serif-xl">Ten businesses.<br /><em class="text-electric">Ten</em> websites.<br />Nothing shared but the code.</h1>
+        <div class="max-w-md">
+          <p class="text-lg text-ink-2">Each site is designed as if commissioned by that business alone — its own typefaces, palette, layout, motion and conversion flow — on a shared, config-driven engineering base that makes it quick to re-skin for a paying client.</p>
+          <div class="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filter by sector">
+            <button type="button" class="filter mono-label border border-ink rounded-full px-3 py-1.5" data-filter="all" aria-pressed="true">All</button>
+            {sectors.map((s) => <button type="button" class="filter mono-label border border-ink rounded-full px-3 py-1.5" data-filter={s} aria-pressed="false">{s}</button>)}
+          </div>
+        </div>
+      </section>
+
+      <section id="built" class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pb-24">
+        <h2 class="serif-lg mb-10 border-t border-ink pt-6">Built &amp; tested</h2>
+        <div class="grid md:grid-cols-2 gap-x-10 gap-y-16" data-grid>
+          {built.map((p, i) => {
+            const d = shot(p.slug, 'desktop');
+            const m = shot(p.slug, 'mobile');
+            return (
+              <article class="card" data-sector={p.sector} data-reveal data-reveal-delay={(i % 2) * 80}>
+                <a href={p.liveUrl ?? p.devUrl} class="block relative aspect-[16/10] bg-paper-2 rounded-sm overflow-hidden shot" aria-label={`Open ${p.name} (opens the site)`}>
+                  {d && <Image src={d} alt={`${p.name} homepage on desktop`} widths={[640, 960, 1280]} sizes="(min-width:768px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover object-top" loading={i < 2 ? 'eager' : 'lazy'} />}
+                  {m && <span class="absolute right-4 -bottom-6 w-[22%] rounded-md overflow-hidden shadow-2xl border-4 border-ink bg-ink"><Image src={m} alt={`${p.name} homepage on a phone`} widths={[200, 400]} sizes="20vw" class="w-full h-auto block" /></span>}
+                </a>
+                <div class="mt-8 grid grid-cols-[1fr_auto] gap-4 items-start">
+                  <div>
+                    <p class="mono-label text-mute">{String(i + 1).padStart(2, '0')} · {p.industry} · {p.place}</p>
+                    <h3 class="font-serif text-3xl mt-1"><a href={p.liveUrl ?? p.devUrl} class="hover:text-electric">{p.name}</a></h3>
+                    <p class="mt-2 text-ink-2">{p.oneLiner}</p>
+                  </div>
+                  <ul class="flex gap-1.5 pt-1" aria-label="Palette">{p.palette.map((c) => <li class="size-6 rounded-full border border-ink/20" style={`background:${c}`} title={c}></li>)}</ul>
+                </div>
+                <dl class="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm border-t border-ink/15 pt-4">
+                  <div><dt class="mono-label text-mute">Type</dt><dd>{p.type}</dd></div>
+                  <div><dt class="mono-label text-mute">Converts via</dt><dd>{p.conversion}</dd></div>
+                  <div class="sm:col-span-2"><dt class="mono-label text-mute">Signature</dt><dd>{p.signature.join(' · ')}</dd></div>
+                </dl>
+                <div class="mt-4 flex gap-4 text-sm">
+                  <a href={p.liveUrl ?? p.devUrl} class="underline hover:text-electric">Open site ↗</a>
+                  <span class="text-mute">{p.pages} pages · dev {p.devUrl.replace('http://', '')}</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="planned" class="bg-ink text-paper py-20">
+        <div class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12">
+          <h2 class="serif-lg mb-10">In the pipeline</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {planned.map((p) => (
+              <article class="border border-paper/20 rounded-sm p-5" data-sector={p.sector}>
+                <p class="mono-label text-paper/60">{p.industry} · {p.place}</p>
+                <h3 class="font-serif text-2xl mt-1">{p.name}</h3>
+                <p class="mt-2 text-paper/80 text-sm">{p.oneLiner}</p>
+                <ul class="flex gap-1.5 mt-4" aria-label="Palette">{p.palette.map((c) => <li class="size-5 rounded-full border border-paper/30" style={`background:${c}`}></li>)}</ul>
+                <p class="mono-label text-paper/60 mt-3">{p.type}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 py-20 grid lg:grid-cols-[1fr_2fr] gap-10">
+        <h2 class="serif-lg">How they're built</h2>
+        <div class="grid sm:grid-cols-2 gap-8 text-ink-2">
+          {[
+            ['One config file per site', 'Every phone number, price, service, review and opening hour lives in src/site.config.ts. Re-skinning for a client means editing one file, swapping photos and adjusting theme tokens.'],
+            ['Design is never shared', 'Each site has its own typefaces, palette, hero, section order, shape language and motion. The shared package holds only booking logic, forms, SEO and tests.'],
+            ['Real flows, honest demos', 'Booking wizards and quote calculators work end to end. In demo mode they say so; one setting connects Cal.com, Calendly, Netlify Forms or a custom API.'],
+            ['Tested, fast, accessible', 'Static Astro output, self-hosted fonts, responsive images, zero JS on most pages. Every build runs a smoke test for links, metadata, console errors and overflow at mobile and desktop.'],
+          ].map(([t, d]) => <div><h3 class="font-serif text-2xl text-ink">{t}</h3><p class="mt-2">{d}</p></div>)}
+        </div>
+      </section>
+    </main>
+    <footer class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 py-8 border-t border-ink/15 mono-label text-mute flex flex-wrap justify-between gap-3">
+      <span>All businesses are fictional demonstrations.</span><span>Astro · Tailwind v4 · Preact islands</span>
+    </footer>
+    <script>
+      import { initReveal } from '@site/core/components/reveal';
+      initReveal();
+      const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+      const cards = document.querySelectorAll<HTMLElement>('[data-sector]');
+      buttons.forEach((b) => b.addEventListener('click', () => {
+        const f = b.dataset.filter!;
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        cards.forEach((c) => { c.hidden = !(f === 'all' || c.dataset.sector === f); });
+      }));
+    </script>
+  </body>
+</html>
