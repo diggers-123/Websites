@@ -1,0 +1,13 @@
+---
+/** A photo with label-maker tags pinned to points (percent coords). */
+import { Image } from 'astro:assets';
+import { img } from '@/images';
+interface Props { src: string; alt: string; tags: { x: number; y: number; text: string; dark?: boolean }[]; class?: string; eager?: boolean; sizes?: string }
+const { src, alt, tags, class: cls = 'aspect-[4/5]', eager = false, sizes = '(min-width:1024px) 45vw, 100vw' } = Astro.props;
+---
+<figure class={`relative overflow-hidden border-2 border-graphite ${cls}`}>
+  <Image src={img(src)} alt={alt} widths={[640, 1024, 1400]} {sizes} class="absolute inset-0 w-full h-full object-cover" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} />
+  {tags.map((t, i) => (
+    <span class="annot" style={`left:${t.x}%; top:${t.y}%`} data-slide data-reveal-delay={200 + i * 150}><span class:list={['tag', t.dark && 'tag-dark']}>{t.text}</span></span>
+  ))}
+</figure>

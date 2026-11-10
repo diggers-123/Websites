@@ -1,0 +1,34 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site, emergency } from '@/site.config';
+import { hoursLines } from '@site/core';
+const lines = hoursLines(site);
+---
+<Base title="Contact" description={`Contact Bramley Electrical, Sheffield: ${site.phone}, ${site.email}. Office Mon–Sat; emergencies 24/7.`}>
+  <section class="grid-paper border-b-2 border-graphite"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-2 gap-10">
+    <div><p class="tag mb-4">Office · Neepsend</p><h1 class="display-xl">Contact</h1>
+      <dl class="mt-8 grid gap-5">
+        <div><dt class="label text-steel">Office</dt><dd class="display-md"><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div>
+        <div><dt class="label text-red">Emergency 24/7</dt><dd class="display-md text-red"><a href={`tel:${emergency.phoneHref}`}>{emergency.phone}</a></dd></div>
+        <div><dt class="label text-steel">Email</dt><dd class="font-display font-700 text-xl break-all"><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt class="label text-steel">Address</dt><dd class="not-italic">{site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}</dd></div>
+        <div><dt class="label text-steel">Office hours</dt><dd><dl class="text-sm max-w-xs">{lines.map((l) => <div class="flex justify-between border-b border-graphite/15 py-1"><dt>{l.days}</dt><dd>{l.time}</dd></div>)}</dl></dd></div>
+      </dl>
+      <p class="mt-6 text-graphite/80">Want a price? The <a class="underline" href="/quote">quote form</a> is faster than this one.</p>
+    </div>
+    <form class="bg-white border-2 border-graphite p-6 sm:p-8 grid gap-5 shadow-[8px_8px_0_#1b1d21]" data-contact-form name="contact" method="post" novalidate>
+      <h2 class="display-md">Send a message</h2>
+      <div class="grid sm:grid-cols-2 gap-5"><div><label class="label-field" for="c-name">Name</label><input class="field" id="c-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label-field" for="c-phone">Phone</label><input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div></div>
+      <div><label class="label-field" for="c-email">Email</label><input class="field" id="c-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+      <div><label class="label-field" for="c-msg">Message</label><textarea class="field" id="c-msg" name="message" rows="5" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-yellow">Send ›</button><p data-form-status role="status" aria-live="polite" class="text-sm"></p></div>
+    </form>
+  </div></section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'contact', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], message: [{ type: 'required', message: 'What can we help with?' }, { type: 'minLength', value: 10, message: 'A little more detail helps' }] } });
+  </script>
+</Base>

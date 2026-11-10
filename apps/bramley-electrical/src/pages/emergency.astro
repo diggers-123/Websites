@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, emergency } from '@/site.config';
+import { img } from '@/images';
+import { faqSchema } from '@site/core';
+const efaqs = site.faqs.filter((f) => /emergency|quickly/.test(f.q));
+const isEmergency = ['Total loss of power to the house (and neighbours still have power)', 'Burning smell, scorch marks or sparks from a socket, switch or fuse board', 'Tripping that won\'t reset, or trips as soon as you reset it', 'Exposed live wires or damaged cables', 'Water leaking onto electrics', 'No heating or hot water in winter because of an electrical fault'];
+const notEmergency = ['One socket not working (unplug things from it, use another)', 'A light that has stopped working', 'Wanting extra sockets or lights', 'An EICR or certificate due', 'A tripping circuit that resets and stays on'];
+---
+<Base title="Emergency electrician" description="24/7 emergency electrician in Sheffield. Within the hour for loss of power, burning smells, tripping that won't reset. £120 first hour daytime, £160 out of hours." schema={[faqSchema(efaqs)]}>
+  <section class="bg-graphite text-concrete on-dark border-b-4 border-red">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+      <div>
+        <p class="tag tag-red mb-4">24 hours · 7 days · Sheffield</p>
+        <h1 class="display-xl">Emergency electrician</h1>
+        <p class="mt-5 text-lg text-concrete/85 max-w-lg">Ring and a qualified electrician answers — not a call centre. We aim to be with you within {emergency.responseMins} minutes anywhere in Sheffield.</p>
+        <a href={`tel:${emergency.phoneHref}`} class="btn btn-red !text-2xl !px-8 mt-8">☎ {emergency.phone}</a>
+        <dl class="mt-8 grid grid-cols-3 gap-4 max-w-lg border-t border-concrete/20 pt-5">
+          <div><dt class="label text-concrete/60">First hour, daytime</dt><dd class="display-md mt-1">£{emergency.firstHour / 100}</dd></div>
+          <div><dt class="label text-concrete/60">First hour, out of hours</dt><dd class="display-md mt-1">£{emergency.firstHourOOH / 100}</dd></div>
+          <div><dt class="label text-concrete/60">Then per 30 min</dt><dd class="display-md mt-1">£{emergency.perHalfHour / 100}</dd></div>
+        </dl>
+        <p class="mt-3 text-sm text-concrete/60">Plus parts. Told to you on the phone before we set off. No charge if we can fix it over the phone.</p>
+      </div>
+      <div class="relative aspect-[4/3] border-2 border-red overflow-hidden"><Image src={img('emergency')} alt="The van outside a terraced house at night, hazards on" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    </div>
+  </section>
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8">
+      <div class="bg-white border-2 border-red p-6"><h2 class="display-md text-red">Ring now if</h2><ul class="mt-4 grid gap-3">{isEmergency.map((t) => <li class="tick">{t}</li>)}</ul></div>
+      <div class="bg-white border-2 border-graphite p-6"><h2 class="display-md">Can usually wait</h2><ul class="mt-4 grid gap-3 text-graphite/85">{notEmergency.map((t) => <li class="flex gap-3"><span class="font-display font-700 text-steel">—</span>{t}</li>)}</ul><a href="/quote" class="btn btn-yellow mt-6">Get a normal quote ›</a></div>
+    </div>
+  </section>
+  <section class="grid-paper border-y-2 border-graphite py-16">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <h2 class="display-lg">While you wait</h2>
+      <ol class="grid gap-4">{['If there is a burning smell or sparks, switch off at the main switch on the fuse board and keep away from it.', 'If water is involved, do not touch anything electrical. Turn off the water if you safely can.', 'Check whether neighbours have power — if the whole street is off, ring your network operator on 105.', 'Have your fuse board accessible and the lights on your phone ready.'].map((t, i) => <li class="bg-white border-2 border-graphite p-4 flex gap-4"><span class="tag">{i + 1}</span><span>{t}</span></li>)}</ol>
+    </div>
+  </section>
+  <section class="py-16">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10"><h2 class="display-lg">Questions</h2><dl class="divide-y-2 divide-graphite/15">{efaqs.map((f) => <div class="py-5"><dt class="display-sm">{f.q}</dt><dd class="mt-2 text-graphite/80">{f.a}</dd></div>)}</dl></div>
+  </section>
+</Base>

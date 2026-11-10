@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Annotated from '@/components/Annotated.astro';
+import { site, fixedPrices, emergency } from '@/site.config';
+import { img } from '@/images';
+const gbp = (p: number) => `£${(p / 100).toLocaleString('en-GB')}`;
+const menu = fixedPrices.slice(0, 8);
+---
+<Base>
+  <!-- HERO: split, condensed caps, annotated photo -->
+  <section class="grid-paper border-b-2 border-graphite">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
+      <div>
+        <p class="tag mb-5" data-slide>Sheffield · est. {site.founded}</p>
+        <h1 class="display-xl">Sheffield's electrician for the jobs that <span class="bg-yellow px-2 -mx-1 box-decoration-clone">can't wait.</span></h1>
+        <p class="mt-6 max-w-lg text-lg text-graphite/85">Rewires, fuse boards, EV chargers, EICRs and the small stuff — priced from a fixed menu, certified, and tidied up after. Emergencies answered 24/7.</p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href={site.primaryCta.href} class="btn btn-yellow">{site.primaryCta.label} ›</a>
+          <a href="/emergency" class="btn btn-outline !border-red !text-red !shadow-[4px_4px_0_#e63b2e]">Emergency call-out</a>
+        </div>
+        <ul class="mt-10 grid sm:grid-cols-2 gap-x-8 gap-y-3 max-w-lg">
+          {['Fixed prices on common jobs', 'Certificates on every notifiable job', 'Registered & insured (fictional)', 'Within the hour for emergencies'].map((t) => <li class="tick">{t}</li>)}
+        </ul>
+      </div>
+      <Annotated src="hero" alt="An electrician installing a consumer unit in a Sheffield hallway" eager tags={[{ x: 56, y: 18, text: 'New consumer unit' }, { x: 16, y: 58, text: 'Dust sheets down', dark: true }, { x: 50, y: 84, text: 'Certified same day' }]} />
+    </div>
+  </section>
+
+  <!-- SERVICES: tagged tiles -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-10"><h2 class="display-lg">What we do</h2><a href="/services" class="label underline hover:text-yellow-2">All services ›</a></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {site.services.map((s, i) => (
+          <a href={`/services/${s.slug}`} class="group bg-white border-2 border-graphite flex flex-col hover:shadow-[6px_6px_0_#ffc800] transition-shadow" data-reveal data-reveal-delay={(i % 3) * 70}>
+            <div class="relative aspect-[3/2] overflow-hidden border-b-2 border-graphite">{s.image && <Image src={img(s.image.src)} alt={s.image.alt} widths={[480, 800]} sizes="(min-width:1024px) 30vw, (min-width:640px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover" />}<span class="tag absolute top-3 left-3">{s.price}</span></div>
+            <div class="p-5 flex-1 flex flex-col"><h3 class="display-md group-hover:underline decoration-yellow decoration-4">{s.name}</h3><p class="mt-2 text-graphite/80 flex-1">{s.summary}</p><span class="label mt-4">Details ›</span></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW A QUOTE WORKS on grid paper -->
+  <section class="grid-paper border-y-2 border-graphite py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <div><h2 class="display-lg">How a quote works</h2><p class="mt-4 text-graphite/80 max-w-sm">No call-out fee, no "we'll see on the day". Most jobs are priced before we turn up.</p><a href="/quote" class="btn btn-graphite mt-6">Start a quote ›</a></div>
+      <ol class="grid sm:grid-cols-3 gap-5">
+        {[['Tell us the job', 'Pick the job type, add a photo or two and your postcode. Two minutes.'], ['Price within a day', 'Small jobs priced from the menu by return; bigger jobs get a free visit and a written quote in two working days.'], ['Booked & certified', 'Pick a date. We turn up when we said, do the job, test it, certify it, tidy up.']].map(([t, d], i) => (
+          <li class="bg-white border-2 border-graphite p-5 relative" data-reveal data-reveal-delay={i * 90}><span class="tag absolute -top-3 left-4">Step {i + 1}</span><h3 class="display-sm mt-3">{t}</h3><p class="mt-2 text-graphite/80">{d}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FIXED PRICE MENU -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-start">
+      <div>
+        <h2 class="display-lg">Fixed-price menu</h2>
+        <p class="mt-3 text-graphite/80 max-w-lg">Common jobs, common prices. Includes VAT, labour and standard parts; we tell you up front if your job needs more.</p>
+        <table class="mt-6 w-full border-2 border-graphite bg-white">
+          <caption class="sr-only">Fixed prices for common electrical jobs</caption>
+          <tbody>{menu.map((m) => <tr class="border-b border-graphite/15 last:border-0"><th scope="row" class="text-left font-medium p-3">{m.job}</th><td class="text-right font-display font-700 text-xl p-3 whitespace-nowrap">{gbp(m.price)}</td></tr>)}</tbody>
+        </table>
+        <a href="/pricing" class="label underline mt-4 inline-block hover:text-yellow-2">Full price list ›</a>
+      </div>
+      <Annotated src="ev" alt="A home EV charger on a brick wall, plugged into a car" class="aspect-[4/3]" sizes="(min-width:1024px) 40vw, 100vw" tags={[{ x: 22, y: 30, text: 'EV charger' }, { x: 60, y: 70, text: `${gbp(89500)} fitted`, dark: true }]} />
+    </div>
+  </section>
+
+  <!-- EMERGENCY LANE -->
+  <section class="bg-graphite text-concrete on-dark border-y-4 border-red">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-14 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+      <div class="relative aspect-[3/2] border-2 border-red overflow-hidden"><Image src={img('emergency')} alt="The van with hazards on outside a terraced house at night" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /><span class="tag tag-red absolute top-3 left-3">24/7</span></div>
+      <div>
+        <p class="label text-red">Emergency call-out</p>
+        <h2 class="display-lg mt-2">No power? Burning smell? Tripping that won't reset?</h2>
+        <p class="mt-4 text-concrete/80 max-w-lg">Ring now. We aim to be with you within {emergency.responseMins} minutes anywhere in Sheffield, day or night. {`£${emergency.firstHour / 100}`} first hour daytime, {`£${emergency.firstHourOOH / 100}`} out of hours — told to you before we set off.</p>
+        <div class="mt-7 flex flex-wrap gap-4"><a href={`tel:${emergency.phoneHref}`} class="btn btn-red !text-xl">☎ {emergency.phone}</a><a href="/emergency" class="btn btn-outline">What counts as an emergency?</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS BAND -->
+  <section class="bg-yellow border-b-2 border-graphite">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
+      {site.credentials?.map((c) => <div class="border-l-4 border-graphite pl-4"><p class="display-sm">{c.label}</p><p class="text-sm text-graphite/75 mt-1">{c.detail}</p></div>)}
+    </div>
+  </section>
+
+  <!-- REVIEWS + AREAS -->
+  <section class="py-16 lg:py-24">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[2fr_1fr] gap-10">
+      <div>
+        <div class="flex items-baseline justify-between gap-4 mb-8"><h2 class="display-lg">Reviews</h2><span class="label text-steel">Fictional reviews for demonstration</span></div>
+        <div class="grid md:grid-cols-2 gap-5">
+          {site.testimonials.slice(0, 4).map((t, i) => <figure class="bg-white border-2 border-graphite p-5" data-reveal data-reveal-delay={i * 70}><p class="font-display font-700 text-yellow-2 tracking-widest text-lg" aria-label={`${t.rating} stars`}>{'★'.repeat(t.rating ?? 5)}</p><blockquote class="mt-2 text-lg leading-snug">“{t.quote}”</blockquote><figcaption class="mt-3 label text-steel">{t.name} · {t.context} · {t.source}</figcaption></figure>)}
+        </div>
+        <a href="/reviews" class="label underline mt-6 inline-block hover:text-yellow-2">All reviews ›</a>
+      </div>
+      <div class="dashed-box p-6 self-start">
+        <h2 class="display-md">Areas covered</h2>
+        <p class="mt-2 text-graphite/80">All Sheffield S postcodes, plus:</p>
+        <ul class="mt-3 flex flex-wrap gap-2">{site.serviceAreas.map((a) => <li class="bg-white border border-graphite px-2.5 py-1 text-sm font-medium">{a}</li>)}</ul>
+        <a href="/areas" class="label underline mt-5 inline-block hover:text-yellow-2">Check your area ›</a>
+      </div>
+    </div>
+  </section>
+</Base>

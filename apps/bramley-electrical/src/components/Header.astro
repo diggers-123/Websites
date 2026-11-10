@@ -1,0 +1,32 @@
+---
+import { site, emergency } from '@/site.config';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<div class="bg-graphite text-concrete text-sm">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-4">
+    <p class="label !tracking-[0.14em] !text-[0.72rem] hidden sm:block">Sheffield · S postcodes · Mon–Sat</p>
+    <a href={`tel:${emergency.phoneHref}`} class="flex items-center gap-2 font-display font-700 uppercase tracking-wider hover:text-yellow whitespace-nowrap"><span class="inline-block size-2 bg-red rounded-full animate-pulse" aria-hidden="true"></span>24/7 emergency {emergency.phone}</a>
+  </div>
+</div>
+<header class="relative z-50 bg-concrete border-b-2 border-graphite">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 h-[70px] lg:h-[84px] flex items-center justify-between gap-6">
+    <a href="/" class="text-graphite" aria-label={`${site.name} — home`}><Logo class="text-[1.1rem] lg:text-[1.35rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-7">
+      {site.nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['font-display font-600 uppercase tracking-wider text-[0.95rem] py-1.5 border-b-[3px] border-transparent hover:border-yellow', isActive(n.href) && '!border-graphite']}>{n.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={site.secondaryCta!.href} class="btn btn-red hidden xl:inline-flex !py-2 !px-4 !text-sm">Emergency</a>
+      <a href={site.primaryCta.href} class="btn btn-yellow hidden sm:inline-flex !py-2 !px-4 !text-sm">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 border-2 border-graphite bg-white inline-flex flex-col items-center justify-center gap-1.5 shadow-[3px_3px_0_#1b1d21]" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="block w-5 h-0.5 bg-graphite"></span><span class="block w-5 h-0.5 bg-graphite"></span><span class="block w-5 h-0.5 bg-graphite"></span></button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] grid-paper overflow-y-auto border-t-2 border-graphite" hidden>
+    <nav aria-label="Mobile" class="px-5 py-6 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b-2 border-graphite/20" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href="/emergency" class="display-md py-3.5 text-red">Emergency call-out</a>
+      <a href={site.primaryCta.href} class="btn btn-yellow mt-6 self-start">{site.primaryCta.label}</a>
+    </nav>
+  </div>
+</header>

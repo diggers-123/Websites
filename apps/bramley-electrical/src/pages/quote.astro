@@ -1,0 +1,89 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site, emergency } from '@/site.config';
+const jobs = [...site.services.map((s) => ({ v: s.slug, l: s.name })), { v: 'other', l: 'Something else' }];
+---
+<Base title="Get a quote" description="Request a free quote from Bramley Electrical: pick the job, add photos and your postcode. Small jobs priced from the menu within a day; larger jobs get a free site visit.">
+  <section class="grid-paper border-b-2 border-graphite">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
+      <div>
+        <p class="tag mb-4">Free · no call-out fee</p>
+        <h1 class="display-xl">Get a quote</h1>
+        <p class="mt-5 text-lg text-graphite/85 max-w-md">Two minutes. Small jobs come back priced from the menu within a working day; bigger jobs get a free site visit and a written quote within two.</p>
+        <div class="mt-8 bg-graphite text-concrete p-5 border-l-4 border-red">
+          <p class="label text-red">Is it urgent?</p>
+          <p class="mt-1 text-concrete/85">Don't fill in a form. Ring <a class="underline font-display font-700 text-xl" href={`tel:${emergency.phoneHref}`}>{emergency.phone}</a> — we answer 24/7.</p>
+        </div>
+        <ul class="mt-8 grid gap-2">{['Photos help: the fuse board, the room, the problem.', 'Postcode tells us travel and whether we can do a same-week slot.', 'Landlords: tell us the property type for EICR pricing.'].map((t) => <li class="tick text-graphite/85">{t}</li>)}</ul>
+      </div>
+
+      <form class="bg-white border-2 border-graphite p-6 sm:p-8 grid gap-6 shadow-[8px_8px_0_#1b1d21]" data-quote-form name="quote" method="post" novalidate>
+        <fieldset>
+          <legend class="label-field">What's the job?</legend>
+          <div class="grid sm:grid-cols-2 gap-2 mt-2">{jobs.map((j, i) => <label class="choice"><input type="radio" name="job" value={j.v} checked={i === 0} />{j.l}</label>)}</div>
+        </fieldset>
+        <fieldset>
+          <legend class="label-field">Property</legend>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">{['House', 'Flat', 'Rental / HMO', 'Commercial'].map((p, i) => <label class="choice !justify-center"><input type="radio" name="property" value={p} checked={i === 0} />{p}</label>)}</div>
+        </fieldset>
+        <fieldset>
+          <legend class="label-field">How soon?</legend>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">{['This week', 'Next 2 weeks', 'Within a month', 'Just pricing'].map((p, i) => <label class="choice !justify-center !text-sm"><input type="radio" name="urgency" value={p} checked={i === 1} />{p}</label>)}</div>
+        </fieldset>
+        <div><label class="label-field" for="q-desc">Describe the job</label><textarea class="field" id="q-desc" name="description" rows="4" placeholder="e.g. Three-bed terrace in Crookes, old fuse box with rewirable fuses, want it replaced. Also two extra sockets in the back bedroom." required></textarea><span data-error-for="description" hidden></span></div>
+        <div>
+          <label class="label-field" for="q-photos">Photos <span class="font-sans font-normal normal-case tracking-normal text-steel">(optional, up to 4)</span></label>
+          <input class="field !p-2" id="q-photos" name="photos" type="file" accept="image/*" multiple data-photos />
+          <div class="mt-2 grid grid-cols-4 gap-2" data-previews aria-live="polite"></div>
+          <p class="text-xs text-steel mt-1">Photo upload needs a form provider that accepts files (Netlify Forms or a custom endpoint). In demo mode previews are shown but nothing is uploaded.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div><label class="label-field" for="q-name">Name</label><input class="field" id="q-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div>
+          <div><label class="label-field" for="q-postcode">Postcode</label><input class="field" id="q-postcode" name="postcode" autocomplete="postal-code" placeholder="S10 2AB" required /><span data-error-for="postcode" hidden></span><span class="text-sm block mt-1" data-postcode-note aria-live="polite"></span></div>
+          <div><label class="label-field" for="q-phone">Phone</label><input class="field" id="q-phone" name="phone" type="tel" autocomplete="tel" required /><span data-error-for="phone" hidden></span></div>
+          <div><label class="label-field" for="q-email">Email</label><input class="field" id="q-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+        </div>
+        <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+        <div class="flex flex-wrap items-center gap-4"><button type="submit" class="btn btn-yellow">Send quote request ›</button><p data-form-status role="status" aria-live="polite" class="text-sm max-w-sm"></p></div>
+        <p class="text-xs text-steel">We only use your details to quote and book. <a class="underline" href="/privacy">Privacy</a>.</p>
+      </form>
+    </div>
+  </section>
+  <script>
+    import { enhanceForm, postcodeInArea } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-quote-form]');
+    if (form) {
+      const pre = new URLSearchParams(location.search).get('job');
+      if (pre) form.querySelector<HTMLInputElement>(`input[name=job][value="${pre}"]`)?.click();
+      const pc = form.querySelector<HTMLInputElement>('#q-postcode')!;
+      const note = form.querySelector<HTMLElement>('[data-postcode-note]')!;
+      pc.addEventListener('input', () => {
+        const r = postcodeInArea(pc.value, site.postcodePrefixes);
+        note.textContent = pc.value.length < 2 ? '' : r === true ? '✓ We cover this postcode' : r === false ? 'Outside Sheffield — we may still be able to help, ask' : '';
+        note.className = `text-sm block mt-1 ${r === false ? 'text-red-2' : 'text-graphite'}`;
+      });
+      const photos = form.querySelector<HTMLInputElement>('[data-photos]')!;
+      const previews = form.querySelector<HTMLElement>('[data-previews]')!;
+      photos.addEventListener('change', () => {
+        previews.innerHTML = '';
+        Array.from(photos.files ?? []).slice(0, 4).forEach((f) => {
+          const url = URL.createObjectURL(f);
+          const imgEl = document.createElement('img');
+          imgEl.src = url; imgEl.alt = f.name; imgEl.className = 'aspect-square object-cover border-2 border-graphite w-full';
+          previews.appendChild(imgEl);
+        });
+      });
+      enhanceForm(form, {
+        config: site.forms, formName: 'quote',
+        rules: {
+          description: [{ type: 'required', message: 'Tell us a bit about the job' }, { type: 'minLength', value: 15, message: 'A sentence or two helps us price it' }],
+          name: [{ type: 'required', message: 'Your name' }],
+          postcode: [{ type: 'required', message: 'Postcode so we can plan the visit' }, { type: 'ukPostcode' }],
+          phone: [{ type: 'required', message: 'A number to confirm the quote' }, { type: 'ukPhone' }],
+          email: [{ type: 'required', message: 'An email for the written quote' }, { type: 'email' }],
+        },
+      });
+    }
+  </script>
+</Base>

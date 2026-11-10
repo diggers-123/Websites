@@ -1,0 +1,32 @@
+---
+import '@/styles/theme.css';
+import Head from '@site/core/components/Head.astro';
+import DemoBanner from '@site/core/components/DemoBanner.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site, emergency } from '@/site.config';
+interface Props { title?: string; description?: string; image?: string; schema?: unknown[]; noindex?: boolean }
+const { title, description, image, schema, noindex } = Astro.props;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head><Head {site} {title} {description} {image} {schema} {noindex} /></head>
+  <body class="min-h-dvh flex flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <DemoBanner {site} />
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1"><slot /></main>
+    <Footer />
+    <div class="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-2 border-t-2 border-graphite">
+      <a href={site.primaryCta.href} class="bg-yellow text-graphite font-display font-700 uppercase tracking-wider text-center py-4">Get a quote</a>
+      <a href={`tel:${emergency.phoneHref}`} class="bg-red text-white font-display font-700 uppercase tracking-wider text-center py-4">Emergency ☎</a>
+    </div>
+    <div class="md:hidden h-[60px]" aria-hidden="true"></div>
+    <script>
+      import { initReveal, initMobileNav } from '@site/core/components/reveal';
+      document.querySelectorAll('[data-slide]').forEach((el) => el.setAttribute('data-reveal', ''));
+      initReveal();
+      initMobileNav({ button: '[data-nav-toggle]', panel: '[data-nav-panel]' });
+    </script>
+  </body>
+</html>

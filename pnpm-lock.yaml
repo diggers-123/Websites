@@ -8,6 +8,40 @@ importers:
 
   .: {}
 
+  apps/bramley-electrical:
+    dependencies:
+      '@astrojs/sitemap':
+        specifier: ^3.7.4
+        version: 3.7.4
+      '@fontsource/barlow':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/barlow-condensed':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@site/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@tailwindcss/vite':
+        specifier: ^4.3.5
+        version: 4.3.5(vite@6.4.6(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.1))
+      astro:
+        specifier: ^5.18.2
+        version: 5.18.2(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.68.2)(typescript@5.9.3)(yaml@2.9.1)
+      sharp:
+        specifier: ^0.34.0
+        version: 0.34.5
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.12
+        version: 0.9.12(prettier@3.9.10)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
+
   apps/cinder-and-salt:
     dependencies:
       '@astrojs/preact':
@@ -735,6 +769,12 @@ packages:
 
   '@fontsource/anton@5.3.0':
     resolution: {integrity: sha512-OR1D5n124n2XRs66SbX7IjcOSptljEJE8FcDNnlni2y1/M6KpTx7cU2PIWzTSsBj4WFkHPw24On8qw3qkQZuTw==}
+
+  '@fontsource/barlow-condensed@5.3.0':
+    resolution: {integrity: sha512-RA7MmIx0v3eQ6Gcf74qLVLOwLB0GpPOzx+eU9iG/AmCnSJGcIWYeU8y6CEMGZ210MGwGg5CZhzLkkvyZdTTk1g==}
+
+  '@fontsource/barlow@5.3.0':
+    resolution: {integrity: sha512-tGR0y6QObRtKv71MOth44222+mdNFM/ZWFWDV1VLzNbG4oK9PNRlyJzmkck4vHAi9ibHBXgt4SlY51amFP55CA==}
 
   '@fontsource/caveat@5.3.0':
     resolution: {integrity: sha512-eHTfzQxFSW9ABERRLNruHoNJmKed2J7pqTUc5lp4a4POMgXGKpxmWj3d9Hz10kmAg6iuTTLe6UagbA4bnsmfQw==}
@@ -3111,6 +3151,10 @@ snapshots:
   '@fontsource-variable/work-sans@5.3.0': {}
 
   '@fontsource/anton@5.3.0': {}
+
+  '@fontsource/barlow-condensed@5.3.0': {}
+
+  '@fontsource/barlow@5.3.0': {}
 
   '@fontsource/caveat@5.3.0': {}
 

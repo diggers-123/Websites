@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Annotated from '@/components/Annotated.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+---
+<Base title="About" description="Bramley Electrical: a two-person Sheffield electrical firm since 2012. Dan Bramley and Aisha Okafor — qualified, registered, insured, and tidy.">
+  <section class="grid-paper border-b-2 border-graphite"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+    <div><p class="tag mb-4">Since {site.founded} · Neepsend</p><h1 class="display-xl">Small firm. Big on doing it right.</h1><p class="mt-5 text-lg text-graphite/85 max-w-lg">Two electricians, one van, no subcontractors. The person who quotes your job is the person who does it.</p></div>
+    <Annotated src="owner" alt="Dan Bramley in front of the van on a Sheffield street" eager tags={[{ x: 10, y: 20, text: 'Dan · owner' }, { x: 55, y: 80, text: 'The van', dark: true }]} />
+  </div></section>
+  <section class="py-14 lg:py-20"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-6">
+    {site.team!.map((m) => <article class="bg-white border-2 border-graphite grid sm:grid-cols-[1fr_1.4fr]"><div class="relative aspect-[4/5] sm:aspect-auto overflow-hidden">{m.image && <Image src={img(m.image.src)} alt={m.image.alt} widths={[480, 800]} sizes="(min-width:640px) 25vw, 100vw" class="absolute inset-0 w-full h-full object-cover" />}</div><div class="p-6"><h2 class="display-md">{m.name}</h2><p class="label text-steel mt-1">{m.role}</p><p class="mt-3 text-graphite/85">{m.bio}</p></div></article>)}
+  </div></section>
+  <section class="bg-graphite text-concrete on-dark py-14 lg:py-20"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+    <div class="relative aspect-[3/2] border-2 border-yellow overflow-hidden"><Image src={img('tools')} alt="Electrician's tools laid out on a concrete floor" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+    <div><h2 class="display-lg">How we work</h2><ul class="mt-6 grid gap-4 text-concrete/85">{['Quote in writing, price fixed unless the job changes — and we tell you first.', 'Dust sheets, hoover, rubbish away. The room is yours again the same day.', 'Every notifiable job certified and registered with Building Control.', 'Honest advice: if a partial rewire or a repair will do, we say so.'].map((t) => <li class="tick [&::before]:bg-yellow">{t}</li>)}</ul></div>
+  </div></section>
+  <section class="bg-yellow border-y-2 border-graphite"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 gap-6">{site.credentials?.map((c) => <div class="border-l-4 border-graphite pl-4"><p class="display-sm">{c.label}</p><p class="text-sm text-graphite/75 mt-1">{c.detail}</p></div>)}</div></section>
+</Base>

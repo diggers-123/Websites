@@ -1,0 +1,141 @@
+/**
+ * BRAMLEY ELECTRICAL — Sheffield. FICTIONAL demonstration data.
+ */
+import { defineSite, hours } from '@site/core';
+
+export const site = defineSite({
+  slug: 'bramley-electrical',
+  name: 'Bramley Electrical',
+  tagline: 'Electricians in Sheffield — domestic, commercial & emergency',
+  isFictional: true,
+  owner: { name: 'Dan Bramley', title: 'Owner & qualified supervisor' },
+  founded: 2012,
+  phone: '0114 326 0790',
+  phoneHref: '+441143260790',
+  email: 'office@bramleyelectrical.example.co.uk',
+  address: { line1: 'Unit 9, Neepsend Works', line2: 'Burton Road', town: 'Sheffield', county: 'South Yorkshire', postcode: 'S3 8BX', lat: 53.3935, lng: -1.4818 },
+  serviceAreas: ['Sheffield', 'Hillsborough', 'Ecclesall', 'Crookes', 'Nether Edge', 'Dore', 'Chapeltown', 'Rotherham', 'Dronfield', 'Chesterfield'],
+  postcodePrefixes: ['S'],
+  hours: hours({ mon: ['07:30', '17:30'], tue: ['07:30', '17:30'], wed: ['07:30', '17:30'], thu: ['07:30', '17:30'], fri: ['07:30', '16:30'], sat: ['08:00', '13:00'], sun: null }),
+  social: { facebook: 'https://facebook.com/', instagram: 'https://instagram.com/', google: 'https://maps.google.com/', checkatrade: 'https://checkatrade.com/' },
+  nav: [
+    { label: 'Services', href: '/services' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'Reviews', href: '/reviews' },
+    { label: 'Areas', href: '/areas' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+  ],
+  footerNav: [
+    { label: 'Emergency call-out', href: '/emergency' },
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Image credits', href: '/credits' },
+  ],
+  primaryCta: { label: 'Get a quote', href: '/quote' },
+  secondaryCta: { label: 'Emergency call-out', href: '/emergency' },
+  services: [
+    {
+      slug: 'rewires', name: 'Full & partial rewires', category: 'Domestic', summary: 'Older house with rubber or fabric cable, or a renovation that needs a fresh start. Planned, dust-managed, certified.',
+      description: ['Most Sheffield terraces built before 1970 have had at least one bodge job since. A rewire replaces every cable, socket, switch and the consumer unit, then certifies the lot. We plan it room by room so you can stay in the house, cover and protect floors, and make good chases ready for plastering.', 'A partial rewire — one floor, a kitchen, an extension — is often the right call and we will say so if it is.'],
+      price: 'From £3,200', pricePence: 320000, includes: ['Design & circuit plan', 'All cabling & accessories', 'New consumer unit', 'Making good chases', 'Electrical Installation Certificate', 'Building Control notification'],
+      image: { src: 'rewire', alt: 'A room stripped back during a rewire, new cables clipped along joists' },
+      faqs: [{ q: 'How long does a rewire take?', a: 'A three-bed terrace takes 5–8 working days with two of us. We rewire floor by floor so you keep power to the kitchen and one bedroom overnight.' }, { q: 'Do I need to move out?', a: 'Most people don\'t. It is dusty and disruptive for the week, but we leave a working kitchen and bathroom every evening.' }],
+    },
+    {
+      slug: 'consumer-units', name: 'Consumer unit upgrades', category: 'Domestic', summary: 'Replace an old fuse box with a modern, RCD-protected consumer unit. Half a day, fixed price.',
+      description: ['If your fuse box has rewirable fuses, a wooden back, or no RCD protection, it is overdue. A new metal-clad consumer unit with RCBOs on every circuit means a fault on one circuit no longer blacks out the house, and you get the surge protection modern electronics need.', 'We test every circuit before and after, label everything properly and leave you the certificate.'],
+      price: '£495 fixed', pricePence: 49500, includes: ['Metal consumer unit', 'RCBO per circuit', 'Surge protection device', 'Full test & certificate', 'Labelled circuit chart'],
+      image: { src: 'board', alt: 'A new consumer unit with neatly dressed cables and a row of RCBOs' },
+    },
+    {
+      slug: 'ev-chargers', name: 'EV charger installation', category: 'Domestic', summary: 'Home chargers for any car: tethered or untethered, smart, app-controlled. Fixed price including the paperwork.',
+      description: ['We fit 7 kW home chargers that work with every EV and are smart-tariff ready. The price includes a survey, up to 10 m of cabling, any required earthing arrangements, an isolator, commissioning and DNO notification.', 'Three-phase and workplace chargers quoted separately.'],
+      price: 'From £895', pricePence: 89500, includes: ['Survey', '7 kW smart charger', 'Up to 10 m cable run', 'Earthing & isolation', 'DNO notification', 'App set-up'],
+      image: { src: 'ev', alt: 'A home EV charger on a red-brick wall, plugged into a car on the driveway' },
+      faqs: [{ q: 'Can I get a grant?', a: 'Grants come and go. At the time of writing, renters and flat owners may qualify for a government contribution; we will check for you and handle the claim where possible.' }],
+    },
+    {
+      slug: 'eicr', name: 'EICR & landlord certificates', category: 'Testing', summary: 'Electrical Installation Condition Reports for landlords, buyers and peace of mind. Clear reports, no scare tactics.',
+      description: ['Landlords must hold a satisfactory EICR and renew it every five years. We inspect and test every circuit, photograph anything we find, and give you a plain-English summary alongside the formal report — so you know what actually needs doing, what is advisory, and what is fine.', 'If remedial work is needed we quote it separately and you are free to use anyone.'],
+      price: 'From £160', pricePence: 16000, includes: ['Inspection & testing of all circuits', 'Formal EICR report', 'Plain-English summary', 'Photos of any defects', 'Remedial quote if needed'],
+      image: { src: 'testing', alt: 'An electrician testing a socket with a multifunction tester during an inspection' },
+    },
+    {
+      slug: 'lighting', name: 'Lighting & sockets', category: 'Domestic', summary: 'Downlights, kitchen lighting, outdoor lights, extra sockets, USB sockets, smart switches. The small jobs, done properly.',
+      description: ['Half our week is small jobs: a kitchen that needs downlights and under-cabinet lighting, a garden that needs lights and a socket, a bedroom that has one socket for six devices. We price them from a fixed menu so you know the cost before we arrive.'],
+      price: 'From £85', pricePence: 8500, includes: ['Fixed-price menu', 'Quality fittings supplied', 'Tested & certified where required'],
+      image: { src: 'lighting', alt: 'A renovated kitchen with new LED downlights and under-cabinet lighting' },
+    },
+    {
+      slug: 'commercial', name: 'Commercial & landlord', category: 'Commercial', summary: 'Shops, offices, cafés and HMOs across Sheffield: maintenance, fit-outs, emergency lighting, periodic testing.',
+      description: ['We look after a portfolio of small commercial premises and HMOs: annual testing, emergency lighting tests, PAT testing, new circuits for kitchens and equipment, and out-of-hours call-outs. Account customers get a direct number and 30-day terms.'],
+      price: 'Quoted', includes: ['Periodic inspection', 'Emergency lighting testing', 'PAT testing', 'Fit-out wiring', 'Priority call-out'],
+      image: { src: 'socket', alt: 'An apprentice fitting a brushed-steel socket' },
+    },
+  ],
+  team: [
+    { name: 'Dan Bramley', role: 'Owner · qualified supervisor', bio: 'Time-served in 2008, set up on his own in 2012. Does the quotes, the rewires and the awkward fault-finding.', image: { src: 'owner', alt: 'Dan Bramley standing in front of the van on a Sheffield street' } },
+    { name: 'Aisha Okafor', role: 'Electrician', bio: 'Joined as an apprentice in 2021, qualified in 2025. EV chargers and lighting are her thing.', image: { src: 'socket', alt: 'Aisha fitting a socket' } },
+  ],
+  testimonials: [
+    { quote: 'Rewired our Crookes terrace in six days. Tidy, explained everything, and the certificate arrived the same evening.', name: 'Laura & Ben H.', context: 'Rewire, Crookes', rating: 5, source: 'checkatrade' },
+    { quote: 'Lost all power on a Sunday night. Dan was here in 40 minutes, found a burnt-out neutral, had us back on in an hour.', name: 'Mo A.', context: 'Emergency, Hillsborough', rating: 5, source: 'google' },
+    { quote: 'EV charger quoted on the phone, fitted the following week for exactly that price. No surprises.', name: 'Rachel T.', context: 'EV charger, Dore', rating: 5, source: 'google' },
+    { quote: 'They do the EICRs on all eleven of my properties. Honest reports — they tell me what\'s advisory and what actually needs doing.', name: 'Steve P.', context: 'Landlord, Sheffield', rating: 5, source: 'checkatrade' },
+    { quote: 'New fuse board done in a morning, labelled properly, and they hoovered up. Rare.', name: 'Jean W.', context: 'Consumer unit, Nether Edge', rating: 5, source: 'google' },
+  ],
+  faqs: [
+    { q: 'How quickly can you come out?', a: 'Emergencies: usually within the hour across Sheffield, 24/7. Small jobs: typically within 3–5 working days. Rewires and EV chargers: booked 2–3 weeks ahead.' },
+    { q: 'Do you charge for quotes?', a: 'No. Most small jobs are priced from our fixed menu by phone or from a photo. Bigger jobs get a free site visit and a written quote within two working days.' },
+    { q: 'Are you registered and insured?', a: 'Registered with a government-approved competent person scheme (fictional for this demo), so our work is self-certified for Building Regulations. £2m public liability insurance. Certificates on every notifiable job.' },
+    { q: 'What counts as an emergency?', a: 'Total loss of power, burning smells or scorch marks, tripping that won\'t reset, exposed live parts, water near electrics, or no heating in winter because of an electrical fault. If you are unsure, ring — we will tell you honestly whether it can wait.' },
+    { q: 'What is the emergency call-out charge?', a: '£120 for the first hour (£160 evenings, weekends and bank holidays), then £60 per half hour, plus parts. We tell you this on the phone before we leave.' },
+    { q: 'Will you tidy up?', a: 'Yes. Dust sheets down, hoover before we leave, rubbish taken away. Chases are made good ready for your plasterer, or we can arrange one.' },
+    { q: 'Do you work with letting agents?', a: 'Yes — EICRs, remedials, PAT and emergency lighting for several Sheffield agents, with keys collected and reports sent directly.' },
+  ],
+  forms: { provider: 'demo', honeypot: '_gotcha', notifyEmail: 'office@bramleyelectrical.example.co.uk' },
+  booking: { provider: 'demo', policy: 'Quotes are valid for 30 days. Booked work can be moved with 48 hours notice at no charge.' },
+  seo: {
+    siteUrl: 'https://bramleyelectrical.example.co.uk',
+    titleTemplate: '%s · Bramley Electrical, Sheffield',
+    defaultDescription: 'Sheffield electricians for rewires, consumer units, EV chargers, EICRs, lighting and 24/7 emergency call-outs. Fixed prices, certified work, free quotes.',
+    ogImage: '/og.jpg',
+    schemaType: 'Electrician',
+    priceRange: '££',
+    keywords: ['electrician Sheffield', 'emergency electrician Sheffield', 'EV charger installation Sheffield', 'EICR Sheffield', 'rewire Sheffield'],
+  },
+  legal: { legalName: 'Bramley Electrical Ltd', entityType: 'limited-company', companyNumber: '00000000 (fictional)', vatNumber: 'GB000000000 (fictional)', policiesReviewed: '2026-11-10' },
+  credentials: [
+    { label: 'Competent-person registered', detail: 'Part P self-certification (fictional)', fictional: true },
+    { label: '£2m public liability', detail: 'Insured', fictional: true },
+    { label: '18th Edition', detail: 'BS 7671 qualified (fictional)', fictional: true },
+    { label: '4.9 ★ · 214 reviews', detail: 'Checkatrade (fictional)', fictional: true },
+  ],
+});
+
+/** Fixed-price menu for small jobs (pence). */
+export const fixedPrices = [
+  { job: 'Replace a light fitting (customer supplied)', price: 6500 },
+  { job: 'Extra double socket, surface or flush', price: 11000 },
+  { job: 'USB double socket swap', price: 8500 },
+  { job: 'Outside socket (weatherproof)', price: 14500 },
+  { job: 'Outside light with sensor', price: 13500 },
+  { job: 'Smart dimmer switch', price: 9500 },
+  { job: 'Kitchen downlights (per 6, inc. fittings)', price: 42000 },
+  { job: 'Electric shower circuit', price: 32000 },
+  { job: 'Cooker circuit & switch', price: 24500 },
+  { job: 'Smoke & heat alarms (interlinked, per 3)', price: 29500 },
+  { job: 'Fault finding — first hour', price: 8500 },
+  { job: 'EICR, 1–2 bed property', price: 16000 },
+  { job: 'EICR, 3–4 bed property', price: 19500 },
+  { job: 'Consumer unit upgrade', price: 49500 },
+  { job: 'EV charger (7 kW, up to 10 m)', price: 89500 },
+];
+export const emergency = {
+  firstHour: 12000,
+  firstHourOOH: 16000,
+  perHalfHour: 6000,
+  responseMins: 60,
+  phone: '0114 326 0790',
+  phoneHref: '+441143260790',
+};

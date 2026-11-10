@@ -1,0 +1,32 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="grid-paper-dark text-concrete on-dark mt-auto border-t-4 border-yellow">
+  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-14 grid lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10">
+    <div>
+      <Logo class="text-[1.35rem] text-concrete" />
+      <p class="mt-4 max-w-sm text-concrete/80">{site.seo.defaultDescription}</p>
+      <ul class="mt-5 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="tag tag-dark">{c.label}</li>)}</ul>
+    </div>
+    <div>
+      <p class="label text-yellow mb-3">Office</p>
+      <address class="not-italic text-concrete/85">{site.address.line1}<br />{site.address.line2}<br />{site.address.town} {site.address.postcode}</address>
+      <p class="mt-3 flex flex-col"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p>
+    </div>
+    <div>
+      <p class="label text-yellow mb-3">Office hours</p>
+      <dl class="text-sm">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-concrete/15 py-1.5"><dt>{l.days}</dt><dd>{l.time}</dd></div>)}</dl>
+      <p class="mt-3 text-sm text-concrete/70">Emergencies answered 24/7.</p>
+    </div>
+    <div>
+      <p class="label text-yellow mb-3">Pages</p>
+      <ul class="flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}</ul>
+      <ul class="mt-5 flex gap-4 text-sm">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k}</a></li>)}</ul>
+    </div>
+  </div>
+  <div class="border-t border-concrete/15"><div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between gap-2 text-xs text-concrete/60 label !tracking-[0.1em]"><span>© {year} {site.legal.legalName} · {site.legal.companyNumber}</span><span>VAT {site.legal.vatNumber}</span></div></div>
+</footer>

@@ -1,0 +1,10 @@
+---
+/** BRAMLEY wordmark with a bolt mark. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<span class={`inline-flex items-center gap-2 font-display font-700 uppercase tracking-tight leading-none ${cls}`}>
+  <svg class="h-[1.5em] w-auto" viewBox="0 0 26 40" aria-hidden="true"><path d="M14 1 L2 22 H11 L8 39 L24 15 H14 L18 1 Z" fill="#ffc800" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <span class="text-[1.5em]">Bramley</span>
+  <span class="text-[0.62em] tracking-[0.18em] self-end mb-[0.18em] opacity-80">Electrical</span>
+</span>

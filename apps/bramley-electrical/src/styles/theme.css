@@ -1,0 +1,117 @@
+/*
+  BRAMLEY ELECTRICAL — design tokens.
+  Palette: concrete off-white (dominant) · graphite (secondary) · safety yellow (accent) · signal red (emergency only)
+  Type: Barlow Condensed (display/labels) · Barlow (body), tabular numerals
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/700.css';
+
+@theme {
+  --color-concrete: #e9e8e3;
+  --color-concrete-2: #dcdbd4;
+  --color-white: #ffffff;
+  --color-graphite: #1b1d21;
+  --color-graphite-2: #2a2d33;
+  --color-steel: #6b6f78;
+  --color-yellow: #ffc800;
+  --color-yellow-2: #e6b400;
+  --color-red: #e63b2e;
+  --color-red-2: #c22f24;
+  --color-focus: #1b1d21;
+  --color-error: #c22f24;
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-sans: 'Barlow', system-ui, sans-serif;
+}
+
+@layer base {
+  html { background: var(--color-concrete); color: var(--color-graphite); font-family: var(--font-sans); font-size: 17px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-yellow); color: var(--color-graphite); }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.005em; line-height: 0.95; }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: 0.9; letter-spacing: -0.005em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 0.95; }
+@utility display-md { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(1.5rem, 2.6vw, 2.4rem); line-height: 1; }
+@utility display-sm { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 1.35rem; line-height: 1.05; }
+@utility label { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8rem; }
+
+/* Grid-paper background */
+@utility grid-paper {
+  background-color: var(--color-concrete);
+  background-image: linear-gradient(color-mix(in srgb, var(--color-graphite) 9%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-graphite) 9%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+@utility grid-paper-dark {
+  background-color: var(--color-graphite);
+  background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Label-maker tag */
+@utility tag {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  background: var(--color-yellow); color: var(--color-graphite);
+  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem;
+  padding: 0.3em 0.6em; border: 1.5px solid var(--color-graphite);
+  box-shadow: 2px 2px 0 var(--color-graphite);
+}
+@utility tag-dark { background: var(--color-graphite); color: var(--color-yellow); border-color: var(--color-yellow); box-shadow: 2px 2px 0 var(--color-yellow); }
+@utility tag-red { background: var(--color-red); color: white; border-color: var(--color-graphite); }
+
+/* Photo annotation: a tag with a leader line */
+.annot { position: absolute; }
+.annot::before { content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--color-yellow); border: 2px solid var(--color-graphite); left: -6px; top: 50%; transform: translateY(-50%); }
+.annot .tag { margin-left: 10px; }
+.annot-line::after { content: ''; position: absolute; left: -1px; top: 50%; width: var(--len, 40px); height: 2px; background: var(--color-graphite); transform: translate(-100%, -50%); }
+
+/* Dashed outline box */
+@utility dashed-box { border: 2px dashed color-mix(in srgb, var(--color-graphite) 45%, transparent); }
+
+/* Buttons: hard-edged, chevron */
+@utility btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.55em;
+  padding: 0.85rem 1.4rem; border: 2px solid var(--color-graphite);
+  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.05rem;
+  text-decoration: none; cursor: pointer; transition: background-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 4px 4px 0 var(--color-graphite);
+}
+.btn:hover, .btn:focus-visible { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--color-graphite); }
+.btn:active { transform: translate(4px, 4px); box-shadow: none; }
+@utility btn-yellow { background: var(--color-yellow); color: var(--color-graphite); }
+@utility btn-graphite { background: var(--color-graphite); color: var(--color-yellow); }
+@utility btn-red { background: var(--color-red); color: white; }
+@utility btn-outline { background: transparent; color: var(--color-graphite); }
+.on-dark .btn-outline { color: var(--color-concrete); border-color: var(--color-concrete); box-shadow: 4px 4px 0 var(--color-yellow); }
+.on-dark .btn-outline:hover { box-shadow: 2px 2px 0 var(--color-yellow); }
+
+/* Checkbox trust list */
+.tick { display: flex; gap: 0.75rem; align-items: flex-start; }
+.tick::before { content: '✓'; flex: none; width: 1.5rem; height: 1.5rem; border: 2px solid var(--color-graphite); background: var(--color-yellow); font-family: var(--font-display); font-weight: 700; display: grid; place-items: center; font-size: 0.95rem; margin-top: 0.1rem; }
+
+/* Wiring diagram motif */
+.wire { stroke: var(--color-graphite); stroke-width: 2; fill: none; }
+.wire-y { stroke: var(--color-yellow); }
+
+/* Chevron slide-in for tags */
+html.js [data-slide] { opacity: 0; transform: translateX(-12px); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+html.js [data-slide].is-visible { opacity: 1; transform: none; }
+
+/* Forms */
+.field { width: 100%; background: white; border: 2px solid var(--color-graphite); color: var(--color-graphite); padding: 0.75rem 0.9rem; font: inherit; min-height: 48px; }
+.field:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-yellow); }
+.field::placeholder { color: var(--color-steel); }
+.label-field { display: block; font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; margin-bottom: 0.35rem; }
+.choice { display: flex; gap: 0.6rem; align-items: center; padding: 0.7rem 0.9rem; border: 2px solid var(--color-graphite); background: white; cursor: pointer; font-weight: 500; }
+.choice:has(input:checked) { background: var(--color-yellow); }
+.choice:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 3px; }
+.choice input { accent-color: var(--color-graphite); width: 1.1rem; height: 1.1rem; }
+
+html.nav-open { overflow: hidden; }

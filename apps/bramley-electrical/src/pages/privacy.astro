@@ -1,0 +1,11 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal information from quote requests, bookings and this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who we are</h2><p>{site.legal.legalName}, {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}. Contact <a href={`mailto:${site.email}`}>{site.email}</a> or {site.phone}.</p>
+  <h2>What we collect and why</h2>
+  <ul><li><strong>Quote requests and bookings:</strong> name, contact details, property address and postcode, job description and any photos you send — to price, plan and carry out the work, and to issue certificates (which must carry the installation address). Lawful basis: steps prior to a contract / contract.</li><li><strong>Certificates and records:</strong> retained for 6 years as required by our registration scheme and for tax purposes.</li><li><strong>Website:</strong> no analytics or advertising cookies by default.</li></ul>
+  <h2>Sharing</h2><p>Notifiable work is registered with Building Control via our competent-person scheme, which involves sharing the installation address and certificate details. Form submissions are processed by the provider configured for this site.</p>
+  <h2>Your rights</h2><p>Access, correction, deletion, restriction, objection: email <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+</Legal>
