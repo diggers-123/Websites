@@ -1,0 +1,28 @@
+---
+import { site } from '@/site.config';
+interface Props { tone?: 'ink' | 'volt' | 'chalk'; limit?: number }
+const { tone = 'volt', limit = 5 } = Astro.props;
+const tones = { ink: 'bg-ink text-chalk border-chalk', volt: 'bg-volt text-ink border-ink', chalk: 'bg-chalk text-ink border-ink' };
+const items = site.testimonials.slice(0, limit);
+---
+<section class={`${tones[tone]} border-y-[3px] overflow-hidden`} aria-labelledby="reviews-heading">
+  <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pt-12 flex items-end justify-between gap-6">
+    <h2 id="reviews-heading" class="display-lg">What they say</h2>
+    <p class="mono-label opacity-70 hidden sm:block">Fictional reviews for demonstration</p>
+  </div>
+  <div class="marquee mt-8 pb-12" style="--marquee-speed: 60s">
+    <div class="marquee-track items-stretch">
+      {[0, 1].map((dup) => (
+        <ul class="flex shrink-0 gap-5 pr-5" aria-hidden={dup === 1 ? 'true' : undefined}>
+          {items.map((t) => (
+            <li class="w-[320px] sm:w-[400px] border-[3px] border-current p-6 flex flex-col gap-4 bg-transparent">
+              <div class="font-mono text-sm tracking-widest" aria-label={`${t.rating} out of 5`}>{'★'.repeat(t.rating ?? 5)}</div>
+              <blockquote class="text-lg leading-snug flex-1">“{t.quote}”</blockquote>
+              <p class="mono-label opacity-70">{t.name} · {t.context}</p>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+</section>

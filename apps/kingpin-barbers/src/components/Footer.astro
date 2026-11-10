@@ -1,0 +1,55 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+const socials = Object.entries(site.social).filter(([, v]) => v) as [string, string][];
+---
+<footer class="bg-chalk text-ink mt-auto">
+  <div class="hazard h-4" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-14 grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div>
+      <Logo class="text-[1.6rem]" />
+      <p class="mt-4 max-w-sm text-ink/80">{site.seo.defaultDescription}</p>
+      <a href={site.primaryCta.href} class="btn btn-ink mt-6">{site.primaryCta.label}</a>
+    </div>
+    <div>
+      <h2 class="display-sm mb-4">Find us</h2>
+      <address class="not-italic leading-relaxed">
+        {site.address.line1}<br />{site.address.town}<br />{site.address.postcode}
+      </address>
+      <p class="mt-3 flex flex-col">
+        <a class="underline hover:text-volt-deep" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+        <a class="underline hover:text-volt-deep break-all" href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+    </div>
+    <div>
+      <h2 class="display-sm mb-4">Hours</h2>
+      <dl class="font-mono text-sm">
+        {lines.map((l) => (
+          <div class="flex justify-between gap-4 border-b border-ink/15 py-1.5">
+            <dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'text-ink/50']}>{l.time}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+    <div>
+      <h2 class="display-sm mb-4">Elsewhere</h2>
+      <ul class="flex flex-col gap-2">
+        {socials.map(([k, v]) => (
+          <li><a class="underline capitalize hover:text-volt-deep" href={v} rel="noopener">{k === 'google' ? 'Google reviews' : k}</a></li>
+        ))}
+      </ul>
+      <ul class="mt-6 flex flex-col gap-1 text-sm">
+        {site.footerNav?.map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="border-t-[3px] border-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between gap-2 mono-label text-ink/70">
+      <span>© {year} {site.legal.legalName}</span>
+      <span>Barbers · {site.address.town}</span>
+    </div>
+  </div>
+</footer>

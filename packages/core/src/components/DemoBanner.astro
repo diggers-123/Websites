@@ -1,0 +1,11 @@
+---
+/** Shown only while `site.isFictional` is true. Remove by setting isFictional: false. */
+import type { SiteConfig } from '../config';
+interface Props { site: SiteConfig }
+const { site } = Astro.props;
+---
+{site.isFictional && (
+  <div class="demo-banner" role="note">
+    Demonstration website — <strong>{site.name}</strong> is a fictional business. Details, reviews and credentials are illustrative.
+  </div>
+)}

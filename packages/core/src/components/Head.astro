@@ -1,0 +1,52 @@
+---
+/**
+ * Shared <head> content: title, description, canonical, Open Graph, Twitter, JSON-LD.
+ * Design-neutral. Each site's layout wraps this.
+ */
+import type { SiteConfig } from '../config';
+import { pageTitle, canonical, localBusinessSchema, jsonLd } from '../seo';
+
+interface Props {
+  site: SiteConfig;
+  title?: string;
+  description?: string;
+  /** Path to OG image in /public. Falls back to site default. */
+  image?: string;
+  /** Extra JSON-LD objects for this page (FAQ, Service, Breadcrumb…). */
+  schema?: unknown[];
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+
+const { site, title, description, image, schema = [], noindex = false, type = 'website' } = Astro.props;
+const fullTitle = pageTitle(site, title);
+const desc = description ?? site.seo.defaultDescription;
+const url = canonical(site, Astro.url.pathname);
+const ogImage = `${site.seo.siteUrl}${image ?? site.seo.ogImage}`;
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const schemas = [...(isHome ? [localBusinessSchema(site)] : []), ...schema];
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={desc} />
+<link rel="canonical" href={url} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="geo.region" content="GB" />
+<meta name="geo.placename" content={site.address.town} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="generator" content={Astro.generator} />
+{schemas.map((s) => <script type="application/ld+json" set:html={jsonLd(s)} />)}

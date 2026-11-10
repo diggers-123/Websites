@@ -1,0 +1,25 @@
+---
+import Base from './Base.astro';
+interface Props { title: string; description: string; reviewed: string }
+const { title, description, reviewed } = Astro.props;
+---
+<Base {title} {description} noindex={false}>
+  <section class="bg-chalk text-ink">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-20">
+      <h1 class="display-lg">{title}</h1>
+      <p class="mono-label opacity-60 mt-3">Last reviewed {reviewed}</p>
+      <div class="mt-8 p-4 border-[3px] border-ink bg-volt text-sm">
+        <strong>Template notice.</strong> This document is a starting point based on ICO guidance. It must be reviewed and adapted for the actual business before going live. It is not legal advice.
+      </div>
+      <div class="prose-legal mt-10">
+        <slot />
+      </div>
+    </div>
+  </section>
+</Base>
+<style is:global>
+  .prose-legal h2 { font-family: var(--font-display); text-transform: uppercase; font-size: 1.6rem; margin: 2.2rem 0 0.8rem; }
+  .prose-legal p, .prose-legal li { font-size: 1.05rem; line-height: 1.6; color: color-mix(in srgb, var(--color-ink) 85%, transparent); margin: 0.6rem 0; }
+  .prose-legal ul { padding-left: 1.3rem; list-style: square; }
+  .prose-legal a { text-decoration: underline; }
+</style>

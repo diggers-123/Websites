@@ -1,0 +1,45 @@
+---
+/** Trading-card style barber profile. Flips on hover/focus, or tap on touch devices. */
+import { Image } from 'astro:assets';
+import type { TeamMember } from '@site/core';
+import { img } from '@/images';
+interface Props { member: TeamMember; index: number }
+const { member, index } = Astro.props;
+const firstName = member.name.split(' ')[0];
+---
+<div class="flip aspect-[3/4]" data-reveal data-reveal-delay={index * 80}>
+  <button type="button" class="flip-inner w-full h-full text-left" data-flip aria-label={`${member.name}, ${member.role}. Show details`}>
+    <div class="flip-face border-[3px] border-chalk bg-ink-2 overflow-hidden flex flex-col">
+      <div class="relative flex-1">
+        {member.image && (
+          <Image src={img(member.image.src)} alt={member.image.alt} widths={[400, 640, 900]} sizes="(min-width:1280px) 22vw, (min-width:640px) 45vw, 90vw" class="absolute inset-0 h-full w-full object-cover grayscale contrast-110" />
+        )}
+        <span class="absolute top-0 left-0 bg-volt text-ink font-mono text-xs tracking-widest px-3 py-1.5 uppercase">Chair {index + 1}</span>
+      </div>
+      <div class="p-4 border-t-[3px] border-chalk bg-ink">
+        <h3 class="display-md">{firstName}</h3>
+        <p class="mono-label text-smoke mt-1">{member.role}</p>
+      </div>
+    </div>
+    <div class="flip-face flip-back border-[3px] border-volt bg-volt text-ink p-5 flex flex-col">
+      <h3 class="display-md">{member.name}</h3>
+      <p class="mono-label mt-1 opacity-70">{member.role}</p>
+      <p class="mt-4 text-base leading-snug">{member.bio}</p>
+      <span class="mt-auto font-display uppercase text-lg">Book {firstName} →</span>
+    </div>
+  </button>
+</div>
+<script>
+  // Tap to flip on touch devices; link through to booking with barber preselected on second tap.
+  document.querySelectorAll<HTMLElement>('[data-flip]').forEach((btn) => {
+    const card = btn.closest('.flip') as HTMLElement;
+    btn.addEventListener('click', () => {
+      if (matchMedia('(hover: hover)').matches || card.classList.contains('is-flipped')) {
+        const name = btn.getAttribute('aria-label')?.split(',')[0] ?? '';
+        location.href = `/book?barber=${encodeURIComponent(name)}`;
+        return;
+      }
+      card.classList.add('is-flipped');
+    });
+  });
+</script>

@@ -1,0 +1,28 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { faqSchema } from '@site/core';
+---
+<Base title="FAQ" description="Walk-ins, cancellations, kids' cuts, parking and everything else people ask Kingpin Barber Co. in Leeds." schema={[faqSchema(site.faqs)]}>
+  <section class="bg-chalk text-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-20 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <div>
+        <p class="mono-label opacity-60 mb-3">Questions</p>
+        <h1 class="display-xl">FAQ</h1>
+        <p class="mt-6 text-ink/75 max-w-xs">Not here? <a class="underline" href="/contact">Ask us</a> or ring <a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a>.</p>
+      </div>
+      <div class="border-t-[3px] border-ink">
+        {site.faqs.map((f, i) => (
+          <details class="group border-b-[3px] border-ink">
+            <summary class="cursor-pointer list-none flex items-baseline gap-5 py-5 pr-2 [&::-webkit-details-marker]:hidden">
+              <span class="font-mono text-sm opacity-60">{String(i + 1).padStart(2, '0')}</span>
+              <span class="display-md flex-1">{f.q}</span>
+              <span class="font-display text-3xl leading-none transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="pb-6 pl-12 text-lg text-ink/80 max-w-prose">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

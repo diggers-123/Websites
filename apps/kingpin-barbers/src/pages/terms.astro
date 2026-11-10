@@ -1,0 +1,26 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Terms & cancellations" description={`Booking terms, cancellation policy and house rules for ${site.name}.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Bookings</h2>
+  <p>A booking made online or by phone reserves a chair with the chosen (or any available) barber at the stated time for the stated service. Prices shown at the time of booking apply. We may contact you using the details you provide to confirm, remind or rearrange.</p>
+
+  <h2>Cancellations and no-shows</h2>
+  <p>{site.booking.policy}</p>
+
+  <h2>Lateness</h2>
+  <p>If you arrive more than ten minutes late we may need to shorten the service or rebook you, so the next customer isn't kept waiting.</p>
+
+  <h2>Children</h2>
+  <p>Children under 12 must be accompanied by an adult for the duration of the appointment.</p>
+
+  <h2>Our responsibility</h2>
+  <p>We take care with every service. If you are unhappy with a cut, tell us before you leave or within 48 hours and we will put it right free of charge. Nothing in these terms limits your statutory rights.</p>
+
+  <h2>Website</h2>
+  <p>Content on this site is for general information. Photographs of people are used with permission (or, for this demonstration site, are illustrative). We may change prices, services and hours without notice; the booking page always shows current details.</p>
+
+  <h2>Business details</h2>
+  <p>{site.legal.legalName}{site.legal.companyNumber ? `, company number ${site.legal.companyNumber}` : ''}. Registered address: {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>

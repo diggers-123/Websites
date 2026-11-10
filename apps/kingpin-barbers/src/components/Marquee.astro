@@ -1,0 +1,14 @@
+---
+/** Scrolling text strip. Content is duplicated for the loop; duplicate is aria-hidden. */
+interface Props { items: string[]; class?: string; speed?: string; separator?: string }
+const { items, class: cls = 'bg-volt text-ink', speed = '40s', separator = '★' } = Astro.props;
+---
+<div class={`marquee overflow-hidden border-y-[3px] border-chalk ${cls}`} style={`--marquee-speed:${speed}`}>
+  <div class="marquee-track">
+    {[0, 1].map((dup) => (
+      <ul class="flex shrink-0 items-center gap-8 pr-8 py-3 display-sm whitespace-nowrap" aria-hidden={dup === 1 ? 'true' : undefined}>
+        {items.map((t) => (<><li>{t}</li><li aria-hidden="true">{separator}</li></>))}
+      </ul>
+    ))}
+  </div>
+</div>

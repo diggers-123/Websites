@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Marquee from '@/components/Marquee.astro';
+import Section from '@/components/Section.astro';
+import BarberCard from '@/components/BarberCard.astro';
+import Reviews from '@/components/Reviews.astro';
+import HoursBoard from '@/components/HoursBoard.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+
+const featured = site.services.filter((s) => ['skin-fade', 'haircut', 'hot-towel-shave', 'cut-and-beard'].includes(s.slug));
+const marqueeItems = ['Walk-ins when we can', 'Bookings always', 'Four chairs', 'Call Lane, Leeds', 'Skin fades', 'Hot towel shaves', 'Est. 2016'];
+---
+
+<Base>
+  <!-- HERO: poster-stack left, portrait right -->
+  <section class="relative bg-ink text-chalk overflow-hidden grain">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 min-h-[calc(100dvh-76px)] items-stretch">
+      <div class="flex flex-col justify-between py-10 lg:py-14 relative z-10">
+        <div>
+          <p class="mono-label text-volt mb-6 wipe-up">Barbers · Leeds · LS1</p>
+          <h1 class="display-xl text-chalk">
+            <span class="block wipe-up">King</span>
+            <span class="block wipe-up text-volt">pin</span>
+          </h1>
+        </div>
+        <div class="mt-10 lg:mt-0 grid sm:grid-cols-[1fr_auto] gap-6 items-end">
+          <p class="max-w-md text-lg sm:text-xl text-chalk/85 leading-snug">
+            Proper barbering, no nonsense. Four chairs on Call Lane, booked online in under a minute.
+            Skin fades, classic cuts, beards and hot towel shaves.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href={site.primaryCta.href} class="btn btn-volt">{site.primaryCta.label} →</a>
+            <a href={site.secondaryCta!.href} class="btn btn-ghost">{site.secondaryCta!.label}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative lg:-mr-8 -mx-4 sm:-mx-6 lg:mx-0 min-h-[60vw] lg:min-h-0">
+        <Image
+          src={img('hero')}
+          alt="A Kingpin barber mid skin-fade, Leeds skyline through the window"
+          widths={[480, 768, 1024]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          class="absolute inset-0 h-full w-full object-cover object-top duotone-hero"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="absolute left-0 bottom-0 bg-volt text-ink px-5 py-3 font-mono text-sm tracking-widest uppercase border-t-[3px] border-r-[3px] border-ink">
+          Open till 8pm Thu &amp; Fri
+        </div>
+      </div>
+    </div>
+    <div class="hazard h-5" aria-hidden="true"></div>
+  </section>
+
+  <Marquee items={marqueeItems} />
+
+  <!-- PRICE BOARD -->
+  <Section number="01" title="The board" kicker="Cuts, beards & combos — all prices include a wash" tone="chalk" id="prices">
+    <ul class="grid md:grid-cols-2 gap-x-14 gap-y-2 border-t-[3px] border-ink">
+      {featured.map((s, i) => (
+        <li class="border-b-[3px] border-ink py-5 grid grid-cols-[auto_1fr_auto] gap-5 items-baseline" data-reveal data-reveal-delay={i * 60}>
+          <span class="font-mono text-sm tracking-widest opacity-60">0{i + 1}</span>
+          <div>
+            <h3 class="display-md">{s.name}</h3>
+            <p class="mt-1 text-ink/75 max-w-md">{s.summary}</p>
+            <p class="mono-label mt-2 opacity-60">{s.durationMins} min</p>
+          </div>
+          <span class="font-mono text-2xl md:text-3xl">{s.price}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a href="/services" class="btn btn-ink">Full price list</a>
+      <span class="mono-label opacity-60">Kids cuts Tue–Thu before 4pm · Buzz cuts from £15</span>
+    </div>
+  </Section>
+
+  <!-- THE CHAIRS -->
+  <Section number="02" title="The chairs" kicker="Pick your barber when you book — or let us choose">
+    <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      {site.team!.map((m, i) => <BarberCard member={m} index={i} />)}
+    </div>
+  </Section>
+
+  <!-- FULL-BLEED SHOP IMAGE + STATEMENT -->
+  <section class="relative bg-ink text-chalk">
+    <div class="grid lg:grid-cols-2">
+      <div class="relative min-h-[60vw] lg:min-h-[640px]">
+        <Image src={img('shop')} alt="Four empty barber chairs in a row at Kingpin, morning light" widths={[640, 1024, 1536]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+      </div>
+      <div class="flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-14 border-t-[3px] lg:border-t-0 lg:border-l-[3px] border-chalk">
+        <p class="mono-label text-volt mb-5">Why Kingpin</p>
+        <h2 class="display-lg">Sit down. Say what you want. Leave looking right.</h2>
+        <ul class="mt-8 grid gap-4 text-lg text-chalk/85 max-w-prose">
+          <li class="flex gap-4"><span class="text-volt font-mono">01</span> Online booking that actually holds your slot — no ringing round.</li>
+          <li class="flex gap-4"><span class="text-volt font-mono">02</span> Barbers who specialise. Fades, scissor work, shaves: book the one for the job.</li>
+          <li class="flex gap-4"><span class="text-volt font-mono">03</span> Same price whoever cuts you. No "senior stylist" surcharges.</li>
+        </ul>
+        <div class="mt-10"><a href="/about" class="btn btn-ghost">About the shop</a></div>
+      </div>
+    </div>
+  </section>
+
+  <Reviews tone="volt" />
+
+  <!-- HOURS + MAP STRIP -->
+  <Section number="03" title="Find us" kicker={`${site.address.line1}, ${site.address.town} ${site.address.postcode}`} tone="chalk">
+    <div class="grid lg:grid-cols-[1fr_1.2fr] gap-10 items-start">
+      <HoursBoard />
+      <div class="relative min-h-[320px] border-[3px] border-ink">
+        <Image src={img('exterior')} alt="Kingpin shopfront on Call Lane at dusk" widths={[640, 1024, 1536]} sizes="(min-width:1024px) 55vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${site.address.line1}, ${site.address.town} ${site.address.postcode}`)}`}
+          rel="noopener" target="_blank"
+          class="absolute bottom-4 left-4 btn btn-volt !text-base !py-2.5 !px-4"
+        >Open in Maps ↗</a>
+      </div>
+    </div>
+  </Section>
+
+  <!-- BIG CTA -->
+  <section class="bg-ink text-chalk border-t-[3px] border-chalk">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
+      <h2 class="display-xl text-volt">Book a chair</h2>
+      <p class="mt-6 text-xl text-chalk/80 max-w-xl mx-auto">Pick your barber, pick your cut, pick a time. Takes less than a minute, no account needed.</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/book" class="btn btn-volt !text-2xl !px-10 !py-5">Book now →</a>
+        <a href={`tel:${site.phoneHref}`} class="btn btn-ghost !text-2xl !px-10 !py-5">{site.phone}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .duotone-hero { filter: grayscale(0.85) contrast(1.1); }
+</style>

@@ -1,0 +1,23 @@
+{
+  "name": "@site/core",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Shared, design-neutral foundations: config types, SEO/schema helpers, booking engine, form handling, a11y utilities, smoke tests.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./booking": "./src/booking/index.ts",
+    "./forms": "./src/forms/index.ts",
+    "./seo": "./src/seo/index.ts",
+    "./components/*": "./src/components/*",
+    "./styles/*": "./src/styles/*",
+    "./components/reveal": "./src/components/reveal.ts"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0",
+    "preact": "^10.0.0"
+  },
+  "dependencies": {
+    "sharp": "^0.34.0"
+  }
+}

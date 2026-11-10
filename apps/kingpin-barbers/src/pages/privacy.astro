@@ -1,0 +1,30 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} collects and uses personal information when you book, contact us or use this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who we are</h2>
+  <p>{site.legal.legalName} ("we"), trading as {site.name}, {site.address.line1}, {site.address.town} {site.address.postcode}. We are the data controller for the personal information described here. Contact: <a href={`mailto:${site.email}`}>{site.email}</a>, {site.phone}.</p>
+
+  <h2>What we collect and why</h2>
+  <ul>
+    <li><strong>Bookings:</strong> your name, mobile number, email, chosen service, barber and appointment time, and any notes you add. We use these to provide the appointment and send confirmations and reminders. Lawful basis: performance of a contract.</li>
+    <li><strong>Contact form and email:</strong> your name, contact details and message, used to reply to you. Lawful basis: legitimate interests (responding to enquiries).</li>
+    <li><strong>Website usage:</strong> this site does not set analytics or advertising cookies by default. If analytics are added, this notice must be updated and consent obtained where required.</li>
+  </ul>
+
+  <h2>Who we share it with</h2>
+  <p>Booking and form data is processed by the third-party providers configured for this website (for example a booking platform and a form or email service). Each acts as our processor under a contract. We do not sell personal information.</p>
+
+  <h2>How long we keep it</h2>
+  <p>Booking records are kept for up to 24 months after your last appointment so we can honour repeat bookings and handle any issues. Enquiries are deleted within 12 months of resolution.</p>
+
+  <h2>Your rights</h2>
+  <p>You can ask for a copy of your data, ask us to correct or delete it, object to or restrict processing, and withdraw consent where consent is the basis. Email <a href={`mailto:${site.email}`}>{site.email}</a>. You can also complain to the Information Commissioner's Office at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+
+  <h2>Cookies</h2>
+  <p>Only strictly necessary cookies or local storage are used (for example to remember a booking in progress). No consent banner is shown because no non-essential cookies are set. If a map embed or booking widget that sets its own cookies is enabled, a consent mechanism must be added.</p>
+
+  <h2>Changes</h2>
+  <p>We will update this notice when our processing changes. The review date at the top shows the current version.</p>
+</Legal>

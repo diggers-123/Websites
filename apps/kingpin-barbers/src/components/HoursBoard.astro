@@ -1,0 +1,23 @@
+---
+import { site } from '@/site.config';
+import { DAY_KEYS, DAY_LABELS, openStatus } from '@site/core';
+const status = openStatus(site);
+---
+<div class="border-[3px] border-ink bg-ink text-chalk p-6 sm:p-8">
+  <div class="flex items-center justify-between gap-4 mb-6">
+    <h3 class="display-md">Hours</h3>
+    <span class:list={['mono-label px-3 py-1.5 border-2', status.open ? 'border-volt text-volt' : 'border-smoke text-smoke']}>{status.label}</span>
+  </div>
+  <dl class="font-mono text-base sm:text-lg">
+    {DAY_KEYS.map((d) => {
+      const h = site.hours[d];
+      return (
+        <div class="flex justify-between gap-4 py-2 border-b border-chalk/15 last:border-0">
+          <dt>{DAY_LABELS[d]}</dt>
+          <dd class:list={[!h && 'text-smoke']}>{h ? `${h.open} – ${h.close}` : 'Closed'}</dd>
+        </div>
+      );
+    })}
+  </dl>
+  <p class="mt-6 text-chalk/70 text-sm">Last bookings 30 minutes before close. Bank holidays vary — the booking page always shows live availability.</p>
+</div>

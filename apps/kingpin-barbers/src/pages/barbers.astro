@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+import { DAY_KEYS, DAY_LABELS } from '@site/core';
+---
+<Base title="The barbers" description="Meet the four barbers at Kingpin Barber Co. Leeds — fade specialists, scissor work, beard shaping and hot towel shaves. Choose your barber when you book.">
+  <section class="bg-ink text-chalk">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20">
+      <p class="mono-label text-volt mb-3">Four chairs</p>
+      <h1 class="display-xl">The barbers</h1>
+      <p class="mt-6 max-w-2xl text-xl text-chalk/80">Everyone here can cut anything. But everyone has a thing they're best at — so pick accordingly, or book "any barber" and get the first free chair.</p>
+    </div>
+
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 grid gap-16">
+      {site.team!.map((m, i) => {
+        const offDays = DAY_KEYS.filter((d) => site.hours[d] && m.hours && d in m.hours && m.hours[d] === null);
+        const working = DAY_KEYS.filter((d) => site.hours[d] && !(m.hours && d in m.hours && m.hours[d] === null));
+        return (
+          <article class:list={['grid md:grid-cols-[2fr_3fr] gap-8 lg:gap-14 items-end', i % 2 === 1 && 'md:[&>*:first-child]:order-2']} data-reveal>
+            <div class="relative aspect-[4/5] border-[3px] border-chalk overflow-hidden">
+              {m.image && <Image src={img(m.image.src)} alt={m.image.alt} widths={[480, 768, 1024]} sizes="(min-width:768px) 40vw, 100vw" class="absolute inset-0 h-full w-full object-cover grayscale contrast-110 hover:grayscale-0 transition-[filter] duration-500" />}
+              <span class="absolute top-0 left-0 bg-volt text-ink font-mono text-xs tracking-widest px-3 py-1.5 uppercase">Chair {i + 1}</span>
+            </div>
+            <div class="pb-2">
+              <h2 class="display-lg">{m.name}</h2>
+              <p class="mono-label text-volt mt-2">{m.role}</p>
+              <p class="mt-6 text-lg text-chalk/85 max-w-prose">{m.bio}</p>
+              <dl class="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-mono text-sm">
+                <dt class="text-smoke">In</dt><dd>{working.map((d) => DAY_LABELS[d].slice(0, 3)).join(' · ')}</dd>
+                {offDays.length > 0 && <><dt class="text-smoke">Off</dt><dd>{offDays.map((d) => DAY_LABELS[d]).join(', ')}</dd></>}
+              </dl>
+              <a href={`/book?barber=${encodeURIComponent(m.name)}`} class="btn btn-volt mt-8">Book {m.name.split(' ')[0]} →</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+  <section class="bg-volt text-ink border-t-[3px] border-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-14 flex flex-wrap items-center justify-between gap-6">
+      <h2 class="display-lg">Want to work here?</h2>
+      <p class="max-w-md text-lg">We're always interested in good barbers. Email <a class="underline" href={`mailto:${site.email}`}>{site.email}</a> with a few photos of your work.</p>
+    </div>
+  </section>
+</Base>

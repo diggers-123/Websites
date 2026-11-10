@@ -1,0 +1,253 @@
+/*
+  KINGPIN BARBER CO. — design tokens.
+  Change colours and fonts here; components use the tokens, never raw values.
+
+  Palette (60/30/10): jet black (dominant) · chalk (secondary) · chartreuse (accent)
+  Type: Anton (display) · Space Grotesk (UI/body) · JetBrains Mono (prices/times)
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource/anton/400.css';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource/jetbrains-mono/500.css';
+
+@theme {
+  --color-ink: #0e0e0e;
+  --color-ink-2: #1a1a1a;
+  --color-ink-3: #262626;
+  --color-chalk: #f2efe6;
+  --color-chalk-2: #e4e0d3;
+  --color-volt: #d6ff3f;
+  --color-volt-deep: #b7e01e;
+  --color-smoke: #8a877f;
+  --color-focus: #d6ff3f;
+  --color-error: #ff6b57;
+
+  --font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --font-sans: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --radius: 0px;
+
+  --ease-wipe: cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    margin: 0;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-volt);
+    color: var(--color-ink);
+  }
+  h1, h2, h3, .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 0.92;
+  }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.88;
+  font-size: clamp(4.5rem, 17vw, 17rem);
+  letter-spacing: -0.01em;
+}
+@utility display-lg {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.9;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+}
+@utility display-md {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.95;
+  font-size: clamp(2rem, 4.5vw, 4rem);
+}
+@utility display-sm {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 1;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+}
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Hazard stripes: the brand's divider */
+@utility hazard {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-volt) 0 14px,
+    var(--color-ink) 14px 28px
+  );
+}
+@utility hazard-thin {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-volt) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+/* Button: hard-edged, wipe fill on hover */
+@utility btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.9rem 1.6rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border: 3px solid currentColor;
+  isolation: isolate;
+  overflow: hidden;
+  transition: color 0.35s var(--ease-wipe);
+  cursor: pointer;
+}
+@utility btn-volt {
+  background: var(--color-volt);
+  color: var(--color-ink);
+  border-color: var(--color-volt);
+}
+.btn-volt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-chalk);
+  transform: translateX(-101%);
+  transition: transform 0.35s var(--ease-wipe);
+  z-index: -1;
+}
+.btn-volt:hover::before, .btn-volt:focus-visible::before { transform: translateX(0); }
+
+@utility btn-ghost {
+  background: transparent;
+  color: var(--color-chalk);
+  border-color: var(--color-chalk);
+}
+.btn-ghost::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-volt);
+  transform: translateY(101%);
+  transition: transform 0.35s var(--ease-wipe);
+  z-index: -1;
+}
+.btn-ghost:hover, .btn-ghost:focus-visible { color: var(--color-ink); border-color: var(--color-volt); }
+.btn-ghost:hover::before, .btn-ghost:focus-visible::before { transform: translateY(0); }
+
+@utility btn-ink {
+  background: var(--color-ink);
+  color: var(--color-chalk);
+  border-color: var(--color-ink);
+}
+.btn-ink::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-volt);
+  transform: translateX(-101%);
+  transition: transform 0.35s var(--ease-wipe);
+  z-index: -1;
+}
+.btn-ink:hover, .btn-ink:focus-visible { color: var(--color-ink); }
+.btn-ink:hover::before, .btn-ink:focus-visible::before { transform: translateX(0); }
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-speed, 40s) linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* Clip-path text reveal */
+@keyframes wipe-up {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(0.2em); }
+  to { clip-path: inset(0 0 0 0); transform: none; }
+}
+.wipe-up {
+  animation: wipe-up 0.9s var(--ease-wipe) both;
+}
+.wipe-up:nth-child(2) { animation-delay: 0.08s; }
+.wipe-up:nth-child(3) { animation-delay: 0.16s; }
+
+/* Duotone photo treatment */
+.duotone {
+  filter: grayscale(1) contrast(1.15);
+  transition: filter 0.4s ease;
+}
+.duotone-wrap { position: relative; background: var(--color-volt); }
+.duotone-wrap > img { mix-blend-mode: multiply; }
+.duotone-wrap:hover > img { filter: grayscale(1) contrast(1.05); }
+
+/* Grain overlay */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Trading-card flip */
+.flip { perspective: 1200px; }
+.flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease-wipe);
+}
+.flip:hover .flip-inner, .flip:focus-within .flip-inner, .flip.is-flipped .flip-inner { transform: rotateY(180deg); }
+.flip-face { position: absolute; inset: 0; backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner { transition: none; }
+}
+
+/* Nav open state */
+html.nav-open { overflow: hidden; }
+
+/* Form fields */
+.field {
+  width: 100%;
+  background: var(--color-ink-2);
+  border: 2px solid var(--color-ink-3);
+  color: var(--color-chalk);
+  padding: 0.85rem 1rem;
+  font: inherit;
+  min-height: 48px;
+}
+.field:focus { border-color: var(--color-volt); outline: none; }
+.field::placeholder { color: var(--color-smoke); }
+.label { display: block; font-weight: 600; margin-bottom: 0.4rem; }

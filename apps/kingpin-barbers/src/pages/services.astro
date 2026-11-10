@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Marquee from '@/components/Marquee.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+import { faqSchema } from '@site/core';
+
+const categories = [...new Set(site.services.map((s) => s.category ?? 'Other'))];
+const bySlug = (slug: string) => site.services.find((s) => s.slug === slug)!;
+const features = [
+  { slug: 'skin-fade', image: 'fade', alt: 'A finished skin fade checked in the mirror' },
+  { slug: 'hot-towel-shave', image: 'hot-towel', alt: 'Hot towel going on before a shave' },
+  { slug: 'beard-trim', image: 'beard', alt: 'Beard being shaped with trimmers' },
+];
+const serviceFaqs = site.faqs.filter((f) => /walk-in|kids|products|specific barber/i.test(f.q));
+---
+<Base title="Cuts & prices" description="Full price list for Kingpin Barber Co. in Leeds: haircuts from £28, skin fades £32, beard trims £16, hot towel shaves £30. Book online." schema={[faqSchema(serviceFaqs)]}>
+  <section class="bg-chalk text-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-10">
+      <p class="mono-label opacity-60 mb-3">Cuts &amp; prices</p>
+      <h1 class="display-xl">The board</h1>
+      <p class="mt-6 max-w-2xl text-xl text-ink/80">Same price whoever cuts you. Every cut includes a consultation, wash and style. Prices as of {new Date(site.legal.policiesReviewed).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}.</p>
+    </div>
+
+    {categories.map((cat, ci) => (
+      <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pb-12">
+        <h2 class="display-md border-b-[3px] border-ink pb-3 mb-2 flex items-baseline gap-4"><span class="font-mono text-sm opacity-60">0{ci + 1}</span>{cat}</h2>
+        <ul>
+          {site.services.filter((s) => (s.category ?? 'Other') === cat).map((s) => (
+            <li class="grid sm:grid-cols-[1fr_auto_auto] gap-x-8 gap-y-2 items-center py-5 border-b-2 border-ink/20" id={s.slug}>
+              <div>
+                <h3 class="display-sm">{s.name}</h3>
+                <p class="text-ink/75 mt-1 max-w-xl">{s.summary}</p>
+                {s.includes && <p class="mono-label opacity-60 mt-2">{s.includes.join(' · ')}</p>}
+              </div>
+              <div class="font-mono text-sm sm:text-right"><span class="block text-2xl sm:text-3xl">{s.price}</span><span class="opacity-60">{s.durationMins} min</span></div>
+              <a href={`/book?service=${s.slug}`} class="btn btn-ink !text-base !py-2.5 !px-5 justify-self-start sm:justify-self-end">Book</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <Marquee items={['Skin fades', 'Scissor cuts', 'Hot towel shaves', 'Beard shaping', 'Kids cuts Tue–Thu', 'Walk-ins when we can']} class="bg-ink text-volt" />
+
+  <!-- Signature services -->
+  <section class="bg-ink text-chalk">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <h2 class="display-lg mb-12">The signature three</h2>
+      <div class="grid gap-14">
+        {features.map((f, i) => {
+          const s = bySlug(f.slug);
+          return (
+            <article class:list={['grid lg:grid-cols-2 gap-8 lg:gap-14 items-center', i % 2 === 1 && 'lg:[&>*:first-child]:order-2']} data-reveal>
+              <div class="relative aspect-[4/3] border-[3px] border-chalk">
+                <Image src={img(f.image)} alt={f.alt} widths={[640, 960, 1280]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+                <span class="absolute -top-[3px] -left-[3px] bg-volt text-ink font-mono text-sm px-3 py-2 border-[3px] border-chalk">{s.price} · {s.durationMins} MIN</span>
+              </div>
+              <div>
+                <h3 class="display-lg">{s.name}</h3>
+                {s.description?.map((para) => <p class="mt-5 text-lg text-chalk/80 max-w-prose">{para}</p>) ?? <p class="mt-5 text-lg text-chalk/80 max-w-prose">{s.summary}</p>}
+                <ul class="mt-6 flex flex-wrap gap-2">
+                  {s.includes?.map((inc) => <li class="border-2 border-chalk/40 px-3 py-1 font-mono text-xs tracking-widest uppercase">{inc}</li>)}
+                </ul>
+                <a href={`/book?service=${s.slug}`} class="btn btn-volt mt-8">Book a {s.name.toLowerCase()} →</a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-chalk text-ink border-t-[3px] border-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <h2 class="display-lg">Good to know</h2>
+      <dl class="divide-y-2 divide-ink/20">
+        {serviceFaqs.map((f) => (
+          <div class="py-5">
+            <dt class="display-sm">{f.q}</dt>
+            <dd class="mt-2 text-ink/80 max-w-prose">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,13 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+<Base title="Page not found" description="That page isn't here." noindex>
+  <section class="bg-ink text-chalk min-h-[70vh] flex items-center">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-20">
+      <p class="mono-label text-volt mb-4">404</p>
+      <h1 class="display-xl">Wrong<br />chair.</h1>
+      <p class="mt-6 text-xl text-chalk/80 max-w-md">That page doesn't exist. Head back to the shop or book a cut.</p>
+      <div class="mt-8 flex gap-3 flex-wrap"><a href="/" class="btn btn-volt">Home</a><a href="/book" class="btn btn-ghost">Book</a></div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Reviews from '@/components/Reviews.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const years = new Date().getFullYear() - (site.founded ?? 2016);
+---
+<Base title="About" description="Kingpin Barber Co. opened on Call Lane in 2016: four chairs, no attitude, proper barbering. Meet the shop and the people behind it.">
+  <section class="bg-chalk text-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-16 grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-20 items-end">
+      <div>
+        <p class="mono-label opacity-60 mb-3">About the shop</p>
+        <h1 class="display-lg !text-[clamp(3.5rem,11vw,10rem)]">Est. {site.founded}.<br />Still here.</h1>
+      </div>
+      <p class="text-xl text-ink/80 max-w-md">{years} years, four chairs, roughly sixty thousand haircuts. Here's the short version.</p>
+    </div>
+  </section>
+
+  <section class="bg-ink text-chalk grain relative">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16">
+      <div class="relative aspect-[3/4] lg:aspect-auto border-[3px] border-chalk min-h-[400px]">
+        <Image src={img('exterior')} alt="The Kingpin shopfront at dusk" widths={[640, 960, 1280]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+      </div>
+      <div class="flex flex-col gap-6 text-lg text-chalk/85 max-w-prose">
+        <p class="text-2xl text-chalk leading-snug">Danny opened Kingpin in {site.founded} with two chairs, a borrowed till and a fairly simple idea: a barbershop that books properly, cuts properly and doesn't make you feel like you've walked into a members' club.</p>
+        <p>The name is a bowling joke that stuck. The shop is a converted print works on Call Lane — high ceilings, big windows, good light for fades. We went to four chairs in 2019 and have been fully booked most Saturdays since.</p>
+        <p>We don't do tiers. There's no "junior" chair and no "director" surcharge. Every barber here is good enough to be the only barber here, which is the bar for getting hired.</p>
+        <p>What we do do: online booking that actually holds your slot, honest advice about what your hair will and won't do, decent coffee, and a playlist that's argued over daily.</p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="/barbers" class="btn btn-volt">Meet the barbers</a>
+          <a href="/gallery" class="btn btn-ghost">See the work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-volt text-ink border-y-[3px] border-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-14 grid sm:grid-cols-3 gap-8">
+      {site.credentials?.map((c) => (
+        <div class="border-l-[3px] border-ink pl-5">
+          <p class="display-md">{c.label}</p>
+          {c.detail && <p class="mono-label mt-1 opacity-70">{c.detail}{c.fictional ? ' · demo' : ''}</p>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-chalk text-ink">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-3 gap-10">
+      <h2 class="display-lg lg:col-span-1">House rules</h2>
+      <ol class="lg:col-span-2 grid sm:grid-cols-2 gap-x-10 gap-y-8 text-lg">
+        {[
+          ['Book it, keep it', 'Four hours notice to cancel. Life happens — just tell us.'],
+          ['Say what you want', 'Bring a photo. We will tell you honestly if your hair will do it.'],
+          ['Kids welcome', 'Tue–Thu before 4pm when it\'s calm. Patient barbers, quick cuts.'],
+          ['No upselling', 'If you don\'t need the product, we\'ll say so.'],
+        ].map(([t, d], i) => (
+          <li class="flex gap-5">
+            <span class="font-mono text-volt-deep text-xl">0{i + 1}</span>
+            <div><h3 class="display-sm">{t}</h3><p class="mt-2 text-ink/75">{d}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Reviews tone="ink" />
+</Base>

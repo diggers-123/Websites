@@ -1,0 +1,15 @@
+---
+/** Kingpin wordmark + crown-pin mark. Replace this component (or the SVG) to change the logo. */
+interface Props { class?: string; markOnly?: boolean }
+const { class: cls = '', markOnly = false } = Astro.props;
+---
+<span class={`inline-flex items-center gap-2 ${cls}`}>
+  <svg class="h-[1.6em] w-auto shrink-0" viewBox="0 0 40 56" aria-hidden="true" fill="none">
+    <!-- crown -->
+    <path d="M6 14 L12 6 L20 13 L28 6 L34 14 L32 20 L8 20 Z" fill="currentColor"/>
+    <!-- pin -->
+    <path d="M14 22 H26 C26 28 22 30 22 36 C22 42 30 44 30 50 L10 50 C10 44 18 42 18 36 C18 30 14 28 14 22 Z" fill="currentColor"/>
+    <rect x="12" y="50" width="16" height="4" fill="currentColor"/>
+  </svg>
+  {!markOnly && <span class="font-display uppercase tracking-tight text-[1.35em] leading-none">Kingpin</span>}
+</span>

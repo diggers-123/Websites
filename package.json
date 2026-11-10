@@ -1,0 +1,15 @@
+{
+  "name": "uk-small-business-websites",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Portfolio of ten individually designed UK small-business websites (Astro + Tailwind v4 monorepo)",
+  "scripts": {
+    "dev": "pnpm --filter \"./apps/*\" --parallel dev",
+    "build": "pnpm -r --filter \"./apps/*\" build",
+    "check": "pnpm -r --filter \"./apps/*\" check",
+    "test": "pnpm -r --filter \"./apps/*\" test",
+    "portfolio": "pnpm --filter portfolio dev"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "engines": { "node": ">=22" }
+}

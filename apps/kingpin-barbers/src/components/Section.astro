@@ -1,0 +1,27 @@
+---
+/** Page section with the brand's poster-style numbered heading. */
+interface Props {
+  number?: string;
+  kicker?: string;
+  title: string;
+  class?: string;
+  tone?: 'ink' | 'chalk' | 'volt';
+  id?: string;
+}
+const { number, kicker, title, class: cls = '', tone = 'ink', id } = Astro.props;
+const tones = {
+  ink: 'bg-ink text-chalk',
+  chalk: 'bg-chalk text-ink',
+  volt: 'bg-volt text-ink',
+};
+---
+<section {id} class={`${tones[tone]} ${cls}`}>
+  <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <header class="flex flex-wrap items-end gap-x-6 gap-y-2 mb-10 lg:mb-14" data-reveal>
+      {number && <span class="font-mono text-sm tracking-[0.2em] opacity-70 pb-2">{number}</span>}
+      <h2 class="display-lg">{title}</h2>
+      {kicker && <p class="mono-label opacity-70 pb-2 basis-full lg:basis-auto">{kicker}</p>}
+    </header>
+    <slot />
+  </div>
+</section>

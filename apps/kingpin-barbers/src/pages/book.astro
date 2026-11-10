@@ -1,0 +1,61 @@
+---
+import Base from '@/layouts/Base.astro';
+import BookingWizard from '@/components/booking/BookingWizard';
+import { site } from '@/site.config';
+const b = site.booking;
+---
+<Base title="Book a chair" description="Book your barber online: pick your barber, your cut and a time. Open Tuesday to Saturday on Call Lane, Leeds." hideBookBar>
+  <section class="bg-ink text-chalk">
+    <div class="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+      <p class="mono-label text-volt mb-3">Online booking</p>
+      <h1 class="display-lg mb-10">Book a chair</h1>
+
+      {b.provider === 'calcom' && (
+        <div class="border-[3px] border-chalk bg-chalk text-ink min-h-[600px]">
+          <div id="cal-inline" style="width:100%;height:100%;min-height:600px;overflow:auto"></div>
+          <script is:inline define:vars={{ link: b.calcomLink }}>
+            (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+            Cal("init", { origin: "https://cal.com" });
+            Cal("inline", { elementOrSelector: "#cal-inline", calLink: link, layout: "month_view" });
+            Cal("ui", { theme: "light", hideEventTypeDetails: false });
+          </script>
+        </div>
+      )}
+
+      {b.provider === 'calendly' && (
+        <div class="border-[3px] border-chalk bg-chalk">
+          <div class="calendly-inline-widget" data-url={b.calendlyUrl} style="min-width:320px;height:700px"></div>
+          <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        </div>
+      )}
+
+      {(b.provider === 'demo' || b.provider === 'custom') && (
+        <BookingWizard
+          client:load
+          services={site.services}
+          team={site.team ?? []}
+          hours={site.hours}
+          booking={b}
+          businessName={site.name}
+          phone={site.phone}
+          policy={b.policy}
+        />
+      )}
+
+      <div class="mt-16 grid md:grid-cols-3 gap-6 border-t-[3px] border-chalk pt-10">
+        <div>
+          <h2 class="display-sm mb-2">Rather ring?</h2>
+          <p class="text-chalk/80">Call <a class="underline text-volt" href={`tel:${site.phoneHref}`}>{site.phone}</a> during opening hours and we'll find you a slot.</p>
+        </div>
+        <div>
+          <h2 class="display-sm mb-2">Cancellations</h2>
+          <p class="text-chalk/80">{b.policy}</p>
+        </div>
+        <div>
+          <h2 class="display-sm mb-2">Running late?</h2>
+          <p class="text-chalk/80">Ten minutes is fine. Beyond that we may have to shorten the service or rebook — ring ahead and we'll do what we can.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
