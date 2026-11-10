@@ -1,0 +1,19 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal information when you book, contact us or use this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who I am</h2>
+  <p>{site.legal.legalName}, {site.address.line1}, {site.address.town} {site.address.postcode}. Contact <a href={`mailto:${site.email}`}>{site.email}</a> or {site.phone}.</p>
+  <h2>What I collect and why</h2>
+  <ul>
+    <li><strong>Bookings:</strong> your name and contact details, your dog's name, breed, size, coat, health notes you give me (for example sore spots or nervousness) and appointment history. Used to provide the groom safely and send confirmations and reminders. Lawful basis: contract; health notes about your dog are not personal data about you but are treated with the same care.</li>
+    <li><strong>Contact form:</strong> name, contact details and message, to reply. Lawful basis: legitimate interests.</li>
+    <li><strong>Photographs:</strong> of dogs, with your agreement at booking, for the gallery and social media. You can withdraw agreement at any time.</li>
+    <li><strong>Website:</strong> no analytics or advertising cookies by default.</li>
+  </ul>
+  <h2>Sharing and retention</h2>
+  <p>Booking and form data is processed by the providers configured for this website as processors. Records are kept for 24 months after your last appointment. Nothing is sold.</p>
+  <h2>Your rights</h2>
+  <p>Access, correction, deletion, restriction, objection: email <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+</Legal>

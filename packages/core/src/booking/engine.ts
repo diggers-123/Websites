@@ -83,6 +83,9 @@ export interface CalendarOptions {
   closedDates?: string[];
   /** Week starts Monday by default (UK). */
   weekStartsMonday?: boolean;
+  /** Minimum notice in hours; today becomes unselectable once now + notice passes closing time. */
+  minNoticeHours?: number;
+  now?: Date;
 }
 
 /** Build a 6-row month grid for a given month. */
@@ -105,6 +108,12 @@ export function buildMonth(year: number, month: number, opts: CalendarOptions): 
     const isOpen = !!opts.hours[dayKey];
     const isClosedDate = closed.has(iso);
     const beyond = date > horizon;
+    let noRoomToday = false;
+    if (isToday && isOpen && opts.minNoticeHours) {
+      const now = opts.now ?? new Date();
+      const earliest = now.getHours() * 60 + now.getMinutes() + opts.minNoticeHours * 60;
+      noRoomToday = earliest >= hhmmToMins(opts.hours[dayKey]!.close);
+    }
     cells.push({
       date,
       iso,
@@ -114,7 +123,7 @@ export function buildMonth(year: number, month: number, opts: CalendarOptions): 
       isToday,
       isOpen,
       isClosedDate,
-      selectable: inMonth && !isPast && !beyond && isOpen && !isClosedDate,
+      selectable: inMonth && !isPast && !beyond && isOpen && !isClosedDate && !noRoomToday,
     });
   }
   return cells;

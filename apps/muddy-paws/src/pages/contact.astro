@@ -1,0 +1,42 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { hoursLines, openStatus } from '@site/core';
+const lines = hoursLines(site);
+const status = openStatus(site);
+const mapsQuery = encodeURIComponent(`${site.name}, ${site.address.line1}, ${site.address.town} ${site.address.postcode}`);
+---
+<Base title="Contact" description={`Muddy Paws Dog Grooming, ${site.address.line1}, Harrogate ${site.address.postcode}. Call ${site.phone}, email, or send a message. Open Tuesday to Saturday.`}>
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-24 grid lg:grid-cols-2 gap-12">
+    <div>
+      <span class="sticker bg-cream">{status.label}</span>
+      <h1 class="display-xl text-teal mt-4">Say hello</h1>
+      <p class="mt-4 text-lg text-cocoa/85 max-w-md">Bookings are quickest <a class="underline" href="/book">online</a>. For everything else, ring, email or pop in.</p>
+      <dl class="mt-8 grid gap-5">
+        <div><dt class="eyebrow opacity-70">Phone</dt><dd class="font-display text-2xl"><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div>
+        <div><dt class="eyebrow opacity-70">Email</dt><dd class="font-display text-xl break-all"><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt class="eyebrow opacity-70">Salon</dt><dd class="not-italic">{site.address.line1}, {site.address.town} {site.address.postcode}<br /><a class="underline text-sm" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">Directions ↗</a> · free 2h parking outside</dd></div>
+        <div><dt class="eyebrow opacity-70">Hours</dt><dd><dl class="text-sm max-w-xs">{lines.map((l) => <div class="flex justify-between border-b border-cocoa/15 py-1"><dt>{l.days}</dt><dd>{l.time}</dd></div>)}</dl></dd></div>
+      </dl>
+    </div>
+    <form class="bg-cream border-[3px] border-cocoa rounded-3xl p-6 sm:p-8 grid gap-5 shadow-[6px_6px_0_#4a2b1e]" data-contact-form name="contact" method="post" novalidate>
+      <h2 class="display-md">Send a message</h2>
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div><label class="label" for="c-name">Your name</label><input class="field" id="c-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div>
+        <div><label class="label" for="c-dog">Dog's name</label><input class="field" id="c-dog" name="dog" /></div>
+        <div><label class="label" for="c-email">Email</label><input class="field" id="c-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+        <div><label class="label" for="c-phone">Phone <span class="font-normal opacity-60">(optional)</span></label><input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div>
+      </div>
+      <div><label class="label" for="c-msg">Message</label><textarea class="field" id="c-msg" name="message" rows="5" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-coral">Send</button><p data-form-status role="status" aria-live="polite" class="text-sm"></p></div>
+      <p class="text-xs opacity-60">Only used to reply. <a class="underline" href="/privacy">Privacy</a>.</p>
+    </form>
+  </section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'contact', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], message: [{ type: 'required', message: 'What can we help with?' }, { type: 'minLength', value: 10, message: 'A little more detail helps' }] } });
+  </script>
+</Base>

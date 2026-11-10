@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Dog from '@/components/Dog.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const puppy = site.services.find((s) => s.slug === 'puppy-intro')!;
+---
+<Base title="Puppy's first groom" description="A gentle first grooming visit for puppies under six months in Harrogate: bath, dry, nails and getting used to the table — £22, 45 minutes, lots of treats.">
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-16 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+    <div>
+      <span class="sticker bg-coral">Under 6 months</span>
+      <h1 class="display-xl text-teal mt-4">Puppy's first groom</h1>
+      <p class="mt-5 text-lg text-cocoa/85 max-w-md">The first visit decides whether a dog spends the rest of its life loving or dreading the groomer. So we make it short, gentle and silly.</p>
+      <div class="mt-6 bubble p-5 [&::after]:hidden"><p class="display-sm">{puppy.name} · {puppy.price} · {puppy.durationMins} min</p><p class="mt-2 text-cocoa/85">{puppy.includes?.join(' · ')}</p></div>
+      <a href="/book?service=puppy-intro" class="btn btn-coral mt-7">Book a puppy intro</a>
+    </div>
+    <div class="relative w-full aspect-square max-w-[480px] blob-c overflow-hidden border-[4px] border-cocoa rotate-2 justify-self-center"><Image src={img('puppy')} alt="A sleepy labrador puppy having its nails trimmed" widths={[480, 800, 1000]} sizes="(min-width:1024px) 40vw, 90vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+  </section>
+  <section class="bg-cream wave-top py-20" style="--wave-color: var(--color-mustard)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <h2 class="display-lg text-teal">How the first visit goes</h2>
+      <ol class="mt-8 grid md:grid-cols-3 gap-5">
+        {[['Explore', 'Ten minutes sniffing the salon, the table, the dryer (off), with treats for everything.'], ['Bath & dry', 'A warm bath, a gentle towel-and-dryer on low. We stop before they\'ve had enough, not after.'], ['Tiny tidy', 'Nails, a trim round the eyes and feet, clippers turned on nearby so the noise is boring. Home before the novelty wears off.']].map(([t, d], i) => (
+          <li class="bg-mustard border-[3px] border-cocoa rounded-3xl p-5 shadow-[5px_5px_0_#4a2b1e]" data-reveal data-reveal-delay={i * 90}><span class="sticker bg-cream !px-3 mb-3">{i + 1}</span><h3 class="display-sm">{t}</h3><p class="mt-2 text-cocoa/85">{d}</p></li>
+        ))}
+      </ol>
+      <div class="mt-12 grid md:grid-cols-[auto_1fr] gap-8 items-center bubble p-6 [&::after]:hidden">
+        <div class="w-32" aria-hidden="true"><Dog size="s" /></div>
+        <div><h2 class="display-sm">Three things that help</h2><ul class="mt-3 grid gap-2 text-cocoa/85"><li>— Touch their paws, ears and tail at home every day, with treats.</li><li>— Book the second visit for 4–6 weeks later, before the coat gets difficult.</li><li>— Come after a walk, not before. Tired puppies are brave puppies.</li></ul></div>
+      </div>
+    </div>
+  </section>
+</Base>

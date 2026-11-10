@@ -1,0 +1,32 @@
+---
+import { site } from '@/site.config';
+import { openStatus } from '@site/core';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+const status = openStatus(site);
+---
+<header class="relative z-50 bg-mustard text-cocoa">
+  <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 h-[74px] lg:h-[88px] flex items-center justify-between gap-4">
+    <a href="/" class="shrink-0" aria-label={`${site.name} — home`}><Logo class="text-[1rem] lg:text-[1.15rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-1 bg-cream border-[3px] border-cocoa rounded-full px-2 py-1.5">
+      {site.nav.map((n) => (
+        <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['font-display font-600 text-[0.95rem] px-3.5 py-1.5 rounded-full hover:bg-mustard transition-colors whitespace-nowrap', isActive(n.href) && 'bg-teal text-cream hover:bg-teal']}>{n.label}</a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-3">
+      <span class="hidden 2xl:inline eyebrow opacity-70">{status.label}</span>
+      <a href={site.primaryCta.href} class="btn btn-coral hidden sm:inline-flex !py-2.5 !px-5 !text-base">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-12 rounded-full bg-cream border-[3px] border-cocoa inline-flex flex-col items-center justify-center gap-1.5 shadow-[3px_3px_0_#4a2b1e]" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span class="block w-5 h-[3px] bg-cocoa rounded"></span><span class="block w-5 h-[3px] bg-cocoa rounded"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] bg-teal text-cream overflow-y-auto" hidden>
+    <nav aria-label="Mobile" class="px-6 py-8 flex flex-col gap-2">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3 border-b-[3px] border-cream/20" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href={site.primaryCta.href} class="btn btn-coral mt-6 self-start">{site.primaryCta.label}</a>
+      <p class="mt-6 text-cream/80">{site.address.line1}, {site.address.town} · <a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,10 @@
+---
+import Base from '@/layouts/Base.astro';
+import Dog from '@/components/Dog.astro';
+---
+<Base title="Page not found" description="That page isn't here." noindex>
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 py-20 min-h-[60vh] grid lg:grid-cols-[1fr_auto] gap-10 items-center">
+    <div><span class="sticker bg-cream">404</span><h1 class="display-xl text-teal mt-4">Buried it.</h1><p class="mt-4 text-lg text-cocoa/85 max-w-md">That page has gone the way of the garden bone. Try these instead.</p><div class="mt-7 flex gap-3 flex-wrap"><a href="/" class="btn btn-coral">Home</a><a href="/book" class="btn btn-cream">Book a groom</a></div></div>
+    <div class="w-64 group" aria-hidden="true"><Dog size="m" /></div>
+  </section>
+</Base>

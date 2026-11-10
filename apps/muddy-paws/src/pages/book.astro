@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import GroomBooking from '@/components/booking/GroomBooking';
+import { site, sizes, coats, addons, groomPrice, groomMins } from '@/site.config';
+import { dogSvgs } from '@/dogs';
+
+// Precompute price/time tables so the island carries no business logic.
+const priceTable: Record<string, Record<string, Record<string, number>>> = {};
+const minsTable: Record<string, Record<string, number>> = {};
+for (const s of site.services) {
+  priceTable[s.slug] = {};
+  minsTable[s.slug] = {};
+  for (const z of sizes) {
+    priceTable[s.slug][z.slug] = {};
+    minsTable[s.slug][z.slug] = groomMins(s.slug, z.slug);
+    for (const c of coats) priceTable[s.slug][z.slug][c.slug] = groomPrice(s.slug, z.slug, c.slug);
+  }
+}
+---
+<Base title="Book a groom" description="Book your dog's groom online: pick size and coat, choose a groom and add-ons, see the exact price, and pick a time. Tuesday to Saturday in Harrogate." hideBookBar>
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-24">
+    <span class="sticker bg-coral">Online booking</span>
+    <h1 class="display-xl mt-4">Book a groom</h1>
+    <p class="mt-4 max-w-xl text-lg text-cocoa/80">Tell us about your dog and we'll show the exact price before you pick a time.</p>
+    <div class="mt-10">
+      <GroomBooking client:load services={site.services} sizes={sizes} coats={coats} addons={addons} hours={site.hours} booking={site.booking} phone={site.phone} policy={site.booking.policy} priceTable={priceTable} minsTable={minsTable} dogSvgs={dogSvgs} />
+    </div>
+    <div class="mt-16 grid md:grid-cols-3 gap-5">
+      {[['Rather ring?', `Call ${site.phone} Tuesday to Saturday and we'll find you a slot.`], ['Cancellations', site.booking.policy ?? ''], ['Running late?', 'Ten minutes is fine. More than that and we may need to shorten the groom — ring ahead.']].map(([t, b]) => <div class="bubble p-5"><h2 class="display-sm">{t}</h2><p class="mt-2 text-cocoa/80">{b}</p></div>)}
+    </div>
+  </section>
+</Base>

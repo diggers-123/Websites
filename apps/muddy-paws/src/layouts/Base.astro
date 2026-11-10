@@ -1,0 +1,36 @@
+---
+import '@/styles/theme.css';
+import Head from '@site/core/components/Head.astro';
+import DemoBanner from '@site/core/components/DemoBanner.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site } from '@/site.config';
+interface Props { title?: string; description?: string; image?: string; schema?: unknown[]; noindex?: boolean; hideBookBar?: boolean }
+const { title, description, image, schema, noindex, hideBookBar = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head><Head {site} {title} {description} {image} {schema} {noindex} /></head>
+  <body class="min-h-dvh flex flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <DemoBanner {site} />
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1"><slot /></main>
+    <Footer />
+    {!hideBookBar && (<>
+      <div class="sm:hidden fixed bottom-0 inset-x-0 z-40 p-3 bg-cream border-t-[3px] border-cocoa grid grid-cols-[1fr_auto] gap-3">
+        <a href={site.primaryCta.href} class="btn btn-coral !py-3">{site.primaryCta.label}</a>
+        <a href={`tel:${site.phoneHref}`} class="btn btn-cream !px-4 !py-3" aria-label={`Call ${site.phone}`}>☎</a>
+      </div>
+      <div class="sm:hidden h-[84px]" aria-hidden="true"></div>
+    </>)}
+    <script>
+      import { initReveal, initMobileNav } from '@site/core/components/reveal';
+      initReveal();
+      initMobileNav({ button: '[data-nav-toggle]', panel: '[data-nav-panel]' });
+      // sticker pop-in uses the same observer class via data-reveal; mark [data-pop] as data-reveal too
+      document.querySelectorAll('[data-pop]').forEach((el) => el.setAttribute('data-reveal', ''));
+      initReveal();
+    </script>
+  </body>
+</html>

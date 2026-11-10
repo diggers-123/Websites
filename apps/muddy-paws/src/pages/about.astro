@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const beth = site.team![0];
+---
+<Base title="About Beth & the salon" description="Muddy Paws is a one-groomer salon on Cold Bath Road, Harrogate, run by Beth Clarkson since 2019. Gentle handling, honest prices, and a soft spot for nervous dogs.">
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-16 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+    <div class="relative w-full aspect-[4/5] max-w-[460px] blob-a overflow-hidden border-[4px] border-cocoa -rotate-2 justify-self-center lg:justify-self-start"><Image src={img(beth.image!.src)} alt={beth.image!.alt} widths={[480, 800, 1100]} sizes="(min-width:1024px) 38vw, 85vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    <div>
+      <span class="sticker bg-cream">Since {site.founded}</span>
+      <h1 class="display-xl text-teal mt-4">Hi, I'm Beth.</h1>
+      <div class="mt-5 grid gap-4 text-lg text-cocoa/85">
+        <p>I groomed in a big salon for five years and loved the dogs, hated the conveyor belt. So in 2019 I took a lease on a little shop on Cold Bath Road and set it up the way I'd want it if I were the dog: one groomer, one dog at a time, no cages, no shouting dryers, and as long as it takes.</p>
+        <p>I trained with a canine behaviourist because so many of the dogs I met were frightened of grooming, not of me. Now nervous dogs are most of what I do — split sessions, quiet slots, and a lot of chicken.</p>
+        <p>Honest prices, too. The booking page shows you the exact price before you pick a time, and I'll ring before doing anything that changes it.</p>
+      </div>
+      <ul class="mt-6 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="sticker !text-sm">{c.label}{c.fictional ? ' *' : ''}</li>)}</ul>
+      <p class="mt-2 text-xs text-cocoa/60">* fictional for this demonstration</p>
+    </div>
+  </section>
+  <section class="bg-teal text-cream wave-top py-20" style="--wave-color: var(--color-mustard)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+      <div class="relative aspect-[3/2] rounded-3xl overflow-hidden border-[4px] border-cocoa"><Image src={img('salon')} alt="The salon: two grooming tables, a walk-in bath, teal walls and a big window" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 55vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      <div>
+        <h2 class="display-lg">The salon</h2>
+        <ul class="mt-5 grid gap-3 text-cream/90">{['Walk-in bath with a ramp — no lifting big dogs', 'Two hydraulic tables, one dog at a time', 'Quiet, low-heat dryers; no cage drying ever', 'Free two-hour street parking outside', 'Loading bay for drop-offs'].map((t) => <li class="flex gap-3"><span class="text-mustard">●</span>{t}</li>)}</ul>
+        <a href="/contact" class="btn btn-coral mt-7">Find us</a>
+      </div>
+    </div>
+  </section>
+</Base>

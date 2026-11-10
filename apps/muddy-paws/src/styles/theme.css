@@ -1,0 +1,107 @@
+/*
+  MUDDY PAWS — design tokens.
+  Palette: mustard (dominant) · teal (secondary) · coral (accent) · cocoa (text) · cream (panels)
+  Type: Fredoka (rounded display) · Nunito (body)
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource-variable/fredoka';
+@import '@fontsource-variable/nunito';
+
+@theme {
+  --color-mustard: #f2b544;
+  --color-mustard-2: #e3a330;
+  --color-teal: #1e5f6b;
+  --color-teal-2: #174c56;
+  --color-teal-pale: #d7ebe9;
+  --color-coral: #ff6b57;
+  --color-coral-2: #e8503c;
+  --color-cocoa: #4a2b1e;
+  --color-cream: #fff5e1;
+  --color-cream-2: #ffeccc;
+  --color-focus: #1e5f6b;
+  --color-error: #c8321f;
+
+  --font-display: 'Fredoka Variable', 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+  --font-sans: 'Nunito Variable', 'Nunito', system-ui, sans-serif;
+
+  --radius-blob: 48% 52% 55% 45% / 50% 44% 56% 50%;
+}
+
+@layer base {
+  html { background: var(--color-mustard); color: var(--color-cocoa); font-family: var(--font-sans); font-size: 17px; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-coral); color: var(--color-cream); }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; line-height: 1; }
+  a { text-underline-offset: 0.15em; }
+  strong { font-weight: 800; }
+}
+
+@utility display-xl { font-family: var(--font-display); font-weight: 700; font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: 0.95; letter-spacing: -0.02em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.015em; }
+@utility display-md { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 2.6vw, 2.3rem); line-height: 1.05; }
+@utility display-sm { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; line-height: 1.1; }
+@utility eyebrow { font-family: var(--font-display); font-weight: 500; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Blob masks for photos — deliberate photo shapes, not decoration */
+@utility blob-a { border-radius: 48% 52% 55% 45% / 50% 44% 56% 50%; }
+@utility blob-b { border-radius: 58% 42% 45% 55% / 42% 56% 44% 58%; }
+@utility blob-c { border-radius: 40% 60% 60% 40% / 55% 45% 55% 45%; }
+
+/* Outlined sticker */
+@utility sticker {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  padding: 0.45em 0.9em; border-radius: 999px;
+  background: var(--color-cream); color: var(--color-cocoa);
+  border: 3px solid var(--color-cocoa);
+  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
+  box-shadow: 3px 3px 0 var(--color-cocoa);
+}
+
+/* Big pill buttons */
+@utility btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  padding: 0.95rem 1.7rem; border-radius: 999px;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.1rem;
+  text-decoration: none; cursor: pointer; border: 3px solid var(--color-cocoa);
+  box-shadow: 4px 4px 0 var(--color-cocoa);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s;
+}
+.btn:hover, .btn:focus-visible { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--color-cocoa); }
+.btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--color-cocoa); }
+@utility btn-coral { background: var(--color-coral); color: var(--color-cocoa); }
+@utility btn-teal { background: var(--color-teal); color: var(--color-cream); }
+@utility btn-cream { background: var(--color-cream); color: var(--color-cocoa); }
+
+/* Wavy divider: use on a section with --wave-color = colour of the section ABOVE */
+.wave-top { position: relative; }
+.wave-top::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 40px; pointer-events: none;
+  background: var(--wave-color, var(--color-mustard));
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 40' preserveAspectRatio='none'><path d='M0 0 L240 0 L240 10 C200 40 160 40 120 20 C80 0 40 0 0 28 Z' fill='black'/></svg>") repeat-x;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 40' preserveAspectRatio='none'><path d='M0 0 L240 0 L240 10 C200 40 160 40 120 20 C80 0 40 0 0 28 Z' fill='black'/></svg>") repeat-x;
+  -webkit-mask-size: 240px 40px; mask-size: 240px 40px;
+}
+
+/* Speech bubble */
+.bubble { position: relative; background: var(--color-cream); border: 3px solid var(--color-cocoa); border-radius: 24px; }
+.bubble::after { content: ''; position: absolute; left: 32px; bottom: -18px; width: 24px; height: 24px; background: var(--color-cream); border-right: 3px solid var(--color-cocoa); border-bottom: 3px solid var(--color-cocoa); transform: skewX(20deg) rotate(45deg); }
+
+/* Wag */
+@keyframes wag { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg); } }
+.wag { transform-origin: 10% 90%; }
+.group:hover .wag, .wag-always { animation: wag 0.5s ease-in-out infinite; }
+@keyframes pop { 0% { transform: scale(0.6) rotate(-8deg); opacity: 0; } 70% { transform: scale(1.08) rotate(2deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+html.js [data-pop].is-visible { animation: pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4) both; }
+@media (prefers-reduced-motion: reduce) { .wag, .group:hover .wag, html.js [data-pop].is-visible { animation: none; } }
+
+/* Forms */
+.field { width: 100%; background: var(--color-cream); border: 3px solid var(--color-cocoa); border-radius: 14px; color: var(--color-cocoa); padding: 0.8rem 1rem; font: inherit; min-height: 50px; }
+.field:focus { outline: none; border-color: var(--color-teal); box-shadow: 0 0 0 3px var(--color-teal-pale); }
+.field::placeholder { color: color-mix(in srgb, var(--color-cocoa) 45%, transparent); }
+.label { display: block; font-family: var(--font-display); font-weight: 600; margin-bottom: 0.35rem; }
+.choice { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1rem; border: 3px solid var(--color-cocoa); border-radius: 16px; background: var(--color-cream); cursor: pointer; font-weight: 700; }
+.choice[data-on='true'], .choice:has(input:checked) { background: var(--color-teal); color: var(--color-cream); }
+.choice:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 3px; }
+
+html.nav-open { overflow: hidden; }

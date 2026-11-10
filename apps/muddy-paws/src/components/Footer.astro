@@ -1,0 +1,37 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+import Dog from './Dog.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="bg-teal text-cream wave-top mt-auto" style="--wave-color: var(--color-mustard)">
+  <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-20 pb-10">
+    <div class="grid lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10">
+      <div>
+        <Logo class="text-[1.3rem] text-cream [&_.text-teal]:text-mustard" />
+        <p class="mt-4 max-w-sm text-cream/85">{site.seo.defaultDescription}</p>
+        <a href={site.primaryCta.href} class="btn btn-coral mt-6">{site.primaryCta.label}</a>
+      </div>
+      <div>
+        <p class="eyebrow text-mustard mb-3">Find us</p>
+        <address class="not-italic">{site.address.line1}<br />{site.address.town}<br />{site.address.postcode}</address>
+        <p class="mt-3 flex flex-col"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p>
+      </div>
+      <div>
+        <p class="eyebrow text-mustard mb-3">Hours</p>
+        <dl class="text-sm">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-cream/15 py-1.5"><dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'opacity-60']}>{l.time}</dd></div>)}</dl>
+      </div>
+      <div>
+        <p class="eyebrow text-mustard mb-3">More</p>
+        <ul class="flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}</ul>
+        <ul class="mt-5 flex gap-4">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k}</a></li>)}</ul>
+      </div>
+    </div>
+    <div class="mt-14 pt-5 border-t border-cream/20 flex flex-wrap items-end justify-between gap-4 text-sm text-cream/70">
+      <span>© {year} {site.legal.legalName}. Dog groomer in Harrogate.</span>
+      <div class="w-28 group" aria-hidden="true"><Dog size="s" class="wag-always-parent" /></div>
+    </div>
+  </div>
+</footer>

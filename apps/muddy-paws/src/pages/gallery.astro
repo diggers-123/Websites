@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { gallery, img } from '@/images';
+import { site } from '@/site.config';
+const blobs = ['blob-a', 'blob-b', 'blob-c'];
+---
+<Base title="Gallery" description="Before, after and mid-shake: dogs groomed at Muddy Paws, Harrogate.">
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-8 flex flex-wrap items-end justify-between gap-6">
+    <div><span class="sticker bg-cream">Good dogs</span><h1 class="display-xl text-teal mt-4">Gallery</h1></div>
+    <p class="max-w-sm text-cocoa/80">Every groom goes on <a class="underline" href={site.social.instagram} rel="noopener">Instagram</a> (with the owner's say-so).</p>
+  </section>
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pb-24 grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+    {gallery.map((g, i) => (
+      <figure class:list={[i % 3 === 1 && 'lg:mt-12']} data-reveal data-reveal-delay={(i % 3) * 80}>
+        <div class:list={['relative aspect-square overflow-hidden border-[4px] border-cocoa', blobs[i % 3], i % 2 ? 'rotate-2' : '-rotate-2']}><Image src={img(g.key)} alt={g.alt} widths={[480, 800]} sizes="(min-width:1024px) 30vw, 48vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+        <figcaption class="mt-3 text-center font-display text-cocoa/80">{g.alt}</figcaption>
+      </figure>
+    ))}
+  </section>
+</Base>

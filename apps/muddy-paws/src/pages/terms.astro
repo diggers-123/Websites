@@ -1,0 +1,18 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Terms & cancellations" description={`Booking terms and cancellation policy for ${site.name}.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Bookings and prices</h2>
+  <p>The price shown at booking is based on the size and coat you select. If your dog is a different size or coat type, or is matted, I will tell you before starting and agree any change with you.</p>
+  <h2>Cancellations</h2>
+  <p>{site.booking.policy}</p>
+  <h2>Health and welfare</h2>
+  <p>Dogs must be up to date with vaccinations (or titre-tested) and free of fleas. Please tell me about any health conditions, medication or behaviour I should know about. I reserve the right to stop a groom if a dog is distressed or unwell; you will only be charged for work done. If I notice anything of concern (lumps, sore skin, parasites) I will tell you and may suggest a vet visit.</p>
+  <h2>Matting</h2>
+  <p>I will not de-mat a dog painfully. Severe matting will be clipped short, at a surcharge agreed with you first. Clipping matted coats can reveal skin irritation that was hidden by the mat; this is not caused by the clipping.</p>
+  <h2>Collection</h2>
+  <p>I text when your dog is nearly ready. Please collect within 30 minutes of that text; late collection beyond an hour may be charged £5 per 15 minutes as it affects the next dog.</p>
+  <h2>Business</h2>
+  <p>{site.legal.legalName}, {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>

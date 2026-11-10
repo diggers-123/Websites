@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Dog from '@/components/Dog.astro';
+import { site, sizes, groomPrice } from '@/site.config';
+import { img } from '@/images';
+const steps = [
+  ['Drop off', 'A sniff round, a treat, and a chat about what you\'d like. Nervous dogs get the slow version.'],
+  ['Warm bath', 'Two shampoos, conditioner, and a proper rinse. Ears and eyes done gently.'],
+  ['Dry & brush', 'Blow-dry, brush-out, and any knots dealt with kindly.'],
+  ['Style & finish', 'Clip or scissor, nails, pads, a bandana — then a text to say they\'re ready.'],
+];
+---
+<Base>
+  <!-- HERO: mustard, huge teal headline, illustrated line-up that doubles as size picker -->
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 grid lg:grid-cols-[1.1fr_1fr] gap-8 items-center">
+      <div class="relative z-10">
+        <span class="sticker bg-cream" data-pop>Harrogate · Tue–Sat</span>
+        <h1 class="display-xl text-teal mt-5">Clean dog.<br />Happy dog.</h1>
+        <p class="mt-6 max-w-md text-lg text-cocoa/85">Gentle, unhurried grooming on Cold Bath Road. Prices by size, booked online in a minute, and a text when they're ready — no waiting in the car.</p>
+        <div class="mt-8 flex flex-wrap gap-3"><a href={site.primaryCta.href} class="btn btn-coral">{site.primaryCta.label}</a><a href={site.secondaryCta!.href} class="btn btn-cream">{site.secondaryCta!.label}</a></div>
+      </div>
+      <div class="relative aspect-[4/5] max-w-[520px] w-full justify-self-center lg:justify-self-end">
+        <div class="absolute inset-0 blob-a overflow-hidden border-[4px] border-cocoa bg-cream rotate-2">
+          <Image src={img('hero')} alt="A freshly groomed cockapoo in a yellow bandana sitting on the grooming table" widths={[480, 800, 1100]} sizes="(min-width:1024px) 40vw, 90vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+        </div>
+        <span class="sticker bg-coral absolute -left-3 bottom-10 -rotate-6" data-pop>smells of coconut</span>
+      </div>
+    </div>
+
+    <!-- Size line-up -->
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 mt-12 lg:mt-6 pb-16">
+      <p class="eyebrow text-cocoa/70 mb-3">Prices by size — tap your dog</p>
+      <ul class="grid grid-cols-5 gap-1 sm:gap-3 items-end border-b-[4px] border-cocoa pb-0">
+        {sizes.map((z, i) => (
+          <li class="group">
+            <a href={`/book?size=${z.slug}`} class="block text-center rounded-t-3xl pt-2 px-1 hover:bg-cream-2 transition-colors focus-visible:bg-cream-2" aria-label={`${z.name} dog, ${z.weight}, full groom from £${groomPrice('full-groom', z.slug) / 100}`}>
+              <Dog size={z.slug} class={['w-[60%]', 'w-[70%]', 'w-[80%]', 'w-[90%]', 'w-[100%]'][i] + ' mx-auto'} />
+              <span class="block font-display font-700 text-sm sm:text-lg">{z.name}</span>
+              <span class="block text-[10px] sm:text-xs opacity-70 pb-2">from £{groomPrice('full-groom', z.slug) / 100}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- WHAT HAPPENS (comic strip) -->
+  <section class="bg-cream wave-top py-20" style="--wave-color: var(--color-mustard)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <h2 class="display-lg text-teal">What happens at a groom</h2>
+      <ol class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {steps.map(([t, d], i) => (
+          <li class="relative bg-mustard border-[3px] border-cocoa rounded-3xl p-5 pt-14 shadow-[5px_5px_0_#4a2b1e]" data-reveal data-reveal-delay={i * 90}>
+            <span class="absolute -top-4 left-5 sticker bg-coral !px-3">{i + 1}</span>
+            <h3 class="display-sm">{t}</h3><p class="mt-2 text-cocoa/85">{d}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-12 grid md:grid-cols-[1fr_1fr] gap-6 items-center">
+        <div class="relative aspect-[3/2] blob-b overflow-hidden border-[4px] border-cocoa -rotate-1"><Image src={img('drying')} alt="Beth blow-drying a very fluffy bichon frise" widths={[640, 1024]} sizes="(min-width:768px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+        <div class="relative w-full aspect-square max-w-[360px] blob-c overflow-hidden border-[4px] border-cocoa rotate-2 justify-self-center"><Image src={img('muddy')} alt="A muddy collie mid-shake in the bath" widths={[480, 800]} sizes="(min-width:768px) 30vw, 80vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICES TABLE teaser -->
+  <section class="bg-teal text-cream wave-top py-20" style="--wave-color: var(--color-cream)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1.4fr] gap-10 items-start">
+      <div>
+        <h2 class="display-lg">Honest prices.</h2>
+        <p class="mt-4 text-cream/85 max-w-sm">Size and coat set the price — the booking page shows the exact figure before you pick a time. No "from £25" that turns into £60.</p>
+        <a href="/services" class="btn btn-coral mt-7">Full price list</a>
+      </div>
+      <div class="overflow-x-auto -mx-4 px-4">
+        <table class="w-full min-w-[520px] bg-cream text-cocoa border-[3px] border-cocoa rounded-3xl overflow-hidden text-center">
+          <thead><tr class="bg-mustard"><th class="text-left p-3 font-display">Groom</th>{sizes.map((z) => <th class="p-3 font-display">{z.name}</th>)}</tr></thead>
+          <tbody>
+            {site.services.filter((s) => s.price?.startsWith('From')).slice(0, 4).map((s) => (
+              <tr class="border-t-[3px] border-cocoa/15"><th scope="row" class="text-left p-3 font-display font-600">{s.name}</th>{sizes.map((z) => <td class="p-3 font-bold">£{groomPrice(s.slug, z.slug) / 100}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="text-xs text-cream/70 mt-2">Short coats. Thick, curly or silky coats add £3–£6 on clipped grooms.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BETH + salon -->
+  <section class="bg-mustard wave-top py-20" style="--wave-color: var(--color-teal)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+      <div class="relative w-full aspect-[4/5] max-w-[440px] blob-a overflow-hidden border-[4px] border-cocoa -rotate-2 justify-self-center lg:justify-self-start"><Image src={img('groomer')} alt={site.team![0].image!.alt} widths={[480, 800, 1100]} sizes="(min-width:1024px) 35vw, 80vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      <div>
+        <span class="sticker bg-cream" data-pop>Meet Beth</span>
+        <h2 class="display-lg text-teal mt-4">Patient with the wrigglers.</h2>
+        <p class="mt-5 text-lg text-cocoa/85">{site.team![0].bio}</p>
+        <ul class="mt-6 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="sticker !text-sm">{c.label}</li>)}</ul>
+        <a href="/about" class="btn btn-teal mt-8">About the salon</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS as speech bubbles -->
+  <section class="bg-cream wave-top py-20" style="--wave-color: var(--color-mustard)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <div class="flex items-baseline justify-between gap-4 mb-10"><h2 class="display-lg text-teal">Woofs of approval</h2><span class="eyebrow opacity-60 hidden sm:inline">Fictional reviews for demonstration</span></div>
+      <div class="grid md:grid-cols-2 gap-x-8 gap-y-12">
+        {site.testimonials.map((t, i) => (
+          <div data-reveal data-reveal-delay={i * 80}>
+            <blockquote class="bubble p-6 text-lg font-semibold">“{t.quote}”</blockquote>
+            <p class="mt-7 ml-4 flex items-center gap-3"><span class="inline-block w-14 shrink-0" aria-hidden="true"><Dog size={(['s', 'm', 'l', 'l'] as const)[i]} /></span><span class="font-display">{t.name} <span class="opacity-60 font-sans text-sm">· {t.context}</span></span></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-coral wave-top py-20" style="--wave-color: var(--color-cream)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_auto] gap-8 items-center">
+      <div><h2 class="display-xl text-cocoa">Book a groom</h2><p class="mt-3 text-lg max-w-md">Pick your dog's size, see the price, choose a time. Tuesday to Saturday, late nights Thursday.</p></div>
+      <div class="flex flex-col gap-3 lg:items-end"><a href="/book" class="btn btn-teal !text-xl !px-8">Book online →</a><a href={`tel:${site.phoneHref}`} class="font-display text-xl underline">{site.phone}</a></div>
+    </div>
+  </section>
+</Base>

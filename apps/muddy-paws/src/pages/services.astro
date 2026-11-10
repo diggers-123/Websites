@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Dog from '@/components/Dog.astro';
+import { site, sizes, coats, addons, groomPrice, groomMins } from '@/site.config';
+import { img } from '@/images';
+import { faqSchema } from '@site/core';
+const sized = site.services.filter((s) => s.price?.startsWith('From'));
+const flat = site.services.filter((s) => !s.price?.startsWith('From'));
+const faqs = site.faqs.filter((f) => /cost|long|matted|often/.test(f.q));
+---
+<Base title="Grooms & prices" description="Dog grooming prices in Harrogate by size: full groom from £38, bath & tidy from £26, de-shed from £34, hand stripping from £48, puppy intro £22, nail trim £10." schema={[faqSchema(faqs)]}>
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-16 pb-12">
+    <span class="sticker bg-cream">Grooms &amp; prices</span>
+    <h1 class="display-xl text-teal mt-4">What it costs.</h1>
+    <p class="mt-4 max-w-xl text-lg text-cocoa/80">Prices depend on size and coat — the exact figure shows on the booking page before you choose a time. Every groom includes nails, ears and pads.</p>
+  </section>
+
+  <section class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pb-16 overflow-x-auto">
+    <table class="w-full min-w-[640px] bg-cream border-[3px] border-cocoa rounded-3xl overflow-hidden text-center">
+      <caption class="sr-only">Grooming prices by dog size</caption>
+      <thead><tr class="bg-teal text-cream">
+        <th class="text-left p-4 font-display text-lg">Groom</th>
+        {sizes.map((z) => <th class="p-3"><span class="block w-14 mx-auto"><Dog size={z.slug} /></span><span class="font-display block">{z.name}</span><span class="text-xs opacity-80 font-normal">{z.weight}</span></th>)}
+      </tr></thead>
+      <tbody>
+        {sized.map((s) => (
+          <tr class="border-t-[3px] border-cocoa/15 align-top">
+            <th scope="row" class="text-left p-4"><span class="font-display font-700 text-lg block">{s.name}</span><span class="text-sm font-normal text-cocoa/75 block max-w-[28ch]">{s.summary}</span></th>
+            {sizes.map((z) => <td class="p-4"><span class="font-display font-700 text-xl block">£{groomPrice(s.slug, z.slug) / 100}</span><span class="text-xs text-cocoa/60">~{groomMins(s.slug, z.slug)} min</span></td>)}
+          </tr>
+        ))}
+        {flat.map((s) => (
+          <tr class="border-t-[3px] border-cocoa/15 align-top">
+            <th scope="row" class="text-left p-4"><span class="font-display font-700 text-lg block">{s.name}</span><span class="text-sm font-normal text-cocoa/75 block max-w-[28ch]">{s.summary}</span></th>
+            <td class="p-4 font-display font-700 text-xl" colspan={sizes.length}>{s.price} <span class="text-xs font-sans font-normal text-cocoa/60">· any size · ~{s.durationMins} min</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="mt-3 text-sm text-cocoa/70">Prices shown for short coats. Coat adjustments on clipped grooms: {coats.filter((c) => c.extraPence).map((c) => `${c.name.toLowerCase()} +£${c.extraPence / 100}`).join(', ')}. Matting: £5–£15 extra (we'll always ring first).</p>
+  </section>
+
+  <section class="bg-cream wave-top py-16" style="--wave-color: var(--color-mustard)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+      <div>
+        <h2 class="display-lg text-teal">What's in each groom</h2>
+        <dl class="mt-6 grid gap-3">{site.services.map((s) => <div class="bg-mustard border-[3px] border-cocoa rounded-3xl p-5"><dt class="display-sm">{s.name} <span class="font-sans text-base font-bold">· {s.price}</span></dt><dd class="mt-1.5 text-sm">{s.includes?.join(' · ')}</dd></div>)}</dl>
+      </div>
+      <div>
+        <h2 class="display-lg text-teal">Add-ons</h2>
+        <ul class="mt-6 grid gap-3">{addons.map((a) => <li class="bubble !rounded-2xl p-4 flex justify-between items-center [&::after]:hidden"><span class="font-display font-600">{a.name}</span><span class="font-display font-700">+£{a.pricePence / 100}</span></li>)}</ul>
+        <div class="relative aspect-[4/3] blob-b overflow-hidden border-[4px] border-cocoa mt-8 rotate-1"><Image src={img('schnauzer')} alt="Scissoring a schnauzer's beard" widths={[640, 1024]} sizes="(min-width:1024px) 45vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mustard wave-top py-16" style="--wave-color: var(--color-cream)">
+    <div class="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10">
+      <h2 class="display-lg text-teal">Good to know</h2>
+      <dl class="grid gap-5">{faqs.map((f) => <div class="bubble p-5 [&::after]:hidden"><dt class="display-sm">{f.q}</dt><dd class="mt-2 text-cocoa/85">{f.a}</dd></div>)}</dl>
+    </div>
+  </section>
+</Base>

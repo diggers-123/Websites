@@ -108,6 +108,8 @@ export default function BookingWizard(p: WizardProps) {
         today,
         horizonDays: p.booking.horizonDays ?? 21,
         closedDates: p.booking.closedDates,
+        minNoticeHours: p.booking.minNoticeHours,
+        now: today,
       }),
     [month, effectiveHours, today, p.booking],
   );
