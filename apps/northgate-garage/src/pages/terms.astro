@@ -1,0 +1,12 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Terms" description={`Booking terms, estimates, guarantee and courtesy-car conditions at ${site.name}.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Estimates and authorisation</h2><p>Online estimates are based on the work you select and typical parts for your vehicle. We confirm the price after inspection and before starting any additional work. No extra work is carried out without your authorisation by phone, text or email.</p>
+  <h2>Bookings</h2><p>{site.booking.policy}</p>
+  <h2>Guarantee</h2><p>Parts and labour are guaranteed for 12 months or 12,000 miles, whichever comes first, against defective parts or workmanship. Wear items and customer-supplied parts are excluded.</p>
+  <h2>Courtesy cars</h2><p>Available free for repairs over £150, subject to availability. Drivers must be 25 or over with a full licence held for 2+ years; an insurance excess of £250 applies. Fuel to be returned at the same level.</p>
+  <h2>Payment and storage</h2><p>Payment on collection by card, bank transfer or cash. Vehicles not collected within 7 days of completion may incur storage at £10 per day.</p>
+  <h2>Company</h2><p>{site.legal.legalName}, {site.legal.companyNumber}. VAT {site.legal.vatNumber}. {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>

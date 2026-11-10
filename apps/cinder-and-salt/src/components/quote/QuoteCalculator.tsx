@@ -3,7 +3,7 @@
  * Live estimate from guests × package + extras + travel, with min-spend and peak rules.
  * Submits the enquiry (with the computed summary) through @site/core submitForm.
  */
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { validate, submitForm, postcodeInArea, type FormsConfig, type SubmitResult } from '@site/core';
 
 export interface PricingRules {
@@ -61,17 +61,23 @@ export function estimate(p: PricingRules, s: { guests: number; pkg: string; extr
   const minSpend = weekend ? p.minSpend.weekend : p.minSpend.weekday;
   const belowMin = subtotal < minSpend;
   const total = Math.max(subtotal, minSpend);
-  return { lines, subtotal, total, low: Math.round(total * 0.95), high: Math.round(total * 1.05), minSpend, belowMin, peak, travelNote, deposit: Math.round(total * p.depositRate), pkg };
+  return { lines, subtotal, total, low: Math.round((total * 0.95) / 100) * 100, high: Math.round((total * 1.05) / 100) * 100, minSpend, belowMin, peak, travelNote, deposit: Math.round(total * p.depositRate), pkg };
 }
 
 export default function QuoteCalculator({ pricing, forms, closedDates, phone, postcodePrefixes, isDemo }: Props) {
-  const params = typeof location !== 'undefined' ? new URLSearchParams(location.search) : null;
-  const [guests, setGuests] = useState(Number(params?.get('guests')) || 80);
-  const [pkg, setPkg] = useState(params?.get('package') ?? pricing.packages[1].slug);
+  const [guests, setGuests] = useState(80);
+  const [pkg, setPkg] = useState(pricing.packages[1].slug);
   const [extras, setExtras] = useState<string[]>([]);
   const [date, setDate] = useState('');
   const [postcode, setPostcode] = useState('');
-  const [type, setType] = useState(params?.get('type') ?? EVENT_TYPES[0]);
+  const [type, setType] = useState(EVENT_TYPES[0]);
+  // URL presets applied after mount (Preact skips prop patching during hydration).
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    if (Number(q.get('guests'))) setGuests(Number(q.get('guests')));
+    if (q.get('package')) setPkg(q.get('package')!);
+    if (q.get('type')) setType(q.get('type')!);
+  }, []);
   const [details, setDetails] = useState({ name: '', email: '', phone: '', venue: '', message: '', _gotcha: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [result, setResult] = useState<SubmitResult | null>(null);

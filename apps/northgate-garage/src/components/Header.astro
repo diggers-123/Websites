@@ -1,0 +1,29 @@
+---
+import { site } from '@/site.config';
+import { openStatus } from '@site/core';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+const status = openStatus(site);
+---
+<header class="relative z-50 bg-white border-b hairline">
+  <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 h-[70px] lg:h-[80px] flex items-center justify-between gap-6">
+    <a href="/" class="text-navy" aria-label={`${site.name} — home`}><Logo class="text-[1rem] lg:text-[1.15rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-1">
+      {site.nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['font-display font-600 text-[0.98rem] px-3.5 py-2 rounded-md hover:bg-pale transition-colors', isActive(n.href) && 'bg-pale text-navy']}>{n.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-3">
+      <span class:list={['chip hidden xl:inline-flex', status.open ? 'chip-green' : 'chip-navy']}>{status.label}</span>
+      <a href={`tel:${site.phoneHref}`} class="hidden md:inline mono text-sm text-navy hover:underline">{site.phone}</a>
+      <a href={site.primaryCta.href} class="btn btn-red hidden sm:inline-flex !py-2.5">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 rounded-md border border-steel inline-flex flex-col items-center justify-center gap-1.5" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="block w-5 h-0.5 bg-navy"></span><span class="block w-5 h-0.5 bg-navy"></span><span class="block w-5 h-0.5 bg-navy"></span></button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] bg-navy text-white overflow-y-auto" hidden>
+    <nav aria-label="Mobile" class="px-5 py-6 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b border-white/15" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href={site.primaryCta.href} class="btn btn-red mt-6 self-start">{site.primaryCta.label}</a>
+      <p class="mt-6 mono text-sm text-white/70">{status.label} · <a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+    </nav>
+  </div>
+</header>

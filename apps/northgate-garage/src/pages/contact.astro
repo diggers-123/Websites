@@ -1,0 +1,34 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { DAY_KEYS, DAY_LABELS, openStatus } from '@site/core';
+const status = openStatus(site);
+const days = DAY_KEYS.map((k) => ({ label: DAY_LABELS[k], time: site.hours[k] ? `${site.hours[k]!.open} – ${site.hours[k]!.close}` : 'Closed' }));
+const mapsQuery = encodeURIComponent(`${site.name}, ${site.address.postcode}`);
+---
+<Base title="Contact & opening hours" description={`Northgate Motor Works, ${site.address.line1}, Stockport ${site.address.postcode}. ${site.phone}. Mon–Fri 8–5:30, Sat 8:30–12:30.`}>
+  <section class="bg-pale grid-lines border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-14 grid lg:grid-cols-2 gap-8">
+    <div class="job-card p-6 sm:p-8"><div class="flex items-center justify-between gap-3 flex-wrap"><p class="eyebrow">Contact</p><span class:list={['chip', status.open ? 'chip-green' : 'chip-navy']}>{status.label}</span></div><h1 class="display-xl mt-2">Get in touch</h1>
+      <dl class="mt-6 grid gap-4 text-sm">
+        <div><dt class="eyebrow">Phone</dt><dd class="mono text-2xl mt-1"><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div>
+        <div><dt class="eyebrow">Email</dt><dd class="mt-1 break-all"><a class="underline" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt class="eyebrow">Address</dt><dd class="mt-1 not-italic"><span class="block">{site.address.line1}, {site.address.line2}</span><span class="block">{site.address.town} {site.address.postcode}</span></dd></div>
+      </dl>
+      <dl class="mt-6 mono text-sm border-t hairline pt-4">{days.map((d) => <div class="flex justify-between py-1 border-b hairline last:border-0"><dt>{d.label}</dt><dd class:list={[d.time === 'Closed' && 'text-steel']}>{d.time}</dd></div>)}</dl>
+      <div class="mt-6 flex gap-3 flex-wrap"><a href="/book" class="btn btn-red">Book online</a><a href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener" class="btn btn-outline">Directions ↗</a></div>
+    </div>
+    <form class="job-card p-6 sm:p-8 grid gap-4" data-contact-form name="contact" method="post" novalidate>
+      <h2 class="display-md">Send a message</h2>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="c-name">Name</label><input class="field" id="c-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label" for="c-reg">Registration <span class="font-normal text-steel">(optional)</span></label><input class="field mono uppercase" id="c-reg" name="reg" placeholder="AB12 CDE" /></div><div><label class="label" for="c-email">Email</label><input class="field" id="c-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div><div><label class="label" for="c-phone">Phone</label><input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div></div>
+      <div><label class="label" for="c-msg">Message</label><textarea class="field" id="c-msg" name="message" rows="5" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-navy">Send</button><p data-form-status role="status" aria-live="polite" class="text-sm"></p></div>
+    </form>
+  </div></section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'contact', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], message: [{ type: 'required', message: 'What can we help with?' }, { type: 'minLength', value: 10, message: 'A little more detail helps' }] } });
+  </script>
+</Base>

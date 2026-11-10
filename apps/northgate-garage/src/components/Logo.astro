@@ -1,0 +1,8 @@
+---
+interface Props { class?: string; light?: boolean }
+const { class: cls = '', light = false } = Astro.props;
+---
+<span class={`inline-flex items-center gap-2 font-display font-700 leading-none ${cls}`}>
+  <svg class="h-[1.5em] w-auto" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="6" fill={light ? '#ffffff' : '#0b1f3a'}/><path d="M8 26 L18 8 L28 26 M12 26 L18 15 L24 26" fill="none" stroke={light ? '#0b1f3a' : '#ffffff'} stroke-width="3" stroke-linejoin="round"/><path d="M14 30 H22" stroke="#e0261c" stroke-width="3" stroke-linecap="round"/></svg>
+  <span class="flex flex-col"><span class="text-[1.25em] tracking-tight uppercase">Northgate</span><span class="eyebrow !text-[0.55em] !tracking-[0.22em]" class:list={[light && '!text-white/70']}>Motor Works</span></span>
+</span>

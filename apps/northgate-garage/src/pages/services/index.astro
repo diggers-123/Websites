@@ -1,0 +1,11 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img, serviceImage } from '@/images';
+const cats = [...new Set(site.services.map((s) => s.category))];
+---
+<Base title="Services" description="MOT testing, interim and full servicing, diagnostics, brakes and clutches, tyres and alignment, air conditioning — Northgate Motor Works, Stockport.">
+  <section class="bg-pale grid-lines border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-14"><p class="eyebrow">Services</p><h1 class="display-xl mt-1">Everything a car needs</h1><p class="mt-3 text-ink/80 max-w-xl">All makes, manufacturer-spec parts, written reports with photos. Warranty-safe servicing.</p></div></section>
+  {cats.map((c) => <section class="py-12 border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8"><h2 class="display-lg mb-6">{c}</h2><div class="grid md:grid-cols-2 gap-5">{site.services.filter((s) => s.category === c).map((s) => <a href={`/services/${s.slug}`} class="job-card grid sm:grid-cols-[2fr_3fr] hover:border-t-red transition-colors" data-reveal><div class="relative aspect-[4/3] sm:aspect-auto sm:min-h-[200px] overflow-hidden"><Image src={img(serviceImage[s.slug])} alt={s.name} widths={[480, 800]} sizes="(min-width:640px) 25vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div><div class="p-5"><div class="flex items-baseline justify-between gap-3"><h3 class="display-md">{s.name}</h3><span class="mono text-navy whitespace-nowrap">{s.price}</span></div><p class="mt-2 text-sm text-ink/75">{s.summary}</p><p class="mt-3 text-xs text-steel">{s.includes?.join(' · ')}</p></div></a>)}</div></div></section>)}
+</Base>

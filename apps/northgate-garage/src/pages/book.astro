@@ -1,0 +1,16 @@
+---
+import Base from '@/layouts/Base.astro';
+import GarageBooking from '@/components/booking/GarageBooking';
+import { site } from '@/site.config';
+---
+<Base title="Book online" description="Book an MOT, service, diagnostics, brakes, tyres or air con at Northgate Motor Works, Stockport. Enter your reg, pick the work and a drop-off time." hideBookBar>
+  <section class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 pb-20">
+    <p class="eyebrow">Online booking</p>
+    <h1 class="display-xl mt-2">Book your car in</h1>
+    <p class="mt-3 text-ink/80 max-w-xl">Four quick steps. You get an estimate up front; we ring before any extra work.</p>
+    <div class="mt-8"><GarageBooking client:load services={site.services} hours={site.hours} booking={site.booking} phone={site.phone} policy={site.booking.policy} /></div>
+    <div class="mt-14 grid md:grid-cols-3 gap-4">
+      {[['Rather ring?', `${site.phone}, ${'Mon–Fri 8–5:30, Sat 8:30–12:30'}.`], ['Key safe', 'Drop keys from 7am; say so in the notes and we send the code.'], ['Changes', site.booking.policy ?? '']].map(([t, b]) => <div class="job-card p-5"><h2 class="display-sm">{t}</h2><p class="mt-2 text-sm text-ink/80">{b}</p></div>)}
+    </div>
+  </section>
+</Base>

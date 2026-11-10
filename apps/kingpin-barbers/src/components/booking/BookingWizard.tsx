@@ -68,16 +68,21 @@ function Stepper({ step, onJump }: { step: Step; onJump: (s: Step) => void }) {
 }
 
 export default function BookingWizard(p: WizardProps) {
-  const params = typeof location !== 'undefined' ? new URLSearchParams(location.search) : null;
-  const presetBarber = params?.get('barber');
-  const presetService = params?.get('service');
-
-  const [step, setStep] = useState<Step>(presetBarber ? 1 : 0);
-  const [barber, setBarber] = useState<string>(() => {
-    const m = p.team.find((t) => t.name === presetBarber || t.name.split(' ')[0] === presetBarber);
-    return m ? m.name : presetBarber ? ANY : '';
-  });
-  const [serviceSlug, setServiceSlug] = useState<string>(presetService ?? '');
+  const [step, setStep] = useState<Step>(0);
+  const [barber, setBarber] = useState<string>('');
+  const [serviceSlug, setServiceSlug] = useState<string>('');
+  // URL presets applied after mount (Preact skips prop patching during hydration).
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    const presetBarber = q.get('barber');
+    const presetService = q.get('service');
+    if (presetBarber) {
+      const m = p.team.find((t) => t.name === presetBarber || t.name.split(' ')[0] === presetBarber);
+      setBarber(m ? m.name : ANY);
+      setStep(1);
+    }
+    if (presetService) setServiceSlug(presetService);
+  }, []);
   const today = useMemo(() => new Date(), []);
   const [month, setMonth] = useState({ y: today.getFullYear(), m: today.getMonth() });
   const [date, setDate] = useState<string>('');

@@ -22,11 +22,16 @@ const gbp = (p: number) => `£${(p / 100).toFixed(p % 100 ? 2 : 0)}`;
 const STEPS = ['Your dog', 'The groom', 'When', 'Details', 'Done'];
 
 export default function GroomBooking(p: Props) {
-  const params = typeof location !== 'undefined' ? new URLSearchParams(location.search) : null;
   const [step, setStep] = useState(0);
-  const [size, setSize] = useState(params?.get('size') ?? '');
+  const [size, setSize] = useState('');
   const [coat, setCoat] = useState('');
-  const [service, setService] = useState(params?.get('service') ?? '');
+  const [service, setService] = useState('');
+  // URL presets applied after mount (Preact skips prop patching during hydration).
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    if (q.get('size')) setSize(q.get('size')!);
+    if (q.get('service')) setService(q.get('service')!);
+  }, []);
   const [addons, setAddons] = useState<string[]>([]);
   const today = useMemo(() => new Date(), []);
   const [month, setMonth] = useState({ y: today.getFullYear(), m: today.getMonth() });

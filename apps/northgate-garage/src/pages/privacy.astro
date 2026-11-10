@@ -1,0 +1,10 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal and vehicle information from bookings and this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who we are</h2><p>{site.legal.legalName}, {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}. Contact <a href={`mailto:${site.email}`}>{site.email}</a> or {site.phone}.</p>
+  <h2>What we collect and why</h2><ul><li><strong>Bookings:</strong> name, contact details, vehicle registration, make/model, mileage, work requested and notes — to carry out and record the work, issue invoices and MOT certificates, and send reminders (contract / legal obligation for MOT records).</li><li><strong>MOT testing:</strong> results are recorded on the DVSA MOT database as required by law.</li><li><strong>Reminders:</strong> MOT and service reminders by text/email, which you can stop at any time.</li><li><strong>Website:</strong> no analytics or advertising cookies by default.</li></ul>
+  <h2>Sharing</h2><p>DVSA (MOT records), parts suppliers (vehicle details to source correct parts), our garage management/booking software and form provider as processors, and courtesy-car insurer where a courtesy car is used. Records kept for 6 years.</p>
+  <h2>Your rights</h2><p>Access, correction, deletion, restriction and objection: email <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+</Legal>

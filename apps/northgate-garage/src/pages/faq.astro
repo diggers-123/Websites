@@ -1,0 +1,9 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { faqSchema } from '@site/core';
+---
+<Base title="FAQ" description="MOT price, waiting, courtesy cars, warranty, extra work, early drop-off, makes we work on, and payment — Northgate Motor Works, Stockport." schema={[faqSchema(site.faqs)]}>
+  <section class="bg-pale grid-lines border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-14"><p class="eyebrow">Questions</p><h1 class="display-xl mt-1">FAQ</h1></div></section>
+  <section class="py-12 lg:py-16"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_2fr] gap-10"><p class="text-ink/80 max-w-xs">Not answered? Ring <a class="underline mono" href={`tel:${site.phoneHref}`}>{site.phone}</a> or <a class="underline" href="/contact">send a message</a>.</p><div class="grid gap-3">{site.faqs.map((f) => <details class="group job-card"><summary class="cursor-pointer list-none p-4 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden"><span class="display-sm">{f.q}</span><span class="mono text-red text-xl transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary><p class="px-4 pb-4 text-sm text-ink/80">{f.a}</p></details>)}</div></div></section>
+</Base>

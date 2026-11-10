@@ -1,0 +1,16 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="bg-navy text-white mt-auto">
+  <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-14 grid lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10">
+    <div><Logo light class="text-[1.15rem]" /><p class="mt-4 max-w-sm text-white/80 text-sm leading-relaxed">{site.seo.defaultDescription}</p><ul class="mt-5 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="chip bg-white/10 text-white">{c.label}</li>)}</ul></div>
+    <div><p class="eyebrow !text-white/60 mb-3">Find us</p><address class="not-italic text-sm text-white/85 leading-relaxed">{site.address.line1}<br />{site.address.line2}<br />{site.address.town} {site.address.postcode}</address><p class="mt-3 flex flex-col text-sm"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p></div>
+    <div><p class="eyebrow !text-white/60 mb-3">Opening hours</p><dl class="text-sm mono">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-white/10 py-1.5"><dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'text-white/50']}>{l.time}</dd></div>)}</dl><p class="mt-2 text-xs text-white/60">Key safe drop-off from 7am.</p></div>
+    <div><p class="eyebrow !text-white/60 mb-3">Pages</p><ul class="text-sm flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:underline" href={n.href}>{n.label}</a></li>)}</ul></div>
+  </div>
+  <div class="border-t border-white/10"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between gap-2 text-xs text-white/60 mono"><span>© {year} {site.legal.legalName} · {site.legal.companyNumber}</span><span>VAT {site.legal.vatNumber}</span></div></div>
+</footer>

@@ -1,0 +1,103 @@
+/**
+ * NORTHGATE MOTOR WORKS — independent garage & MOT, Stockport. FICTIONAL demonstration data.
+ */
+import { defineSite, hours } from '@site/core';
+
+export const site = defineSite({
+  slug: 'northgate-garage',
+  name: 'Northgate Motor Works',
+  tagline: 'Independent garage & MOT centre, Stockport',
+  isFictional: true,
+  owner: { name: 'Phil Garside', title: 'Owner' },
+  founded: 2004,
+  phone: '0161 480 2275',
+  phoneHref: '+441614802275',
+  email: 'bookings@northgatemotorworks.example.co.uk',
+  address: { line1: 'Unit 2, Northgate Industrial Estate', line2: 'Lancashire Hill', town: 'Stockport', county: 'Greater Manchester', postcode: 'SK4 1RB', lat: 53.4196, lng: -2.1588 },
+  serviceAreas: ['Stockport', 'Heaton Moor', 'Heaton Chapel', 'Reddish', 'Bramhall', 'Cheadle', 'Marple', 'Didsbury', 'Levenshulme'],
+  postcodePrefixes: ['SK', 'M19', 'M20', 'M21', 'M22', 'M12'],
+  hours: hours({ mon: ['08:00', '17:30'], tue: ['08:00', '17:30'], wed: ['08:00', '17:30'], thu: ['08:00', '17:30'], fri: ['08:00', '17:00'], sat: ['08:30', '12:30'], sun: null }),
+  social: { facebook: 'https://facebook.com/', google: 'https://maps.google.com/' },
+  nav: [
+    { label: 'Services', href: '/services' },
+    { label: 'Prices', href: '/prices' },
+    { label: 'Reviews', href: '/reviews' },
+    { label: 'About', href: '/about' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Contact', href: '/contact' },
+  ],
+  footerNav: [
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
+    { label: 'Image credits', href: '/credits' },
+  ],
+  primaryCta: { label: 'Book online', href: '/book' },
+  secondaryCta: { label: 'See prices', href: '/prices' },
+  services: [
+    { slug: 'mot', name: 'MOT test', category: 'Testing', summary: 'Class 4 MOT (cars and small vans) at £45 — below the maximum fee. Free retest within 10 working days.', description: ['We are a DVSA-approved test centre (fictional for this demo) with a dedicated MOT bay, so your test happens at the time you booked, not when a ramp comes free. You can watch from the viewing window.', 'If it fails, we tell you exactly why with photos, give you a price to fix it, and you are free to take it elsewhere. Retests on the same items are free within ten working days.'], price: '£45', pricePence: 4500, durationMins: 60, bookable: true, includes: ['Class 4 MOT', 'Viewing window', 'Photo report if it fails', 'Free retest within 10 days', 'Reminder next year'] },
+    { slug: 'interim-service', name: 'Interim service', category: 'Servicing', summary: 'Every 6 months or 6,000 miles for high-mileage cars. Oil, filter, 35-point check, fluids topped up.', description: ['An interim service is the one most cars actually need between full services: fresh oil and filter, a thorough check of brakes, tyres, lights, steering and suspension, and all fluids topped up. We use manufacturer-spec oil and parts so your warranty is unaffected.'], price: 'From £95', pricePence: 9500, durationMins: 90, bookable: true, includes: ['Oil & filter', '35-point inspection', 'Fluid top-ups', 'Written report', 'Service book stamped'] },
+    { slug: 'full-service', name: 'Full service', category: 'Servicing', summary: 'Annual or every 12,000 miles. Everything in the interim plus air and fuel filters, spark plugs where due, and a 60-point check.', description: ['The full service follows the manufacturer schedule for your car — we look it up by registration — and includes the items an interim skips: air filter, cabin filter, fuel filter or spark plugs where due, brake fluid test, and a 60-point inspection with photos of anything we recommend.', 'Combine with an MOT on the same day and save £15.'], price: 'From £175', pricePence: 17500, durationMins: 180, bookable: true, includes: ['Everything in interim', 'Air & cabin filters', 'Plugs / fuel filter where due', '60-point inspection', 'Photo report', 'MOT combo saves £15'] },
+    { slug: 'diagnostics', name: 'Diagnostics', category: 'Repairs', summary: 'Warning light on? Dealer-level diagnostic tools for all major makes, a plain-English explanation, and a quote before any work.', description: ['A warning light rarely tells you what is wrong — it tells you the car has noticed something. We read the fault codes with dealer-level tools, then actually test the component before condemning it. You get the finding, the fix and the price in writing before we touch anything.'], price: '£65', pricePence: 6500, durationMins: 60, bookable: true, includes: ['Fault code read', 'Component testing', 'Plain-English report', 'Fixed-price quote'] },
+    { slug: 'brakes', name: 'Brakes & clutches', category: 'Repairs', summary: 'Pads, discs, callipers, clutches and flywheels. We show you the old parts.', description: ['Brakes are the one job we never cut corners on and never oversell: if the pads have 4 mm left we will tell you, not replace them. Quality branded parts with a 12-month / 12,000-mile guarantee. Clutches quoted by registration.'], price: 'Pads from £89', pricePence: 8900, durationMins: 90, bookable: true, includes: ['Branded parts', 'Old parts shown', '12-month guarantee', 'Brake fluid check'] },
+    { slug: 'tyres', name: 'Tyres & tracking', category: 'Repairs', summary: 'Budget to premium tyres fitted while you wait, puncture repairs, four-wheel alignment.', description: ['Tyres priced by registration and delivered next morning from our supplier, or fitted same day from stock on common sizes. Puncture repairs where safe. Four-wheel laser alignment to stop the new tyres wearing out like the old ones.'], price: 'Fitting from £12', pricePence: 1200, durationMins: 45, bookable: true, includes: ['Fitting & balancing', 'New valve', 'Disposal', 'Alignment from £49'] },
+    { slug: 'air-con', name: 'Air conditioning', category: 'Repairs', summary: 'Regas, leak testing and anti-bacterial clean for R134a and R1234yf systems.', description: ['Air con loses about 10% of its gas a year and most cars have never had it serviced. A regas restores cold air and protects the compressor; a leak test finds why it went in the first place. Both refrigerant types, including the newer R1234yf.'], price: 'Regas from £59', pricePence: 5900, durationMins: 60, bookable: true, includes: ['Vacuum & leak test', 'Regas to spec', 'Anti-bacterial clean', 'Performance check'] },
+  ],
+  team: [
+    { name: 'Phil Garside', role: 'Owner · MOT tester', bio: 'Opened the garage in 2004 after fifteen years at a main dealer. Still tests most of the MOTs himself.', image: { src: 'owner', alt: 'Phil at the workshop door' } },
+    { name: 'Priya Sethi', role: 'Technician', bio: 'Diagnostics and electrical specialist. If a warning light is on, it ends up on her ramp.', image: { src: 'tyres', alt: 'Priya fitting a tyre' } },
+    { name: 'Jamie Holt', role: 'Technician · MOT tester', bio: 'Brakes, clutches, suspension. Twelve years here.', image: { src: 'brakes', alt: 'Jamie showing a customer worn brake pads' } },
+  ],
+  testimonials: [
+    { quote: 'Failed the MOT on a bulb, they fitted one for £4 and passed it. Could easily have charged a retest. Didn\'t.', name: 'Karen W.', context: 'MOT · Heaton Moor', rating: 5, source: 'google' },
+    { quote: 'Booked a service online at midnight, dropped the keys in the box at 7am, car back by lunch with a photo report. Brilliant.', name: 'Tom F.', context: 'Full service · Reddish', rating: 5, source: 'google' },
+    { quote: 'They showed me the worn pads and the new ones side by side. First garage I\'ve trusted.', name: 'Anita P.', context: 'Brakes · Cheadle', rating: 5, source: 'google' },
+    { quote: 'Main dealer quoted £1,100 for a "gearbox fault". Northgate found a £90 sensor. Enough said.', name: 'Dave M.', context: 'Diagnostics · Bramhall', rating: 5, source: 'facebook' },
+    { quote: 'Courtesy car, honest prices, and Phil rang to explain before doing anything extra.', name: 'Louise B.', context: 'Service & MOT · Marple', rating: 5, source: 'google' },
+  ],
+  faqs: [
+    { q: 'How much is an MOT?', a: '£45 for a Class 4 (cars and vans up to 3,000 kg). That is below the legal maximum of £54.85. A retest within 10 working days on the same items is free.' },
+    { q: 'Can I wait while it\'s done?', a: 'For MOTs, tyres, diagnostics and air con — yes, we have a waiting area with coffee and Wi-Fi and a viewing window onto the workshop. Services and repairs are best dropped off.' },
+    { q: 'Do you have courtesy cars?', a: 'Two, free, for services and repairs over £150. Tick the box when booking; they go quickly, so book ahead. You need your licence and to be over 25.' },
+    { q: 'Will servicing here affect my warranty?', a: 'No. Under block exemption rules any VAT-registered garage can service your car using manufacturer-spec parts and schedules without affecting the warranty. We stamp the book and keep digital records.' },
+    { q: 'What if you find something else wrong?', a: 'We ring you with the finding, a photo and a price before doing anything. Nothing is added to the bill without your say-so.' },
+    { q: 'Do you do early drop-off?', a: 'Yes — a key safe by the door from 7am. Tell us at booking and we send the code.' },
+    { q: 'Which makes do you work on?', a: 'All of them. Our diagnostic kit covers every mainstream manufacturer, and we have specialist experience with VW Group, Ford, Vauxhall, Toyota and Hyundai/Kia. Hybrids yes; full EVs for MOT, tyres and brakes.' },
+    { q: 'How do I pay?', a: 'Card, bank transfer or cash on collection. Account terms for small fleets.' },
+  ],
+  forms: { provider: 'demo', honeypot: '_gotcha', notifyEmail: 'bookings@northgatemotorworks.example.co.uk' },
+  booking: { provider: 'demo', slotIntervalMins: 30, horizonDays: 28, minNoticeHours: 2, closedDates: ['2026-12-25', '2026-12-26', '2026-12-28', '2027-01-01'], policy: 'Move or cancel free of charge up to 24 hours before. No-shows for MOTs may be charged £20.' },
+  seo: {
+    siteUrl: 'https://northgatemotorworks.example.co.uk',
+    titleTemplate: '%s · Northgate Motor Works, Stockport',
+    defaultDescription: 'Independent garage and MOT centre in Stockport. MOT £45, servicing from £95, diagnostics, brakes, tyres and air con. Honest prices, free courtesy cars, book online.',
+    ogImage: '/og.jpg',
+    schemaType: 'AutoRepair',
+    priceRange: '££',
+    keywords: ['MOT Stockport', 'garage Stockport', 'car service Stockport', 'MOT Heaton Moor', 'diagnostics Stockport'],
+  },
+  legal: { legalName: 'Northgate Motor Works Ltd', entityType: 'limited-company', companyNumber: '00000000 (fictional)', vatNumber: 'GB000000000 (fictional)', policiesReviewed: '2026-11-10' },
+  credentials: [
+    { label: 'DVSA-approved MOT centre', detail: 'Station no. fictional', fictional: true },
+    { label: 'Free courtesy cars', detail: 'For repairs over £150' },
+    { label: '12-month guarantee', detail: 'Parts & labour' },
+    { label: '4.8 ★ · 406 reviews', detail: 'Google (fictional)', fictional: true },
+  ],
+});
+
+/** Price list with notes. Pence. */
+export const priceList = [
+  { item: 'MOT (Class 4)', price: 4500, note: 'Retest free within 10 days' },
+  { item: 'MOT + full service', price: 20500, note: 'Save £15' },
+  { item: 'Interim service', price: 9500, note: 'From; oil grade dependent' },
+  { item: 'Full service', price: 17500, note: 'From; by schedule' },
+  { item: 'Diagnostics', price: 6500, note: 'Deducted if we do the repair' },
+  { item: 'Front brake pads', price: 8900, note: 'From; fitted' },
+  { item: 'Front pads & discs', price: 18900, note: 'From; fitted' },
+  { item: 'Tyre fitting (per tyre)', price: 1200, note: 'Inc. balancing & valve' },
+  { item: 'Puncture repair', price: 2500, note: 'Where safe' },
+  { item: 'Four-wheel alignment', price: 4900, note: 'Laser' },
+  { item: 'Air con regas (R134a)', price: 5900, note: 'Inc. leak test' },
+  { item: 'Air con regas (R1234yf)', price: 9900, note: 'Inc. leak test' },
+  { item: 'Battery fitting', price: 1500, note: 'Plus battery' },
+  { item: 'Labour rate', price: 6800, note: 'Per hour, inc. VAT' },
+];

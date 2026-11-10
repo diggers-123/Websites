@@ -1,0 +1,14 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site, priceList } from '@/site.config';
+import { faqSchema } from '@site/core';
+const gbp = (p: number) => `£${(p / 100).toFixed(0)}`;
+const faqs = site.faqs.filter((f) => /much|pay|something else|warranty/.test(f.q));
+---
+<Base title="Prices" description="Garage prices in Stockport: MOT £45, interim service from £95, full service from £175, diagnostics £65, brake pads from £89, air con regas from £59, labour £68/hr inc. VAT." schema={[faqSchema(faqs)]}>
+  <section class="bg-pale grid-lines border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-14"><p class="eyebrow">Prices · inc. VAT</p><h1 class="display-xl mt-1">The price list</h1><p class="mt-3 text-ink/80 max-w-xl">"From" prices depend on the car; the booking page shows the estimate for yours and we confirm before starting.</p></div></section>
+  <section class="py-12 lg:py-16"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.3fr_1fr] gap-10 items-start">
+    <table class="w-full job-card text-sm"><caption class="sr-only">Price list</caption><thead><tr class="border-b hairline"><th class="text-left p-3 eyebrow">Item</th><th class="text-right p-3 eyebrow">Price</th></tr></thead><tbody>{priceList.map((r) => <tr class="border-b hairline last:border-0 hover:bg-pale"><th scope="row" class="text-left font-medium p-3">{r.item}<span class="block text-xs text-steel font-normal">{r.note}</span></th><td class="text-right mono text-lg p-3 whitespace-nowrap">{gbp(r.price)}</td></tr>)}</tbody></table>
+    <div class="grid gap-4"><div class="job-card p-5 border-t-red"><h2 class="display-md">MOT + full service</h2><p class="mt-2 text-sm text-ink/80">Book both on the same day and save £15. One drop-off, one collection, one invoice.</p><a href="/book?service=mot" class="btn btn-red mt-4">Book</a></div><dl class="job-card p-5">{faqs.map((f) => <div class="mb-4 last:mb-0"><dt class="display-sm">{f.q}</dt><dd class="mt-1 text-sm text-ink/80">{f.a}</dd></div>)}</dl></div>
+  </div></section>
+</Base>

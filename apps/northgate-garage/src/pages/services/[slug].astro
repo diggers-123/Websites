@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img, serviceImage } from '@/images';
+import { serviceSchema, breadcrumbSchema } from '@site/core';
+export function getStaticPaths() { return site.services.map((s) => ({ params: { slug: s.slug }, props: { service: s } })); }
+const { service } = Astro.props;
+const url = `${site.seo.siteUrl}/services/${service.slug}`;
+const schema = [serviceSchema(site, service, url), breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: 'Services', url: `${site.seo.siteUrl}/services` }, { name: service.name, url }])];
+const related = site.testimonials.filter((t) => (t.context ?? '').toLowerCase().includes(service.name.split(' ')[0].toLowerCase())).slice(0, 2);
+---
+<Base title={`${service.name} in Stockport`} description={`${service.summary} ${service.price} at Northgate Motor Works, Stockport. Book online.`} {schema}>
+  <section class="bg-pale grid-lines border-b hairline"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-14 grid lg:grid-cols-[1.1fr_1fr] gap-8 items-center">
+    <div class="job-card p-6 sm:p-8"><p class="eyebrow"><a href="/services" class="hover:underline">Services</a> · {service.category}</p><h1 class="display-xl mt-2">{service.name}</h1><p class="mt-3 text-ink/80">{service.summary}</p><div class="mt-5 flex items-center gap-4 flex-wrap"><span class="mono text-3xl text-navy">{service.price}</span><span class="chip chip-navy">about {service.durationMins} min</span></div><a href={`/book?service=${service.slug}`} class="btn btn-red mt-6">Book {service.name.toLowerCase()}</a></div>
+    <div class="relative aspect-[4/3] rounded-md overflow-hidden"><Image src={img(serviceImage[service.slug])} alt={service.name} widths={[640, 1024, 1400]} sizes="(min-width:1024px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+  </div></section>
+  <section class="py-12 lg:py-16"><div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[2fr_1fr] gap-10">
+    <div>{service.description?.map((p) => <p class="text-[1.05rem] leading-relaxed text-ink/85 mb-5 max-w-[65ch]">{p}</p>)}</div>
+    <aside class="grid gap-4 self-start lg:sticky lg:top-6"><div class="job-card p-5"><p class="eyebrow mb-3">Included</p><ul class="grid gap-2 text-sm">{service.includes?.map((x) => <li class="check">{x}</li>)}</ul></div>{related.map((t) => <blockquote class="job-card p-4 text-sm"><p>“{t.quote}”</p><footer class="eyebrow mt-2">{t.name} · {t.context}</footer></blockquote>)}</aside>
+  </div></section>
+</Base>

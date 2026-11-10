@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, priceList } from '@/site.config';
+import { img, serviceImage } from '@/images';
+const mot = site.services.find((s) => s.slug === 'mot')!;
+const gbp = (p: number) => `£${(p / 100).toFixed(0)}`;
+---
+<Base>
+  <!-- HERO: job card with reg-plate input -->
+  <section class="bg-pale grid-lines border-b hairline">
+    <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 py-10 lg:py-16 grid lg:grid-cols-[1.05fr_1fr] gap-8 lg:gap-12 items-center">
+      <div class="job-card p-6 sm:p-8">
+        <div class="flex items-center justify-between gap-3 flex-wrap"><p class="eyebrow">Job card · new</p><span class="chip chip-green">MOT bay open</span></div>
+        <h1 class="display-xl mt-3">Honest garage. <span class="text-red">Straight prices.</span></h1>
+        <p class="mt-3 text-ink/80 max-w-md">Independent garage and MOT centre in Stockport since {site.founded}. We show you the old parts, ring before any extra work, and the MOT is {mot.price}.</p>
+        <form class="mt-6" action="/book" method="get">
+          <label class="label" for="reg">Enter your reg to book an MOT</label>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input id="reg" name="reg" class="plate sm:max-w-xs" placeholder="AB12 CDE" autocomplete="off" spellcheck="false" maxlength="8" />
+            <input type="hidden" name="service" value="mot" />
+            <button type="submit" class="btn btn-red whitespace-nowrap">Book an MOT · {mot.price}</button>
+          </div>
+        </form>
+        <ul class="mt-6 grid sm:grid-cols-3 gap-3 text-sm">{site.credentials?.slice(0, 3).map((c) => <li class="check">{c.label}</li>)}</ul>
+      </div>
+      <div class="relative aspect-[4/3] rounded-md overflow-hidden">
+        <Image src={img('workshop')} alt="A hatchback on a two-post lift in the clean Northgate workshop, a technician underneath" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+        <span class="chip chip-navy absolute top-3 left-3 bg-white">Ramp 1 · in progress</span>
+        <span class="chip chip-green absolute bottom-3 left-3 bg-white">MOT bay · free</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES WITH PRICES -->
+  <section class="py-14 lg:py-20">
+    <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-6 mb-8"><div><p class="eyebrow">Services</p><h2 class="display-lg mt-1">What we do, what it costs</h2></div><a href="/prices" class="btn btn-outline hidden sm:inline-flex">Full price list</a></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {site.services.map((s, i) => (
+          <a href={`/services/${s.slug}`} class:list={['job-card p-5 flex flex-col hover:border-t-red transition-colors', i === 0 && 'sm:col-span-2 lg:row-span-2']} data-reveal data-reveal-delay={(i % 4) * 60}>
+            {i === 0 && <div class="relative aspect-[3/2] rounded overflow-hidden mb-4"><Image src={img(serviceImage[s.slug])} alt="The MOT bay" widths={[640, 1024]} sizes="(min-width:1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>}
+            <div class="flex items-baseline justify-between gap-3"><h3 class="display-md">{s.name}</h3><span class="mono text-navy whitespace-nowrap">{s.price}</span></div>
+            <p class="mt-2 text-sm text-ink/75 flex-1">{s.summary}</p>
+            <span class="mt-4 eyebrow !text-navy">Details →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY INDEPENDENT + process checklist -->
+  <section class="bg-navy text-white py-14 lg:py-20">
+    <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1fr] gap-10 items-center">
+      <div>
+        <p class="eyebrow !text-white/60">How a visit works</p>
+        <h2 class="display-lg mt-1">We'll show you the part.</h2>
+        <ol class="mt-6 grid gap-4">
+          {[['Book online or ring', 'Estimate up front. Drop off from 7am via the key safe, or wait with a coffee.'], ['We inspect, then we ring', 'Anything beyond the booked work gets a photo, an explanation and a price — before we touch it.'], ['Old parts on the counter', 'Collect the car, see what came off it, pay by card. 12-month guarantee on parts and labour.']].map(([t, b], i) => <li class="flex gap-4"><span class="mono text-red text-lg">0{i + 1}</span><div><h3 class="display-sm">{t}</h3><p class="text-sm text-white/75 mt-1">{b}</p></div></li>)}
+        </ol>
+      </div>
+      <div class="relative aspect-[3/2] rounded-md overflow-hidden"><Image src={img('brakes')} alt="A technician showing a customer worn and new brake pads side by side" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+    </div>
+  </section>
+
+  <!-- PRICE TABLE TEASER + reviews -->
+  <section class="py-14 lg:py-20">
+    <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1fr] gap-10">
+      <div>
+        <p class="eyebrow">Prices</p><h2 class="display-lg mt-1">No surprises</h2>
+        <table class="mt-5 w-full job-card text-sm"><tbody>{priceList.slice(0, 7).map((r) => <tr class="border-b hairline last:border-0"><th scope="row" class="text-left font-medium p-3">{r.item}<span class="block text-xs text-steel font-normal">{r.note}</span></th><td class="text-right mono text-lg p-3 whitespace-nowrap">{gbp(r.price)}</td></tr>)}</tbody></table>
+        <a href="/prices" class="btn btn-outline mt-4">All prices</a>
+      </div>
+      <div>
+        <div class="flex items-baseline justify-between gap-4"><p class="eyebrow">Reviews</p><span class="eyebrow">Fictional reviews for demonstration</span></div>
+        <h2 class="display-lg mt-1">4.8 ★ from 406 reviews</h2>
+        <div class="mt-5 grid gap-3">{site.testimonials.slice(0, 3).map((t, i) => <figure class="job-card p-4" data-reveal data-reveal-delay={i * 70}><blockquote class="text-[0.98rem]">“{t.quote}”</blockquote><figcaption class="mt-2 eyebrow">{t.name} · {t.context}</figcaption></figure>)}</div>
+        <a href="/reviews" class="btn btn-outline mt-4">All reviews</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP & HOURS -->
+  <section class="bg-pale border-t hairline py-14">
+    <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1fr_1fr] gap-8 items-center">
+      <div class="relative aspect-[3/2] rounded-md overflow-hidden"><Image src={img('exterior')} alt="The garage exterior with the roller door open and a courtesy car outside" widths={[640, 1024, 1400]} sizes="(min-width:1024px) 48vw, 100vw" class="absolute inset-0 w-full h-full object-cover" /></div>
+      <div><p class="eyebrow">Find us</p><h2 class="display-lg mt-1">Lancashire Hill, Stockport</h2><p class="mt-3 text-ink/80">{site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}. Two minutes from the M60 J1; buses 192 and 203 stop outside.</p><div class="mt-5 flex gap-3 flex-wrap"><a href="/contact" class="btn btn-navy">Contact &amp; hours</a><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address.postcode)}`} target="_blank" rel="noopener" class="btn btn-outline">Directions ↗</a></div></div>
+    </div>
+  </section>
+  <script>
+    import { formatReg } from '@/components/booking/GarageBooking';
+    const r = document.getElementById('reg') as HTMLInputElement | null;
+    r?.addEventListener('input', () => { r.value = formatReg(r.value); });
+  </script>
+</Base>

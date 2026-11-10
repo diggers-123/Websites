@@ -1,0 +1,100 @@
+/*
+  NORTHGATE MOTOR WORKS — design tokens.
+  Palette: white (dominant) · navy (secondary) · signal red (accent). Supporting steel, pale grey, plate yellow.
+  Type: IBM Plex Sans Condensed (headings) · IBM Plex Sans (body) · IBM Plex Mono (data, prices, reg plates)
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource/ibm-plex-sans-condensed/600.css';
+@import '@fontsource/ibm-plex-sans-condensed/700.css';
+@import '@fontsource-variable/ibm-plex-sans';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+@theme {
+  --color-white: #ffffff;
+  --color-pale: #eef1f5;
+  --color-pale-2: #dfe4eb;
+  --color-navy: #0b1f3a;
+  --color-navy-2: #14305a;
+  --color-steel: #8c97a6;
+  --color-ink: #0f1620;
+  --color-red: #e0261c;
+  --color-red-2: #b91e15;
+  --color-green: #1f8a4c;
+  --color-amber: #e0a21c;
+  --color-plate: #ffd500;
+  --color-focus: #e0261c;
+  --color-error: #b91e15;
+
+  --font-display: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+  --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  html { background: var(--color-white); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-navy); color: white; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; line-height: 1; }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 6.5vw, 5.6rem); line-height: 0.95; letter-spacing: -0.02em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -0.015em; }
+@utility display-md { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.05; }
+@utility display-sm { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; line-height: 1.1; }
+@utility mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+@utility eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-steel); }
+
+/* Job card */
+@utility job-card { background: white; border: 1px solid var(--color-pale-2); border-top: 4px solid var(--color-navy); box-shadow: 0 1px 2px rgb(11 31 58 / 0.06), 0 8px 24px -12px rgb(11 31 58 / 0.25); }
+@utility hairline { border-color: var(--color-pale-2); }
+
+/* Status chips */
+@utility chip { display: inline-flex; align-items: center; gap: 0.4em; padding: 0.25em 0.6em; border-radius: 4px; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+@utility chip-green { background: color-mix(in srgb, var(--color-green) 12%, white); color: var(--color-green); }
+@utility chip-navy { background: color-mix(in srgb, var(--color-navy) 10%, white); color: var(--color-navy); }
+@utility chip-red { background: color-mix(in srgb, var(--color-red) 12%, white); color: var(--color-red-2); }
+@utility chip-amber { background: color-mix(in srgb, var(--color-amber) 16%, white); color: #8a6210; }
+.chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* UK registration plate */
+@utility plate {
+  display: inline-flex; align-items: center;
+  background: var(--color-plate); color: #000;
+  font-family: 'Charles Wright', var(--font-mono); font-weight: 700; font-size: 1.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+  border: 2px solid #c9a800; border-radius: 6px; padding: 0.3em 0.6em 0.3em 0;
+}
+.plate::before { content: 'UK'; display: inline-grid; place-items: center; align-self: stretch; background: #003399; color: white; font-size: 0.5em; font-family: var(--font-sans); font-weight: 700; padding: 0 0.6em; margin-right: 0.5em; border-radius: 3px 0 0 3px; letter-spacing: 0; }
+input.plate { width: 100%; outline: none; }
+input.plate::placeholder { color: #7a6a00; opacity: 0.7; }
+input.plate:focus { box-shadow: 0 0 0 3px var(--color-navy); }
+
+/* Buttons */
+@utility btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.8rem 1.3rem; border-radius: 6px; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background-color 0.15s, color 0.15s, border-color 0.15s; }
+@utility btn-red { background: var(--color-red); color: white; }
+.btn-red:hover, .btn-red:focus-visible { background: var(--color-red-2); }
+@utility btn-navy { background: var(--color-navy); color: white; }
+.btn-navy:hover, .btn-navy:focus-visible { background: var(--color-navy-2); }
+@utility btn-outline { background: white; color: var(--color-navy); border-color: var(--color-navy); }
+.btn-outline:hover, .btn-outline:focus-visible { background: var(--color-pale); }
+
+/* Checklist tick animation */
+.check { display: flex; gap: 0.75rem; align-items: flex-start; }
+.check::before { content: ''; flex: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--color-navy); margin-top: 2px; background: white; }
+html.js .check.is-visible::before { background: var(--color-green); border-color: var(--color-green); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>"); transition: background-color 0.3s, border-color 0.3s; }
+
+/* Hairline grid background */
+@utility grid-lines { background-image: linear-gradient(var(--color-pale-2) 1px, transparent 1px); background-size: 100% 2.5rem; }
+
+/* Forms */
+.field { width: 100%; background: white; border: 1px solid var(--color-steel); border-radius: 6px; color: var(--color-ink); padding: 0.7rem 0.85rem; font: inherit; min-height: 46px; }
+.field:focus { outline: none; border-color: var(--color-navy); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-navy) 15%, transparent); }
+.field::placeholder { color: var(--color-steel); }
+.label { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; color: var(--color-navy); }
+.choice { display: flex; gap: 0.6rem; align-items: center; padding: 0.65rem 0.85rem; border: 1px solid var(--color-steel); border-radius: 6px; background: white; cursor: pointer; }
+.choice:has(input:checked) { border-color: var(--color-navy); background: var(--color-pale); box-shadow: inset 0 0 0 1px var(--color-navy); }
+.choice:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 2px; }
+.choice input { accent-color: var(--color-navy); width: 1rem; height: 1rem; }
+
+html.nav-open { overflow: hidden; }
