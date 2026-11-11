@@ -1,0 +1,16 @@
+---
+import { site } from '@/site.config';
+import { hoursLines } from '@site/core';
+import Logo from './Logo.astro';
+const lines = hoursLines(site);
+const year = new Date().getFullYear();
+---
+<footer class="bg-ink text-white mt-auto">
+  <div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10">
+    <div><Logo class="text-[1.4rem] text-white" invert /><p class="mt-4 max-w-sm text-white/80">{site.seo.defaultDescription}</p><a href={site.primaryCta.href} class="btn btn-hi mt-6">{site.primaryCta.label}</a></div>
+    <div><p class="eyebrow !text-hi !opacity-100 mb-3">Lessons</p><address class="not-italic text-white/85 leading-relaxed">{site.address.line1}<br />{site.address.town} {site.address.postcode}<br />and online, UK-wide</address><p class="mt-3 flex flex-col text-sm"><a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p></div>
+    <div><p class="eyebrow !text-hi !opacity-100 mb-3">Lesson hours</p><dl class="text-sm">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-white/10 py-1.5"><dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'text-white/50']}>{l.time}</dd></div>)}</dl></div>
+    <div><p class="eyebrow !text-hi !opacity-100 mb-3">Pages</p><ul class="text-sm flex flex-col gap-1.5">{[...site.nav, ...(site.footerNav ?? [])].map((n) => <li><a class="hover:text-hi" href={n.href}>{n.label}</a></li>)}</ul><ul class="mt-5 flex gap-4 text-sm">{Object.entries(site.social).filter(([, v]) => v).map(([k, v]) => <li><a class="underline capitalize" href={v as string} rel="noopener">{k}</a></li>)}</ul></div>
+  </div>
+  <div class="border-t border-white/10"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-4 text-xs text-white/60 flex flex-wrap justify-between gap-2"><span>© {year} {site.legal.legalName} · ICO {site.legal.icoReference}</span><span>Tuition · Cambridge & online</span></div></div>
+</footer>

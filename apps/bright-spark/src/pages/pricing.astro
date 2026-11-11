@@ -1,0 +1,22 @@
+---
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site, pricing } from '@/site.config';
+const gbp = (p: number) => `£${(p / 100).toFixed(0)}`;
+const pack = (p: number) => gbp(Math.round(p * 10 * (1 - pricing.packDiscount)));
+---
+<Base title="Pricing" description="Tuition prices: KS3 and 11+ from £42/hr, GCSE from £45/hr, A-level from £55/hr online; in person in Cambridge from £48/hr. Packs of ten save 10%. No contract.">
+  <section class="grid-paper border-b-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Pricing</p><h1 class="display-xl mt-3">Straight prices. <span class="hl">No contract.</span></h1><p class="mt-5 text-ink/80 max-w-xl">Per 60-minute lesson. Pay weekly, or buy ten upfront and save 10%. No registration fee.</p></div><Note arrow="left" class="text-ink">the free call quotes the exact figure</Note></div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1.4fr_1fr] gap-10 items-start">
+    <div class="sheet px-5 sm:pl-20 sm:pr-10 py-8 overflow-x-auto" data-reveal>
+      <table class="w-full text-left border-collapse min-w-[520px]"><caption class="sr-only">Lesson prices per hour</caption><thead><tr class="text-xs uppercase tracking-wider text-mute leading-8"><th class="font-700">Level</th><th class="font-700 text-right">Online</th><th class="font-700 text-right">In person</th><th class="font-700 text-right">Pack of 10 (online)</th></tr></thead><tbody>{pricing.rows.map((r) => <tr class="leading-8"><td class="font-800 py-2">{r.level}</td><td class="text-right py-2">{gbp(r.online)}</td><td class="text-right py-2">{gbp(r.inPerson)}</td><td class="text-right py-2"><span class="hl-static font-800">{pack(r.online)}</span></td></tr>)}</tbody></table>
+      <ul class="mt-6 grid gap-1 text-sm text-ink/80 leading-8">{pricing.notes.map((n) => <li class="flex gap-2"><span class="tick" aria-hidden="true">✓</span>{n}</li>)}</ul>
+    </div>
+    <div class="grid gap-6">
+      <div class="sticky-note tilt-r"><p class="hand text-2xl">Free assessment call</p><p class="text-sm mt-2">Twenty minutes, phone or video. An honest view of what's achievable, a suggested plan and the exact price. No obligation.</p><a href="/book" class="btn btn-ink mt-4">Book the call</a></div>
+      <div class="card p-6"><p class="eyebrow">Worked example</p><p class="mt-3 text-sm text-ink/85 leading-relaxed">GCSE maths, online, one lesson a week from September to May (about 30 lessons): three packs of ten at {pack(pricing.rows[1].online)} = <strong>{gbp(Math.round(pricing.rows[1].online * 30 * (1 - pricing.packDiscount)))}</strong> for the year. Two lessons a week after the mocks adds roughly ten more.</p></div>
+      <div class="card p-6"><p class="eyebrow">Cancellations</p><p class="mt-3 text-sm text-ink/85 leading-relaxed">{site.faqs.find((f) => f.q.startsWith('What if we need to cancel'))?.a}</p></div>
+    </div>
+  </section>
+</Base>

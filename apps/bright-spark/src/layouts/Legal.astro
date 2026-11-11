@@ -1,0 +1,21 @@
+---
+import Base from './Base.astro';
+interface Props { title: string; description: string; reviewed: string; notice?: string }
+const { title, description, reviewed, notice = 'This document is a starting point based on ICO guidance. It must be reviewed and adapted for the actual business before going live. It is not legal advice.' } = Astro.props;
+---
+<Base {title} {description}>
+  <section class="grid-paper"><div class="mx-auto max-w-3xl px-5 sm:px-8 py-12 lg:py-16">
+    <h1 class="display-lg">{title}</h1><p class="eyebrow mt-3">Last reviewed {reviewed}</p>
+    <div class="sheet mt-8 px-6 sm:px-12 lg:pl-20 lg:pr-14 py-10">
+      <div class="sticky-note tilt-l mb-8 text-sm !py-4"><strong>Template notice.</strong> {notice}</div>
+      <div class="prose-legal"><slot /></div>
+    </div>
+  </div></section>
+</Base>
+<style is:global>
+  .prose-legal h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; margin: 1.9rem 0 0.5rem; letter-spacing: -0.02em; }
+  .prose-legal p, .prose-legal li { font-size: 1rem; line-height: 2rem; margin: 0; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .prose-legal ul { padding-left: 1.3rem; list-style: disc; }
+  .prose-legal a { text-decoration: underline; }
+  .prose-legal strong { font-weight: 700; }
+</style>

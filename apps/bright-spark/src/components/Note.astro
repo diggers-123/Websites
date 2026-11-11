@@ -1,0 +1,11 @@
+---
+/** Handwritten margin annotation with an optional arrow. arrow: 'left' | 'right' | 'down' | 'none' */
+interface Props { class?: string; arrow?: 'left' | 'right' | 'down' | 'none'; rotate?: number }
+const { class: cls = '', arrow = 'left', rotate = -3 } = Astro.props;
+---
+<span class:list={['hand inline-flex items-center gap-2', cls]} style={`transform: rotate(${rotate}deg)`} aria-hidden="true">
+  {arrow === 'left' && <svg width="38" height="22" viewBox="0 0 38 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M36 4C28 2 14 4 3 13" /><path d="M9 7 3 13l8 2" /></svg>}
+  <span><slot /></span>
+  {arrow === 'right' && <svg width="38" height="22" viewBox="0 0 38 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4c8-2 22 0 33 9" /><path d="M29 7l6 6-8 2" /></svg>}
+  {arrow === 'down' && <svg width="22" height="38" viewBox="0 0 22 38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2c-2 8 0 22 9 33" /><path d="M7 29l6 6 2-8" /></svg>}
+</span>

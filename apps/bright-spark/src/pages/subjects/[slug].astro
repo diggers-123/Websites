@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site, subjects, pricing } from '@/site.config';
+import { img } from '@/images';
+import { serviceSchema, breadcrumbSchema } from '@site/core';
+export function getStaticPaths() { return subjects.map((s) => ({ params: { slug: s.slug }, props: { s } })); }
+const { s } = Astro.props as { s: (typeof subjects)[number] };
+const svc = site.services.find((x) => x.slug === s.slug)!;
+const gbp = (p: number) => `£${(p / 100).toFixed(0)}`;
+const url = `${site.seo.siteUrl}/subjects/${s.slug}`;
+const schema = [serviceSchema(site, svc, url), breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: 'Subjects', url: `${site.seo.siteUrl}/subjects` }, { name: s.name, url }])];
+const related = subjects.filter((x) => x.slug !== s.slug).slice(0, 3);
+---
+<Base title={`${s.name} tuition`} description={`${s.name} tutor in Cambridge and online: ${s.levels.join(', ')}. ${s.boards}. ${svc.price}. Free assessment call.`} {schema}>
+  <section class="grid-paper border-b-2 border-ink overflow-x-clip"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-10 lg:pt-16 pb-14 grid lg:grid-cols-[1fr_440px] gap-10 items-center">
+    <div class="relative"><nav aria-label="Breadcrumb" class="text-sm text-mute"><a href="/subjects" class="underline">Subjects</a> / {s.name}</nav><p class="eyebrow mt-5">{s.levels.join(' · ')}</p><h1 class="display-xl mt-3">{s.name}</h1><p class="mt-5 text-lg text-ink/85 max-w-xl">{s.headline}</p><dl class="mt-7 flex flex-wrap gap-x-10 gap-y-3"><div><dt class="eyebrow">From</dt><dd class="font-800 text-lg">{svc.price}</dd></div><div><dt class="eyebrow">Lesson</dt><dd class="font-800 text-lg">{svc.durationMins} min</dd></div><div><dt class="eyebrow">Boards</dt><dd class="font-800 text-lg">{s.boards}</dd></div></dl><div class="mt-8 flex gap-3 flex-wrap"><a href={`/book?subject=${s.slug}`} class="btn btn-hi border-ink">Book a free call</a><a href="/pricing" class="btn btn-outline">Pricing</a></div></div>
+    <div class="relative mx-auto w-full max-w-[440px]"><div class="bg-white p-3 pb-8 shadow-[0_30px_60px_-30px_rgba(29,46,107,0.5)] rotate-[-1.5deg]"><Image src={img(s.image)} alt={`${s.name} tuition`} widths={[440, 800]} sizes="(min-width:1024px) 440px, 92vw" loading="eager" fetchpriority="high" class="w-full aspect-[4/3] object-cover" /></div><Note class="absolute -bottom-6 right-2 text-ink" arrow="left" rotate={-4}>{s.levels[0]} to {s.levels[s.levels.length - 1]}</Note></div>
+  </div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1.3fr_1fr] gap-12 items-start">
+    <div class="sheet px-6 sm:pl-20 sm:pr-10 py-8" data-reveal>{s.intro.map((pp) => <p class="leading-8 mb-8 last:mb-0 text-ink/85">{pp}</p>)}<p class="hand text-2xl text-red mt-6">{s.results} <span class="text-sm font-sans text-mute not-italic">(fictional)</span></p></div>
+    <div class="grid gap-6">
+      <div class="sticky-note tilt-r"><p class="hand text-2xl">We'll cover</p><ul class="mt-3 grid gap-1.5 text-sm">{s.topics.map((t) => <li class="flex gap-2"><span class="tick" aria-hidden="true">✓</span>{t}</li>)}</ul></div>
+      <div class="card p-6"><p class="eyebrow">Each lesson includes</p><ul class="mt-3 grid gap-1.5 text-sm">{svc.includes?.map((t) => <li class="flex gap-2"><span class="text-ink font-800" aria-hidden="true">—</span>{t}</li>)}</ul><p class="text-sm text-mute mt-4">Online {gbp(pricing.rows[1].online)}–{gbp(pricing.rows[2].online)}/hr · in person {gbp(pricing.rows[1].inPerson)}–{gbp(pricing.rows[2].inPerson)}/hr depending on level. <a href="/pricing" class="underline">See pricing</a>.</p></div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pb-16 lg:pb-24"><p class="eyebrow">Also</p><ul class="mt-4 grid sm:grid-cols-3 gap-4 list-none p-0">{related.map((r, i) => <li><a href={`/subjects/${r.slug}`} class:list={['sticky-note block h-full', i % 2 ? 'tilt-r sticky-sky' : 'tilt-l']}><p class="display-sm">{r.name}</p><p class="text-sm mt-2">{r.levels.join(' · ')}</p></a></li>)}</ul></section>
+</Base>

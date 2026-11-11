@@ -1,0 +1,15 @@
+---
+import Base from '@/layouts/Base.astro';
+import CallBooking from '@/components/booking/CallBooking';
+import { site, subjects, yearGroups } from '@/site.config';
+const b = site.booking;
+---
+<Base title="Book a free assessment call" description="Book a free 20-minute assessment call with Bright Spark Tutoring, Cambridge. Weekday evenings and Saturday mornings, by phone or video. No obligation." hideBookBar>
+  <section class="grid-paper border-b-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-10 lg:pt-16 pb-10"><p class="eyebrow">Free assessment call</p><h1 class="display-xl mt-2">Book a <span class="hl">free call.</span></h1><p class="mt-4 text-ink/80 max-w-xl">Twenty minutes, phone or video. Where the student is, what's realistic, and what it costs. Prefer to write? <a class="underline" href="/contact">Send an enquiry</a>.</p></div></section>
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-10 lg:py-14">
+    {b.provider === 'calcom' && (<div class="card overflow-hidden min-h-[640px]"><div id="cal-inline" style="width:100%;height:100%;min-height:640px;overflow:auto"></div><script is:inline define:vars={{ link: b.calcomLink }}>(function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init"); Cal("init", { origin: "https://cal.com" }); Cal("inline", { elementOrSelector: "#cal-inline", calLink: link, layout: "month_view" });</script></div>)}
+    {b.provider === 'calendly' && (<div class="card overflow-hidden"><div class="calendly-inline-widget" data-url={b.calendlyUrl} style="min-width:320px;height:700px"></div><script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script></div>)}
+    {(b.provider === 'demo' || b.provider === 'custom') && <CallBooking client:load hours={site.hours} booking={b} subjects={subjects.map((s) => ({ slug: s.slug, name: s.name }))} yearGroups={yearGroups} phone={site.phone} policy={b.policy} />}
+    <div class="mt-14 grid md:grid-cols-3 gap-4">{[['Rather ring?', `${site.phone}, weekday evenings and Saturday mornings. Leave a message and I'll call back.`], ['Who should be on the call?', 'A parent, and the student if they\'re willing — hearing how they describe the problem is half the diagnosis.'], ['After the call', 'A short email with the suggested plan, prices and first available lesson times. No chasing, no pressure.']].map(([t, b]) => <div class="card p-5"><h2 class="display-sm">{t}</h2><p class="mt-2 text-sm text-ink/80">{b}</p></div>)}</div>
+  </section>
+</Base>

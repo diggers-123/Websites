@@ -1,0 +1,11 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Safeguarding policy" description={`Safeguarding policy for ${site.name}: DBS, parent-present lessons, online-lesson conduct and reporting concerns.`} reviewed={site.legal.policiesReviewed} notice="SAFEGUARDING — REQUIRES REVIEW. This is a template for a sole-trader tutor. It must be reviewed against current statutory guidance (Keeping Children Safe in Education, Working Together to Safeguard Children) and the local safeguarding partnership's procedures, and the fictional DBS and training details replaced with real, verifiable ones before this site goes live.">
+  <h2>Our commitment</h2><p>{site.name} believes every child and young person has the right to learn in a safe environment. {site.owner?.name} holds an Enhanced DBS certificate with children's barred-list check, registered on the DBS Update Service, and completes safeguarding and Prevent training annually (fictional for this demonstration).</p>
+  <h2>In-person lessons</h2><ul><li>Lessons take place at the home study with a parent or guardian in the house; the study door stays open.</li><li>Parents are welcome to sit in on any lesson.</li><li>The tutor never transports students.</li></ul>
+  <h2>Online lessons</h2><ul><li>Lessons use a video platform with a parent-known account; the student joins from a shared family space where possible.</li><li>All communication with students under 18 goes through a parent's email or phone; no direct messaging, social-media contact or private accounts.</li><li>Lessons are not recorded unless a parent asks in writing.</li></ul>
+  <h2>Concerns</h2><p>If the tutor has a concern about a student's welfare, it will be discussed with the parent or guardian unless doing so could put the student at risk, in which case it will be referred to the local authority children's social care team or, in an emergency, the police. Concerns are recorded in writing, dated, and kept securely.</p>
+  <h2>Contacts</h2><ul><li>Designated person: {site.owner?.name}, <a href={`mailto:${site.email}`}>{site.email}</a>, {site.phone}.</li><li>Local authority children's services: to be completed for the business's area.</li><li>NSPCC helpline: 0808 800 5000.</li></ul>
+</Legal>

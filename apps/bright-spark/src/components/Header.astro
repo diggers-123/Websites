@@ -1,0 +1,27 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="relative z-50 bg-paper border-b-2 border-ink">
+  <div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 h-[70px] lg:h-[84px] flex items-center justify-between gap-6">
+    <a href="/" class="text-ink" aria-label={`${site.name} — home`}><Logo class="text-[1.25rem] lg:text-[1.45rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-7">
+      {site.nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['relative font-700 text-[0.95rem] py-2 whitespace-nowrap after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[3px] after:bg-hi after:scale-x-0 after:origin-left after:transition-transform hover:after:scale-x-100', isActive(n.href) && 'after:scale-x-100']}>{n.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={`tel:${site.phoneHref}`} class="hidden xl:inline font-700 text-sm">{site.phone}</a>
+      <a href={site.primaryCta.href} class="btn btn-ink hidden sm:inline-flex !py-2.5 !px-4 !text-sm">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 rounded-lg border-2 border-ink inline-flex flex-col items-center justify-center gap-1.5" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="block w-5 h-0.5 bg-ink"></span><span class="block w-5 h-0.5 bg-ink"></span><span class="block w-5 h-0.5 bg-ink"></span></button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] bg-ink text-white overflow-y-auto" hidden>
+    <nav aria-label="Mobile" class="px-6 py-8 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b border-white/15" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href="/contact" class="display-md py-3.5">Contact</a>
+      <a href={site.primaryCta.href} class="btn btn-hi mt-6 self-start">{site.primaryCta.label}</a>
+      <a href={`tel:${site.phoneHref}`} class="mt-5 font-700 underline">{site.phone}</a>
+    </nav>
+  </div>
+</header>

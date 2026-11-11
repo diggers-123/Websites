@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const t = site.team?.[0]!;
+---
+<Base title="About Anjali" description="Anjali Mehta: PhD physics, six years teaching maths and physics in a Cambridgeshire secondary school, tutoring full-time since 2018. Enhanced DBS. Fictional demonstration profile.">
+  <section class="grid-paper border-b-2 border-ink overflow-x-clip"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-16 grid lg:grid-cols-[400px_1fr] gap-10 lg:gap-16 items-center">
+    <div class="relative mx-auto w-full max-w-[400px]"><div class="bg-white p-3 pb-10 shadow-[0_30px_60px_-30px_rgba(29,46,107,0.5)] rotate-[-2deg]"><Image src={img('tutor')} alt={`${t.name} at her desk with exercise books and a mug`} widths={[400, 800]} sizes="(min-width:1024px) 400px, 92vw" loading="eager" fetchpriority="high" class="w-full aspect-[4/5] object-cover" /><p class="hand text-xl mt-3 text-center">{t.name}</p></div><Note class="absolute -bottom-4 -right-2 text-ink" arrow="left" rotate={-5}>Mill Road study</Note></div>
+    <div><p class="eyebrow">{t.role}</p><h1 class="display-xl mt-3">Hello, I'm <span class="hl">Anjali.</span></h1><p class="mt-6 text-lg text-ink/85 max-w-xl">{t.bio}</p><p class="mt-4 text-ink/80 max-w-xl">I left the classroom because thirty students and one of me meant the ones who were quietly lost stayed lost. Tutoring is the opposite: one student, the exact gap, and the time to fix it properly.</p><p class="mt-4 text-ink/80 max-w-xl">I teach maths and all three sciences, which matters more than it sounds: the maths that trips students up in physics and chemistry is the same maths, and one tutor can fix it once.</p>
+    <ul class="mt-7 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="chip !cursor-default">{c.label}{c.fictional ? ' *' : ''}</li>)}</ul><p class="text-xs text-mute mt-2">* fictional for this demonstration</p></div>
+  </div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1fr_1.2fr] gap-10 items-start">
+    <div class="sheet px-6 sm:pl-20 sm:pr-10 py-8" data-reveal><h2 class="font-800 text-xl leading-8">How I teach</h2><p class="leading-8 text-ink/85 mt-2">Ask before telling. A student who explains their wrong method out loud usually finds the error themselves — and remembers it. I don't do "watch me do it, now copy".</p><p class="leading-8 text-ink/85 mt-6">Honest about effort. Grades move with homework done and papers sat; I'll tell you plainly if that isn't happening, and I'll tell the student too.</p><p class="leading-8 text-ink/85 mt-6">Calm. Exams are stressful enough. Lessons shouldn't be.</p></div>
+    <div class="grid sm:grid-cols-2 gap-6"><div class="bg-white p-2 pb-5 rotate-[1.5deg] shadow-[0_20px_40px_-25px_rgba(29,46,107,0.5)]"><Image src={img('whiteboard')} alt="A whiteboard of maths working in blue marker" widths={[400, 700]} sizes="(min-width:640px) 300px, 92vw" class="w-full aspect-[4/3] object-cover" /><p class="hand text-lg mt-2 text-center">the study wall, most evenings</p></div><div class="sticky-note tilt-l self-start sm:mt-10"><p class="hand text-2xl">Safeguarding</p><p class="text-sm mt-2">Enhanced DBS on the Update Service, safeguarding training, a parent-present policy for in-person lessons and a written safeguarding policy. All fictional here; a real tutor shows the certificate on request.</p><a href="/safeguarding" class="underline font-700 text-sm mt-3 inline-block">Read the policy →</a></div></div>
+  </section>
+
+  <section class="bg-ink text-white"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 flex flex-wrap items-center justify-between gap-6"><div><h2 class="display-lg">Let's talk about the student.</h2><p class="mt-3 text-white/80">Twenty minutes, free, no obligation.</p></div><a href="/book" class="btn btn-hi">Book a free call</a></div></section>
+</Base>

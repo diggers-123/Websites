@@ -1,0 +1,12 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Privacy notice" description={`How ${site.name} uses personal information about parents and students from enquiries, assessment calls, lessons and this website.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Who we are</h2><p>{site.legal.legalName}, {site.address.town} {site.address.postcode}. ICO registration {site.legal.icoReference}. Contact <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  <h2>What we collect and why</h2><ul><li><strong>Enquiries and call bookings:</strong> your name, contact details, the student's year group, subjects and goals — to reply and to run the assessment call (legitimate interests / steps before a contract).</li><li><strong>Students:</strong> first name, year group, school, exam board, grades, lesson notes and homework — to provide tuition and report progress to parents (contract). We hold information about children only with a parent or guardian's agreement; adult learners contract directly.</li><li><strong>Payments:</strong> invoices and payment records, retained for 6 years for tax purposes (legal obligation).</li><li><strong>Website:</strong> no analytics or advertising cookies by default. Forms use a hidden anti-spam field.</li></ul>
+  <h2>Online lessons</h2><p>Lessons are not recorded unless a parent asks in writing. Whiteboard notes are kept for the student's reference until the end of the academic year.</p>
+  <h2>Sharing</h2><p>Booking and form providers configured for this site act as processors. Information about a student is shared only with their parent or guardian, or where a safeguarding concern requires it (see the safeguarding policy).</p>
+  <h2>Retention</h2><p>Lesson notes and progress records: one year after lessons end. Enquiries that don't proceed: six months. Financial records: six years.</p>
+  <h2>Your rights</h2><p>Access, correction, deletion, restriction and objection: email <a href={`mailto:${site.email}`}>{site.email}</a>. Complaints: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+</Legal>

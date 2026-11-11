@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+import { faqSchema } from '@site/core';
+const steps = [
+  { n: 1, t: 'Book a free assessment call', b: 'Twenty minutes with the parent and, ideally, the student. Current grades, targets, what\'s been tried. I give an honest view of what\'s achievable and in what time, and quote exact prices. If I\'m not the right fit I\'ll say so.' },
+  { n: 2, t: 'Two diagnostic lessons', b: 'We work through a short paper together. Not to grade it — to watch how the student thinks. Most problems trace back to three or four missing foundations that school moved past too quickly.' },
+  { n: 3, t: 'A written plan', b: 'Which topics, in which order, how many lessons until the exam, and what "good" looks like at each half-term. Parents get a copy; we review it together each half-term.' },
+  { n: 4, t: 'Weekly lessons and marked homework', b: 'Sixty minutes a week (ninety for A-level if useful). Thirty to forty-five minutes of homework between, marked before the next lesson. A short note to parents after every lesson.' },
+  { n: 5, t: 'Exam technique from the mocks', b: 'Past papers under time. Mark-scheme language. Where method marks hide. How to leave a question and come back. The part most students have never actually been taught.' },
+];
+---
+<Base title="How it works" description="How tuition with Bright Spark works: a free assessment call, two diagnostic lessons, a written plan, weekly lessons with marked homework, and exam technique from the mocks. Online and in person in Cambridge." schema={[faqSchema(site.faqs)]}>
+  <section class="grid-paper border-b-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14"><p class="eyebrow">How it works</p><h1 class="display-xl mt-3 max-w-[12ch]">Find the gaps. <span class="hl">Fill them.</span> Practise.</h1><p class="mt-5 text-ink/80 max-w-xl">The same method for a Year 6 and a Year 13 — the pace changes, the steps don't.</p></div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1.3fr_1fr] gap-12 items-start">
+    <ol class="sheet px-6 sm:pl-20 sm:pr-10 py-6 list-none m-0" data-reveal>{steps.map((s) => <li class="relative py-5 leading-8"><span class="hand text-3xl text-red absolute -left-12 sm:-left-14 top-5" aria-hidden="true">{s.n}.</span><h2 class="font-800 text-xl leading-8">{s.t}</h2><p class="text-ink/80">{s.b}</p></li>)}</ol>
+    <div class="grid gap-6 lg:sticky lg:top-8">
+      <div class="relative"><div class="bg-white p-3 pb-8 shadow-[0_30px_60px_-30px_rgba(29,46,107,0.5)] rotate-[1.5deg]"><Image src={img('online')} alt="A student in an online lesson with a shared whiteboard on screen" widths={[480, 900]} sizes="(min-width:1024px) 420px, 92vw" class="w-full aspect-[4/3] object-cover" /></div><Note class="absolute -bottom-5 left-4 text-ink" arrow="right" rotate={-3}>shared whiteboard = I see the working</Note></div>
+      <div class="sticky-note tilt-l mt-4"><p class="hand text-2xl">Online or in person?</p><p class="text-sm mt-2">In person at my home study on Mill Road (parents welcome to stay). Online with video plus a shared whiteboard — a tablet with a stylus or a cheap graphics tablet is all you need. We can try one of each in the first fortnight.</p><a href="/resources/online-vs-in-person-tutoring" class="underline font-700 text-sm mt-3 inline-block">Honest comparison →</a></div>
+    </div>
+  </section>
+
+  <section class="bg-ink text-white"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid md:grid-cols-3 gap-8">{[['Parents in the loop', 'A short note after every lesson: what we did, what went well, what to practise. A proper review each half-term.'], ['Homework that gets marked', 'Thirty to forty-five minutes between lessons, marked before the next. Students who do it progress about twice as fast.'], ['Honest from the start', 'If the target isn\'t realistic in the time, I\'ll say so on the free call and suggest what is.']].map(([t, b]) => <div><p class="hand text-hi text-2xl">{t}</p><p class="mt-2 text-white/80">{b}</p></div>)}</div></section>
+
+  <section id="faq" class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1fr_1.6fr] gap-10 scroll-mt-10"><div><p class="eyebrow">Questions</p><h2 class="display-lg mt-3">Parents ask.</h2><p class="mt-4 text-ink/80 max-w-xs">Something else? <a class="underline" href="/contact">Send an enquiry</a> or ring <a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a>.</p></div><div class="grid gap-3">{site.faqs.map((f) => <details class="group card"><summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden"><span class="display-sm">{f.q}</span><span class="hand text-2xl text-red group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary><p class="px-5 pb-5 text-ink/80">{f.a}</p></details>)}</div></section>
+</Base>

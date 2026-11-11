@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site, subjects, pricing, results } from '@/site.config';
+import { img } from '@/images';
+const gbp = (p: number) => `£${(p / 100).toFixed(0)}`;
+const faqs = site.faqs.slice(0, 4);
+const tilts = ['tilt-l', 'tilt-r', 'tilt-l', 'tilt-r', 'tilt-l'];
+const skins = ['', 'sticky-sky', 'sticky-white', '', 'sticky-sky'];
+---
+<Base>
+  <!-- Hero on exercise-book grid -->
+  <section class="grid-paper border-b-2 border-ink overflow-x-clip">
+    <div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-10 lg:pt-20 pb-14 lg:pb-24 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-center">
+      <div class="relative">
+        <p class="eyebrow">Cambridge &amp; online · GCSE, A-level, 11+</p>
+        <h1 class="display-xl mt-4 max-w-[12ch]">Maths and science tuition that <span class="hl">actually clicks.</span></h1>
+        <Note class="absolute -top-2 right-0 lg:right-10 text-ink hidden md:inline-flex" arrow="down" rotate={-6}>ex-secondary teacher, PhD</Note>
+        <p class="mt-6 text-lg text-ink/80 max-w-xl">One-to-one lessons with {site.owner?.name}: find the gaps, fill them, then practise until the exam looks easy. In person on Mill Road or online with a shared whiteboard.</p>
+        <div class="mt-8 flex flex-wrap gap-3 items-center"><a href="/book" class="btn btn-hi border-ink">Book a free 20-min call</a><a href="/subjects" class="btn btn-outline">Subjects &amp; levels</a></div>
+        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-700">{site.credentials?.slice(0, 3).map((c) => <li class="flex items-center gap-2"><span class="tick text-xl" aria-hidden="true">✓</span>{c.label}{c.fictional && <span class="sr-only"> (fictional)</span>}</li>)}</ul>
+      </div>
+      <div class="relative mx-auto w-full max-w-[520px] sm:pt-6">
+        <div class="bg-white p-3 pb-10 shadow-[0_30px_60px_-30px_rgba(29,46,107,0.5)] rotate-[1.5deg]"><Image src={img('hero')} alt="A student working through maths in an exercise book at a desk by a window, highlighter in hand" widths={[520, 800, 1100]} sizes="(min-width:1024px) 520px, 92vw" loading="eager" fetchpriority="high" class="w-full aspect-[4/3] object-cover" /><p class="hand text-xl mt-3 ml-1">Tuesday, 4.30pm — quadratics, finally.</p></div>
+        <div class="sticky-note tilt-l max-w-[220px] mt-6 sm:mt-0 sm:absolute sm:-top-8 sm:-left-10"><p class="hand text-2xl leading-none">Free assessment call</p><p class="text-sm mt-2">20 minutes. Honest view, exact prices, no obligation.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subjects as sticky notes -->
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24">
+    <div class="flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Subjects</p><h2 class="display-lg mt-3">Five subjects. <span class="hl">Properly</span> taught.</h2></div><Note arrow="right" class="text-ink">pick one, or three</Note></div>
+    <ul class="mt-12 grid sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-5 list-none p-0">{subjects.map((s, i) => <li><a href={`/subjects/${s.slug}`} class:list={['sticky-note block h-full', tilts[i], skins[i]]} data-reveal data-reveal-delay={i * 70}><p class="display-sm">{s.name}</p><p class="text-xs font-700 mt-1 opacity-70">{s.levels.join(' · ')}</p><p class="text-sm mt-3 leading-snug">{site.services.find((x) => x.slug === s.slug)?.summary}</p><p class="hand text-xl mt-4">from {gbp(site.services.find((x) => x.slug === s.slug)?.pricePence ?? 0)}/hr →</p></a></li>)}</ul>
+  </section>
+
+  <!-- How lessons work: ruled sheet -->
+  <section class="grid-paper border-y-2 border-ink">
+    <div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-[1fr_1.3fr] gap-10 items-start">
+      <div class="lg:sticky lg:top-8"><p class="eyebrow">How it works</p><h2 class="display-lg mt-3">Gaps first. <span class="hl">Then grades.</span></h2><p class="mt-5 text-ink/80 max-w-md">The same four steps for a Year 6 and a Year 13. The pace changes; the method doesn't.</p><a href="/how-it-works" class="btn btn-ink mt-7">The full method</a></div>
+      <ol class="sheet px-6 sm:pl-20 sm:pr-10 py-8 list-none m-0" data-reveal>
+        {[['Free call', 'Twenty minutes to understand where the student is, the target, and whether I\'m the right fit. I say so if I\'m not.'], ['Diagnostic lessons', 'The first two lessons find the missing foundations — the handful of things that make everything else wobble.'], ['Weekly lessons + homework', 'Sixty minutes a week, 30–45 minutes of marked homework between. Parents get a short note after every lesson.'], ['Exam technique', 'From the mocks onwards: past papers under time, mark-scheme language, and how to collect method marks.']].map(([t, b], i) => <li class="relative grid grid-cols-[2.5rem_1fr] gap-3 py-4 leading-8"><span class="hand text-3xl text-red -ml-14 sm:-ml-16 absolute" aria-hidden="true">{i + 1}.</span><span class="font-800 text-lg col-start-2">{t}</span><span class="col-start-2 text-ink/80">{b}</span></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24">
+    <div class="flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Results</p><h2 class="display-lg mt-3">Marked, not marketed.</h2></div><p class="text-sm text-mute max-w-xs">Fictional results and reviews for this demonstration.</p></div>
+    <dl class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">{results.stats.map((s, i) => <div data-reveal data-reveal-delay={i * 80}><dd class="display-xl"><span class="hl">{s.stat}{s.suffix}</span></dd><dt class="mt-3 text-sm font-700 text-ink/75 max-w-[22ch]">{s.label}</dt></div>)}</dl>
+    <div class="mt-14 grid md:grid-cols-3 gap-6">{site.testimonials.slice(0, 3).map((t, i) => <figure class="card p-6 relative" data-reveal data-reveal-delay={i * 80}><span class="tick absolute -top-4 right-5 text-5xl" aria-hidden="true">✓</span><blockquote class="text-[1.05rem] leading-relaxed">“{t.quote}”</blockquote><figcaption class="mt-4 text-sm"><span class="font-800">{t.name}</span><span class="text-mute"> · {t.context}</span></figcaption></figure>)}</div>
+    <a href="/results" class="btn btn-outline mt-8">All results &amp; reviews</a>
+  </section>
+
+  <!-- Pricing + about -->
+  <section class="bg-ink text-white">
+    <div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <div data-reveal>
+        <p class="eyebrow !text-hi !opacity-100">Pricing</p>
+        <h2 class="display-lg mt-3">Straight prices. <span class="bg-hi text-ink px-2 box-decoration-clone">No contract.</span></h2>
+        <table class="mt-8 w-full text-left border-collapse"><thead><tr class="text-xs uppercase tracking-wider text-white/60"><th class="py-2 font-700">Level</th><th class="py-2 font-700 text-right">Online</th><th class="py-2 font-700 text-right">In person</th></tr></thead><tbody>{pricing.rows.map((r) => <tr class="border-t border-white/15"><td class="py-3 font-700">{r.level}</td><td class="py-3 text-right">{gbp(r.online)}/hr</td><td class="py-3 text-right">{gbp(r.inPerson)}/hr</td></tr>)}</tbody></table>
+        <p class="mt-4 text-sm text-white/70">Packs of ten save 10%. Siblings 10% off. Weekly rolling.</p>
+        <a href="/pricing" class="btn btn-hi mt-6">Full pricing</a>
+      </div>
+      <div class="grid sm:grid-cols-[200px_1fr] gap-6 items-center" data-reveal data-reveal-delay={120}>
+        <div class="bg-white p-2 pb-6 rotate-[-2deg] max-w-[240px]"><Image src={img('tutor')} alt={`${site.owner?.name}, tutor, at her desk`} widths={[240, 480]} sizes="200px" class="w-full aspect-[4/5] object-cover" /><p class="hand text-ink text-lg mt-2 text-center">{site.owner?.name}</p></div>
+        <div><p class="eyebrow !text-hi !opacity-100">Your tutor</p><h3 class="display-md mt-2">Taught it in a classroom first.</h3><p class="mt-3 text-white/80">{site.team?.[0]?.bio}</p><a href="/about" class="underline font-700 mt-4 inline-block">About Anjali →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + CTA -->
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-[1fr_1.4fr] gap-10">
+    <div><p class="eyebrow">Questions</p><h2 class="display-lg mt-3">Parents ask.</h2><a href="/how-it-works#faq" class="underline font-700 mt-4 inline-block">All questions →</a></div>
+    <div class="grid gap-3">{faqs.map((f) => <details class="group card"><summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden"><span class="display-sm">{f.q}</span><span class="hand text-2xl text-red group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary><p class="px-5 pb-5 text-ink/80">{f.a}</p></details>)}</div>
+  </section>
+  <section class="grid-paper border-t-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-16 lg:py-24 text-center"><h2 class="display-xl max-w-[14ch] mx-auto">Start with a <span class="hl">free call.</span></h2><p class="mt-5 text-ink/80 max-w-md mx-auto">Twenty minutes, no obligation. Honest view of what's achievable and exactly what it costs.</p><div class="mt-8 flex justify-center gap-3 flex-wrap"><a href="/book" class="btn btn-ink">Book a free call</a><a href="/contact" class="btn btn-outline">Send an enquiry</a></div></div></section>
+</Base>

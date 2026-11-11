@@ -1,0 +1,113 @@
+/*
+  BRIGHT SPARK TUTORING — design tokens.
+  Palette: paper white (dominant) · ink blue (secondary) · highlighter yellow (accent) · correction red (sparingly).
+  Type: Plus Jakarta Sans (display + body) · Caveat (handwritten margin notes).
+  Motifs: exercise-book grid, ruled A4 sheets with a red margin, highlighter swipes that draw in, sticky notes, margin annotations.
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource/caveat/500.css';
+@import '@fontsource/caveat/700.css';
+
+@theme {
+  --color-paper: #fbfaf6;
+  --color-paper-2: #f1efe6;
+  --color-ink: #1d2e6b;
+  --color-ink-2: #14204d;
+  --color-hi: #fff048;
+  --color-hi-2: #f3e11a;
+  --color-sky: #dbe6ff;
+  --color-line: #d7deef;
+  --color-pencil: #9a9a93;
+  --color-red: #e24b3b;
+  --color-white: #ffffff;
+  --color-mute: #6b7088;
+  --color-focus: #1d2e6b;
+  --color-error: #e24b3b;
+
+  --font-display: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-hand: 'Caveat', 'Segoe Print', cursive;
+}
+
+@layer base {
+  html { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-hi); color: var(--color-ink); }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.6rem, 6.6vw, 5.6rem); line-height: 1; letter-spacing: -0.04em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.02; letter-spacing: -0.035em; }
+@utility display-md { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 2.3vw, 2rem); line-height: 1.08; letter-spacing: -0.025em; }
+@utility display-sm { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.15; letter-spacing: -0.01em; }
+@utility eyebrow { font-family: var(--font-display); font-weight: 700; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink); opacity: 0.7; }
+@utility hand { font-family: var(--font-hand); font-weight: 500; font-size: 1.45rem; line-height: 1.05; color: var(--color-ink); }
+
+/* Exercise-book grid paper */
+@utility grid-paper {
+  background-color: var(--color-paper);
+  background-image: linear-gradient(var(--color-line) 1px, transparent 1px), linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+/* Ruled A4 sheet with a red margin line */
+@utility sheet {
+  position: relative;
+  background-color: white;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--color-line) 31px 32px);
+  box-shadow: 0 30px 60px -40px color-mix(in srgb, var(--color-ink) 40%, transparent), 0 1px 0 var(--color-line);
+}
+.sheet::before { content: ''; position: absolute; top: 0; bottom: 0; left: clamp(1rem, 4.5vw, 4rem); width: 1px; background: color-mix(in srgb, var(--color-red) 55%, transparent); pointer-events: none; }
+.sheet > * { position: relative; }
+
+/* Highlighter swipe. Draws in when `.is-in` is added (scroll); static on no-JS / reduced motion. */
+.hl { background-image: linear-gradient(var(--color-hi), var(--color-hi)); background-repeat: no-repeat; background-size: 100% 0.5em; background-position: 0 88%; padding: 0 0.08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+html.js .hl { background-size: 0% 0.5em; transition: background-size 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+html.js .hl.is-in { background-size: 100% 0.5em; }
+@media (prefers-reduced-motion: reduce) { html.js .hl { background-size: 100% 0.5em; transition: none; } }
+.hl-static { background: linear-gradient(var(--color-hi), var(--color-hi)) no-repeat 0 88% / 100% 0.5em; padding: 0 0.08em; }
+
+/* Sticky notes */
+@utility sticky-note { position: relative; background: var(--color-hi); color: var(--color-ink); padding: 1.4rem 1.5rem 1.6rem; box-shadow: 2px 8px 22px -10px color-mix(in srgb, var(--color-ink) 45%, transparent); }
+.sticky-note::before { content: ''; position: absolute; top: -11px; left: 50%; width: 88px; height: 22px; background: rgba(255, 255, 255, 0.5); transform: translateX(-50%) rotate(-2deg); backdrop-filter: blur(1px); }
+@utility sticky-sky { background: var(--color-sky); }
+@utility sticky-white { background: white; }
+.tilt-l { transform: rotate(-1.5deg); } .tilt-r { transform: rotate(1.2deg); }
+.sticky-note { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.sticky-note:hover { transform: rotate(0deg) translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .sticky-note:hover { transform: none; } }
+
+/* Buttons: pencil-rectangle, slight lift */
+@utility btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.85rem 1.5rem; border-radius: 8px; font-family: var(--font-display); font-weight: 700; font-size: 0.98rem; text-decoration: none; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s; }
+.btn:hover, .btn:focus-visible { transform: translateY(-2px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+@utility btn-ink { background: var(--color-ink); color: white; box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-ink) 70%, transparent); }
+.btn-ink:hover, .btn-ink:focus-visible { background: var(--color-ink-2); }
+@utility btn-hi { background: var(--color-hi); color: var(--color-ink); box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-ink) 40%, transparent); }
+.btn-hi:hover, .btn-hi:focus-visible { background: var(--color-hi-2); }
+@utility btn-outline { background: transparent; color: currentColor; border-color: currentColor; }
+@utility btn-white { background: white; color: var(--color-ink); }
+
+/* Cards */
+@utility card { background: white; border: 1.5px solid var(--color-line); border-radius: 12px; }
+@utility card-ink { background: var(--color-ink); color: white; border-radius: 12px; }
+
+/* Correction mark */
+@utility tick { color: var(--color-red); font-family: var(--font-hand); font-weight: 700; }
+
+/* Forms */
+@layer components {
+  .field { width: 100%; background: white; border: 1.5px solid var(--color-line); border-bottom: 2px solid var(--color-ink); border-radius: 8px 8px 0 0; color: var(--color-ink); padding: 0.75rem 0.9rem; font: inherit; min-height: 48px; }
+  .field:focus { outline: none; border-color: var(--color-ink); background: #fffdf0; box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-hi) 70%, transparent); }
+  .field::placeholder { color: var(--color-pencil); }
+  .label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; }
+  .chip { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.95rem; border-radius: 8px; border: 1.5px solid var(--color-line); background: white; cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+  .chip:has(input:checked) { background: var(--color-hi); border-color: var(--color-ink); }
+  .chip:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 2px; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+}
+
+html.nav-open { overflow: hidden; }

@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, results } from '@/site.config';
+import { img } from '@/images';
+---
+<Base title="Results & reviews" description="Grade improvements and parent reviews for Bright Spark Tutoring, Cambridge: average 2.1 grades GCSE mock to final, 94% hitting target. Fictional demonstration data.">
+  <section class="grid-paper border-b-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Results &amp; reviews</p><h1 class="display-xl mt-3">Marked, <span class="hl">not marketed.</span></h1></div><p class="text-sm text-mute max-w-xs">All results, students and reviews on this page are fictional, for demonstration. A real tutor should publish only consented, verifiable results.</p></div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20">
+    <dl class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">{results.stats.map((s, i) => <div data-reveal data-reveal-delay={i * 80}><dd class="display-xl"><span class="hl">{s.stat}{s.suffix}</span></dd><dt class="mt-3 text-sm font-700 text-ink/75 max-w-[22ch]">{s.label}</dt></div>)}</dl>
+  </section>
+
+  <section class="grid-paper border-y-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20">
+    <h2 class="display-lg">Four students, four plans.</h2>
+    <div class="mt-10 grid md:grid-cols-2 gap-6">{results.stories.map((s, i) => <article class="sheet px-6 sm:pl-16 sm:pr-8 py-6" data-reveal data-reveal-delay={i * 80}><p class="eyebrow leading-8">{s.subject}</p><h3 class="font-800 text-xl leading-8">{s.student}</h3><p class="leading-8 mt-2"><span class="text-mute">From</span> <span class="font-800">{s.from}</span> <span class="text-mute">to</span> <span class="hl-static font-800 text-lg">{s.to}</span> <span class="text-mute">· {s.lessons} lessons</span></p><p class="leading-8 text-ink/80 mt-2">{s.note}</p><p class="hand text-red text-2xl mt-2">✓ target met</p></article>)}</div>
+  </div></section>
+
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1fr_1.5fr] gap-10 items-start">
+    <div class="lg:sticky lg:top-8"><p class="eyebrow">Reviews</p><h2 class="display-lg mt-3">What parents say.</h2><p class="mt-4 text-sm text-mute">Fictional reviews for demonstration.</p><div class="bg-white p-3 pb-8 mt-8 rotate-[-2deg] max-w-[360px] shadow-[0_30px_60px_-30px_rgba(29,46,107,0.5)]"><Image src={img('papers')} alt="A stack of marked past papers with highlighter notes" widths={[360, 700]} sizes="360px" class="w-full aspect-[4/5] object-cover" /></div></div>
+    <div class="grid gap-5">{site.testimonials.map((t, i) => <figure class="card p-6 relative" data-reveal data-reveal-delay={i * 60}><span class="tick absolute -top-4 right-5 text-5xl" aria-hidden="true">✓</span><blockquote class="text-[1.05rem] leading-relaxed">“{t.quote}”</blockquote><figcaption class="mt-4 text-sm"><span class="font-800">{t.name}</span><span class="text-mute"> · {t.context}</span></figcaption></figure>)}</div>
+  </section>
+</Base>

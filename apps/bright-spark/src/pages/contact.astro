@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import Note from '@/components/Note.astro';
+import { site, subjects, yearGroups } from '@/site.config';
+import { hoursLines } from '@site/core';
+const lines = hoursLines(site);
+---
+<Base title="Contact & enquiry" description="Send a tuition enquiry to Bright Spark Tutoring, Cambridge — student year group, subjects and goals — or ring 01223 920 614. Lessons in Cambridge and online.">
+  <section class="grid-paper border-b-2 border-ink"><div class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-12 flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Contact</p><h1 class="display-xl mt-3">Tell me about <span class="hl">the student.</span></h1><p class="mt-5 text-ink/80 max-w-xl">Year group, subjects, what's going on. I reply within one working day — usually the same evening.</p></div><Note arrow="left" class="text-ink">or just book the free call</Note></div></section>
+  <section class="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-10 py-14 grid lg:grid-cols-[1.4fr_1fr] gap-10 items-start">
+    <form class="sheet px-6 sm:pl-20 sm:pr-10 py-8 grid gap-5" data-enquiry-form name="enquiry" method="post" novalidate>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="e-name">Your name</label><input class="field" id="e-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label" for="e-email">Email</label><input class="field" id="e-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div><div><label class="label" for="e-phone">Phone <span class="font-normal text-mute">(optional)</span></label><input class="field" id="e-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div><div><label class="label" for="e-year">Student's year group</label><select class="field" id="e-year" name="year" required><option value="">Choose…</option>{yearGroups.map((y) => <option>{y}</option>)}</select><span data-error-for="year" hidden></span></div></div>
+      <fieldset><legend class="label">Subjects <span class="font-normal text-mute">(pick any)</span></legend><div class="flex flex-wrap gap-2 mt-1">{subjects.map((s) => <label class="chip relative"><input type="checkbox" name="subjects" value={s.slug} />{s.name}</label>)}</div></fieldset>
+      <fieldset><legend class="label">Online or in person?</legend><div class="flex flex-wrap gap-2 mt-1">{['Online', 'In person (Cambridge)', 'Either'].map((o, i) => <label class="chip relative"><input type="radio" name="mode" value={o} checked={i === 2} />{o}</label>)}</div></fieldset>
+      <div><label class="label" for="e-msg">What's the goal?</label><textarea class="field" id="e-msg" name="message" rows="4" required placeholder="e.g. Year 11, Edexcel maths, mock grade 4, needs a 6 for sixth form. Hates algebra."></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-ink">Send enquiry</button><p data-form-status role="status" aria-live="polite" class="text-sm max-w-sm"></p></div>
+      <p class="text-xs text-mute">Used only to reply to your enquiry. <a class="underline" href="/privacy">Privacy</a>.</p>
+    </form>
+    <div class="grid gap-6">
+      <div class="sticky-note tilt-r"><p class="hand text-2xl">Ring or email</p><p class="mt-2 flex flex-col gap-1 text-sm"><a class="underline font-700" href={`tel:${site.phoneHref}`}>{site.phone}</a><a class="underline break-all" href={`mailto:${site.email}`}>{site.email}</a></p><p class="text-sm mt-3">Weekday evenings and Saturday mornings. Leave a message and I'll call back the same day.</p></div>
+      <div class="card p-6"><p class="eyebrow">In-person lessons</p><address class="not-italic mt-2 text-sm leading-relaxed">{site.address.line1}, {site.address.line2}<br />{site.address.town} {site.address.postcode}</address><p class="text-sm text-mute mt-2">Exact address shared on booking. Parents welcome to stay. Online lessons UK-wide.</p></div>
+      <div class="card p-6"><p class="eyebrow">Lesson hours</p><dl class="text-sm mt-2">{lines.map((l) => <div class="flex justify-between gap-4 border-b border-line py-1.5"><dt>{l.days}</dt><dd class:list={[l.time === 'Closed' && 'text-mute']}>{l.time}</dd></div>)}</dl></div>
+    </div>
+  </section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-enquiry-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'enquiry', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], year: [{ type: 'required', message: 'Which year group?' }], message: [{ type: 'required', message: 'A line about the goal' }] } });
+  </script>
+</Base>
