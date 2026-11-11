@@ -5,8 +5,9 @@ lilac pages, circular treatment orbs in a snap-scrolling carousel, before/after 
 a concern-chip consultation form, and a treatment-booking island (Cal.com/Calendly-ready).
 Astro 5 + Tailwind v4 + one Preact island. Static output.
 
-> Fictional demonstration business. Replace all details before launch. Photography is currently
-> brand-coloured **placeholder** JPEGs (see Images) — swap in real or generated photos by filename.
+> Fictional demonstration business. Replace all details before launch. Photography is AI-generated
+> (see `/credits`); the three results stories currently share one before/after pair, mirrored/cropped
+> per story — give each story its own consented pair via `results[].before/after` keys.
 
 ## Pages
 `/` · `/treatments` · `/treatments/<slug>` ×5 · `/consultation` · `/prices` · `/results` ·
