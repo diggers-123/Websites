@@ -1,0 +1,11 @@
+---
+/** lowercase "lumen" wordmark; the u carries a glowing counter. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<span class={`inline-flex items-baseline font-display font-600 tracking-tight ${cls}`}>
+  <span class="text-[1.7em] leading-none">l</span>
+  <span class="relative inline-block text-[1.7em] leading-none"><span class="absolute left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 w-[0.42em] h-[0.42em] rounded-full bg-[radial-gradient(circle,#ff7a1a_0%,#ff9ecf_60%,transparent_75%)] blur-[1px]" aria-hidden="true"></span><span class="relative">u</span></span>
+  <span class="text-[1.7em] leading-none">men</span>
+  <span class="ml-2 eyebrow !text-[0.55em] self-center">skin studio</span>
+</span>

@@ -1,0 +1,25 @@
+---
+import { site } from '@/site.config';
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="relative z-50 bg-lilac/90 backdrop-saturate-150">
+  <div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 h-[74px] lg:h-[88px] flex items-center justify-between gap-6">
+    <a href="/" class="text-plum" aria-label={`${site.name} — home`}><Logo class="text-[1rem] lg:text-[1.15rem]" /></a>
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-1 bg-white/70 rounded-full p-1.5">
+      {site.nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} class:list={['font-display font-500 text-[0.92rem] px-4 py-2 rounded-full hover:bg-white transition-colors', isActive(n.href) && 'bg-plum text-white hover:bg-plum']}>{n.label}</a>)}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={site.primaryCta.href} class="btn btn-tang hidden sm:inline-flex !py-2.5 !px-5 !text-sm">{site.primaryCta.label}</a>
+      <button type="button" class="lg:hidden size-11 rounded-full bg-white inline-flex flex-col items-center justify-center gap-1.5" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="block w-5 h-0.5 bg-plum rounded"></span><span class="block w-5 h-0.5 bg-plum rounded"></span></button>
+    </div>
+  </div>
+  <div id="mobile-nav" data-nav-panel class="lg:hidden absolute inset-x-0 top-full h-[calc(100dvh-100%)] light-plum text-white overflow-y-auto" hidden>
+    <nav aria-label="Mobile" class="px-6 py-8 flex flex-col">
+      {site.nav.map((n) => <a href={n.href} class="display-md py-3.5 border-b border-white/15" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href="/contact" class="display-md py-3.5">Contact</a>
+      <a href={site.primaryCta.href} class="btn btn-tang mt-6 self-start">{site.primaryCta.label}</a>
+    </nav>
+  </div>
+</header>

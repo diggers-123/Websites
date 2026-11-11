@@ -1,0 +1,38 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { hoursLines, openStatus } from '@site/core';
+const lines = hoursLines(site);
+const status = openStatus(site);
+const mapsQuery = encodeURIComponent(`${site.address.line1}, ${site.address.town} ${site.address.postcode}`);
+---
+<Base title="Contact & gift vouchers" description={`Lumen Skin Studio, ${site.address.line1}, ${site.address.line2}, Brighton ${site.address.postcode}. ${site.phone}. Gift vouchers available.`}>
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 grid lg:grid-cols-2 gap-10">
+    <div><p class="eyebrow">{status.label}</p><h1 class="display-xl mt-3">Say hello.</h1><dl class="mt-8 grid gap-5 text-sm"><div><dt class="eyebrow">Phone</dt><dd class="display-md mt-1"><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd></div><div><dt class="eyebrow">Email</dt><dd class="mt-1 break-all"><a class="underline" href={`mailto:${site.email}`}>{site.email}</a></dd></div><div><dt class="eyebrow">Studio</dt><dd class="mt-1 not-italic">{site.address.line1}, {site.address.line2}<br />{site.address.town} {site.address.postcode}<br /><a class="underline" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">Directions ↗</a> · lift to the first floor</dd></div><div><dt class="eyebrow">Hours</dt><dd class="mt-1">{lines.map((l) => <span class="block">{l.days}: {l.time}</span>)}</dd></div></dl></div>
+    <form class="panel p-6 sm:p-8 grid gap-4" data-contact-form name="contact" method="post" novalidate>
+      <h2 class="display-md">Send a message</h2>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="c-name">Name</label><input class="field" id="c-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label" for="c-phone">Phone <span class="font-normal text-mute">(optional)</span></label><input class="field" id="c-phone" name="phone" type="tel" autocomplete="tel" /><span data-error-for="phone" hidden></span></div></div>
+      <div><label class="label" for="c-email">Email</label><input class="field" id="c-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div>
+      <div><label class="label" for="c-msg">Message</label><textarea class="field" id="c-msg" name="message" rows="5" required></textarea><span data-error-for="message" hidden></span></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-tang">Send</button><p data-form-status role="status" aria-live="polite" class="text-sm"></p></div>
+    </form>
+  </div></section>
+  <section id="vouchers" class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 scroll-mt-10 grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
+    <div><p class="eyebrow">Gift vouchers</p><h2 class="display-lg mt-2">Give someone good skin.</h2><p class="mt-4 text-plum/80 max-w-md">Vouchers for any amount or any treatment, emailed within the hour or posted in a card. Valid 12 months.</p></div>
+    <form class="panel p-6 sm:p-8 grid gap-4" data-voucher-form name="voucher" method="post" novalidate>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="v-amount">Amount or treatment</label><select class="field" id="v-amount" name="amount"><option>£50</option><option>£75 — Signature facial</option><option>£100</option><option>£180 — Microneedling</option><option>Other amount</option></select></div><div><label class="label" for="v-delivery">Delivery</label><select class="field" id="v-delivery" name="delivery"><option>Email voucher</option><option>Posted in a card (+£2)</option></select></div><div><label class="label" for="v-name">Your name</label><input class="field" id="v-name" name="name" required /><span data-error-for="name" hidden></span></div><div><label class="label" for="v-email">Your email</label><input class="field" id="v-email" name="email" type="email" required /><span data-error-for="email" hidden></span></div><div class="sm:col-span-2"><label class="label" for="v-to">For (name &amp; a message)</label><input class="field" id="v-to" name="recipient" placeholder="For Mum — happy birthday" /></div></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-plum">Request a voucher</button><p data-form-status role="status" aria-live="polite" class="text-sm max-w-sm"></p></div>
+      <p class="text-xs text-mute">We reply with a payment link; the voucher is sent once paid. Payments need a provider (e.g. Stripe Payment Links) — see README.</p>
+    </form>
+  </section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const c = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (c) enhanceForm(c, { config: site.forms, formName: 'contact', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'An email to reply to' }, { type: 'email' }], phone: [{ type: 'ukPhone' }], message: [{ type: 'required', message: 'What can we help with?' }, { type: 'minLength', value: 10, message: 'A little more detail helps' }] } });
+    const v = document.querySelector<HTMLFormElement>('[data-voucher-form]');
+    if (v) enhanceForm(v, { config: site.forms, formName: 'voucher', rules: { name: [{ type: 'required', message: 'Your name' }], email: [{ type: 'required', message: 'Your email' }, { type: 'email' }] } });
+  </script>
+</Base>

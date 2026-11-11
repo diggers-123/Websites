@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, courses } from '@/site.config';
+import { img, treatmentImage } from '@/images';
+import { serviceSchema, breadcrumbSchema } from '@site/core';
+export function getStaticPaths() { return site.services.filter((s) => s.slug !== 'skin-consultation').map((s) => ({ params: { slug: s.slug }, props: { t: s } })); }
+const { t } = Astro.props;
+const url = `${site.seo.siteUrl}/treatments/${t.slug}`;
+const course = courses.find((c) => c.slug === t.slug);
+const downtime: Record<string, string> = { 'signature-facial': 'None', 'chemical-peel': 'Light flaking 2–3 days (stronger grades)', microneedling: 'Pink 24–48 hours', 'led-therapy': 'None', dermaplaning: 'None' };
+const schema = [serviceSchema(site, t, url), breadcrumbSchema([{ name: 'Home', url: site.seo.siteUrl }, { name: 'Treatments', url: `${site.seo.siteUrl}/treatments` }, { name: t.name, url }])];
+---
+<Base title={`${t.name} in Brighton`} description={`${t.summary} ${t.price}, ${t.durationMins} minutes at Lumen Skin Studio, Brighton. Book online.`} {schema}>
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+    <div><p class="eyebrow"><a href="/treatments" class="hover:underline">Treatments</a> · {t.category}</p><h1 class="display-xl mt-3">{t.name}</h1><p class="mt-4 text-lg text-plum/80 max-w-lg">{t.summary}</p><dl class="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm"><div><dt class="eyebrow">Price</dt><dd class="display-sm mt-1">{t.price}</dd></div><div><dt class="eyebrow">Time</dt><dd class="display-sm mt-1">{t.durationMins} min</dd></div><div><dt class="eyebrow">Downtime</dt><dd class="display-sm mt-1">{downtime[t.slug]}</dd></div></dl><div class="mt-7 flex flex-wrap gap-3"><a href={`/book?treatment=${t.slug}`} class="btn btn-tang">Book {t.name.toLowerCase()}</a><a href="/consultation" class="btn btn-white">Not sure? Consult first</a></div></div>
+    <div class="relative aspect-[4/5] max-w-[440px] w-full justify-self-center rounded-[40px] overflow-hidden shadow-[0_40px_80px_-30px_rgba(59,28,79,0.45)]"><Image src={img(treatmentImage[t.slug])} alt={t.name} widths={[640, 1024]} sizes="(min-width:1024px) 40vw, 90vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+  </div></section>
+  <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[2fr_1fr] gap-10">
+    <div>{t.description?.map((p) => <p class="text-[1.08rem] leading-relaxed text-plum/85 mb-5 max-w-[65ch]">{p}</p>)}</div>
+    <aside class="grid gap-4 self-start lg:sticky lg:top-6"><div class="panel p-5"><p class="eyebrow mb-3">Included</p><ul class="grid gap-2 text-sm">{t.includes?.map((x) => <li class="flex gap-2"><span class="text-tang">●</span>{x}</li>)}</ul></div>{course && <div class="panel p-5 border-2 border-tang"><p class="eyebrow">Course</p><p class="display-sm mt-1">{course.name}</p><p class="display-md mt-1">£{course.price / 100} <span class="text-sm font-sans font-normal text-mute">save £{course.saves / 100}</span></p><p class="text-xs text-mute mt-2">Valid 12 months; split over 3 months at no extra cost.</p></div>}</aside>
+  </section>
+</Base>

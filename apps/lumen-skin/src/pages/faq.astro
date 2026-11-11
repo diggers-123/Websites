@@ -1,0 +1,9 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { faqSchema } from '@site/core';
+---
+<Base title="FAQ" description="Which treatment to book, downtime, suitability for acne, rosacea and darker skin, pregnancy, patch tests, courses, cancellations and parking — Lumen Skin Studio, Brighton." schema={[faqSchema(site.faqs)]}>
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14"><p class="eyebrow">Questions</p><h1 class="display-xl mt-3">Asked often.</h1></div></section>
+  <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 grid lg:grid-cols-[1fr_2fr] gap-10"><p class="text-plum/80 max-w-xs">Something else? <a class="underline" href="/contact">Message us</a> or ring <a class="underline" href={`tel:${site.phoneHref}`}>{site.phone}</a>.</p><div class="grid gap-3">{site.faqs.map((f) => <details class="group panel"><summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden"><span class="display-sm">{f.q}</span><span class="size-8 shrink-0 rounded-full bg-lilac grid place-items-center font-display text-xl transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary><p class="px-5 pb-5 text-plum/80">{f.a}</p></details>)}</div></section>
+</Base>

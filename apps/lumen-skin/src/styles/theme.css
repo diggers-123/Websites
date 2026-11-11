@@ -1,0 +1,92 @@
+/*
+  LUMEN SKIN STUDIO — design tokens.
+  Palette: pale lilac (dominant) · deep plum (secondary) · tangerine (accent) with a tangerine→pink light gradient.
+  Type: Outfit (geometric display) · DM Sans (body).
+*/
+@import 'tailwindcss';
+@import '@site/core/styles/base.css';
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/dm-sans';
+
+@theme {
+  --color-lilac: #eee6ff;
+  --color-lilac-2: #e2d6ff;
+  --color-plum: #3b1c4f;
+  --color-plum-2: #2a1239;
+  --color-tang: #ff7a1a;
+  --color-tang-2: #e8650a;
+  --color-pink: #ff9ecf;
+  --color-white: #ffffff;
+  --color-mute: #7d6f8e;
+  --color-focus: #3b1c4f;
+  --color-error: #c2410c;
+
+  --font-display: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  --font-sans: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
+}
+
+@layer base {
+  html { background: var(--color-lilac); color: var(--color-plum); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; overflow-x: clip; }
+  ::selection { background: var(--color-tang); color: white; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; line-height: 1; }
+  a { text-underline-offset: 0.15em; }
+}
+
+@utility display-xl { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.8rem, 7.5vw, 6.8rem); line-height: 0.95; letter-spacing: -0.035em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.1rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -0.03em; }
+@utility display-md { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.4rem, 2.4vw, 2.1rem); line-height: 1.05; letter-spacing: -0.02em; }
+@utility display-sm { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; line-height: 1.1; }
+@utility eyebrow { font-family: var(--font-display); font-weight: 500; font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-tang); }
+
+/* The light: one large soft radial gradient, used deliberately, once per page */
+@utility light {
+  background:
+    radial-gradient(60% 55% at 70% 40%, color-mix(in srgb, var(--color-tang) 70%, transparent) 0%, color-mix(in srgb, var(--color-pink) 55%, transparent) 38%, transparent 72%),
+    var(--color-lilac);
+}
+@utility light-plum {
+  background:
+    radial-gradient(55% 50% at 30% 60%, color-mix(in srgb, var(--color-tang) 55%, transparent) 0%, color-mix(in srgb, var(--color-pink) 35%, transparent) 40%, transparent 72%),
+    var(--color-plum);
+}
+@keyframes drift { 0%, 100% { background-position: 0% 0%, 0 0; } 50% { background-position: 6% 8%, 0 0; } }
+.light-drift { background-size: 140% 140%, auto; animation: drift 18s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .light-drift { animation: none; } }
+
+/* Pills */
+@utility btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.9rem 1.7rem; border-radius: 999px; font-family: var(--font-display); font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border: 2px solid transparent; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s, color 0.2s, box-shadow 0.2s; }
+.btn:hover, .btn:focus-visible { transform: scale(1.04); }
+@utility btn-tang { background: var(--color-tang); color: white; box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--color-tang) 70%, transparent); }
+.btn-tang:hover, .btn-tang:focus-visible { background: var(--color-tang-2); }
+@utility btn-plum { background: var(--color-plum); color: white; }
+.btn-plum:hover, .btn-plum:focus-visible { background: var(--color-plum-2); }
+@utility btn-outline { background: transparent; color: currentColor; border-color: currentColor; }
+@utility btn-white { background: white; color: var(--color-plum); }
+
+/* Circular treatment tile */
+@utility orb { width: clamp(220px, 24vw, 300px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; position: relative; }
+.orb img { transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.orb:hover img { transform: scale(1.06); }
+.carousel { display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; scrollbar-width: thin; }
+.carousel > * { scroll-snap-align: start; flex: none; }
+
+/* Cards */
+@utility panel { background: white; border-radius: 28px; box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--color-plum) 35%, transparent); }
+.tilt { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.tilt:hover { transform: perspective(900px) rotateX(2deg) rotateY(-2deg) translateY(-3px); }
+@media (prefers-reduced-motion: reduce) { .tilt:hover { transform: none; } }
+
+/* Forms */
+@layer components {
+  .field { width: 100%; background: white; border: 2px solid var(--color-lilac-2); border-radius: 16px; color: var(--color-plum); padding: 0.8rem 1rem; font: inherit; min-height: 50px; }
+  .field:focus { outline: none; border-color: var(--color-tang); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-tang) 18%, transparent); }
+  .field::placeholder { color: var(--color-mute); }
+  .label { display: block; font-family: var(--font-display); font-weight: 500; font-size: 0.9rem; margin-bottom: 0.35rem; }
+  .chip { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; border-radius: 999px; border: 2px solid var(--color-lilac-2); background: white; cursor: pointer; font-size: 0.92rem; }
+  .chip:has(input:checked) { background: var(--color-plum); color: white; border-color: var(--color-plum); }
+  .chip:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 2px; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+}
+
+html.nav-open { overflow: hidden; }

@@ -1,0 +1,17 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img } from '@/images';
+const a = site.team![0];
+---
+<Base title="About Lumen" description="Lumen Skin Studio: a one-room, results-led skin studio in Brighton's North Laine, founded in 2020 by advanced skin therapist Amara Osei.">
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
+    <div class="relative aspect-[4/5] max-w-[460px] w-full justify-self-center rounded-[40px] overflow-hidden"><Image src={img(a.image!.src)} alt={a.image!.alt} widths={[640, 1024]} sizes="(min-width:1024px) 40vw, 90vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+    <div><p class="eyebrow">{a.role}</p><h1 class="display-xl mt-3">Hello, I'm Amara.</h1><p class="mt-5 text-lg text-plum/85">{a.bio}</p><div class="mt-5 grid gap-4 text-plum/80"><p>I spent years in clinics watching people spend money on treatments that would never do what they'd been promised. Lumen is my answer: one room, medical-grade kit, and a rule that we only recommend what the scan says your skin needs.</p><p>That means saying no to things. It also means the results are real, and the reviews are the ones that matter to me.</p></div><ul class="mt-6 flex flex-wrap gap-2">{site.credentials?.map((c) => <li class="chip !cursor-default text-sm">{c.label}{c.fictional ? ' *' : ''}</li>)}</ul><p class="mt-2 text-xs text-mute">* fictional for this demonstration</p></div>
+  </div></section>
+  <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+    <div><p class="eyebrow">The studio</p><h2 class="display-lg mt-2">One calm room above Gardner Street.</h2><ul class="mt-6 grid gap-3 text-plum/85">{['Medical-grade LED, imaging and microneedling devices', 'Single treatment room — you\'re never passed between people', 'First floor with a lift; four minutes from The Lanes car park', 'Tuesday to Saturday, late night Thursday'].map((t) => <li class="flex gap-3"><span class="text-tang">●</span>{t}</li>)}</ul><a href="/contact" class="btn btn-plum mt-7">Find us</a></div>
+    <div class="grid grid-cols-2 gap-4"><div class="relative aspect-[4/5] rounded-[28px] overflow-hidden"><Image src={img('room')} alt="The treatment room" widths={[480, 800]} sizes="25vw" class="absolute inset-0 w-full h-full object-cover" /></div><div class="relative aspect-[4/5] rounded-[28px] overflow-hidden mt-10"><Image src={img('exterior')} alt="Gardner Street in the North Laine" widths={[480, 800]} sizes="25vw" class="absolute inset-0 w-full h-full object-cover" /></div></div>
+  </section>
+</Base>

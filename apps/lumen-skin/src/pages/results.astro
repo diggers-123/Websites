@@ -1,0 +1,13 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site, results } from '@/site.config';
+import { img } from '@/images';
+---
+<Base title="Results" description="Before-and-after stories from Lumen Skin Studio, Brighton: pigmentation, acne scarring, dullness. Fictional results for demonstration.">
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">Results</p><h1 class="display-xl mt-3">What a course looks like.</h1></div><p class="text-sm text-mute max-w-xs">All stories and images are fictional placeholders for this demonstration. A real studio would publish consented client photos.</p></div></section>
+  <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 grid gap-10">
+    {results.map((r, i) => <article class:list={['panel overflow-hidden grid lg:grid-cols-[1.2fr_1fr] items-center', i % 2 && 'lg:[&>*:first-child]:order-2']} data-reveal><div class="grid grid-cols-2"><div class="relative aspect-[4/5]"><Image src={img(r.before)} alt={`Before: ${r.title}`} widths={[480, 800]} sizes="(min-width:1024px) 30vw, 50vw" class="absolute inset-0 w-full h-full object-cover" /><span class="absolute top-3 left-3 eyebrow bg-white/90 rounded-full px-2 py-1 !text-plum">Before</span></div><div class="relative aspect-[4/5]"><Image src={img(r.after)} alt={`After ${r.months} months: ${r.title}`} widths={[480, 800]} sizes="(min-width:1024px) 30vw, 50vw" class="absolute inset-0 w-full h-full object-cover" /><span class="absolute top-3 right-3 eyebrow bg-tang rounded-full px-2 py-1 !text-white">After · {r.months} months</span></div></div><div class="p-8"><h2 class="display-md">{r.title}</h2><p class="eyebrow mt-4">The plan</p><p class="mt-1 text-plum/85">{r.plan}</p><p class="mt-5 font-display text-xl">“{r.quote}”</p></div></article>)}
+  </section>
+  <section class="light-plum text-white rounded-[40px] mx-3 lg:mx-6 py-16"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 grid lg:grid-cols-2 gap-8 items-center"><div><p class="eyebrow !text-pink">Kind words</p><div class="mt-4 grid gap-5">{site.testimonials.map((t) => <figure><blockquote class="font-display text-lg leading-snug">“{t.quote}”</blockquote><figcaption class="text-sm text-white/70 mt-1">{t.name} · {t.context}</figcaption></figure>)}</div></div><div class="lg:text-right"><h2 class="display-lg">Your skin next.</h2><a href="/consultation" class="btn btn-tang mt-6">Free consultation</a></div></div></section>
+</Base>

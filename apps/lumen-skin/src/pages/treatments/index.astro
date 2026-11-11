@@ -1,0 +1,11 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { img, treatmentImage } from '@/images';
+const cats = [...new Set(site.services.map((s) => s.category))];
+---
+<Base title="Treatments" description="Facials, chemical peels, microneedling, LED light therapy and dermaplaning at Lumen Skin Studio, Brighton — graded to your skin, honest about downtime.">
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14"><p class="eyebrow">Treatments</p><h1 class="display-xl mt-3">What we do, and what it does.</h1><p class="mt-4 text-plum/80 max-w-xl">Every treatment lists its downtime and who it suits. If you're not sure, the free consultation picks for you.</p></div></section>
+  {cats.map((c) => <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-12"><h2 class="display-lg mb-6">{c}</h2><div class="grid md:grid-cols-2 gap-6">{site.services.filter((s) => s.category === c).map((s) => <a href={s.slug === 'skin-consultation' ? '/consultation' : `/treatments/${s.slug}`} class="panel tilt p-5 grid sm:grid-cols-[120px_1fr] gap-5 items-center"><div class="orb !w-[120px]"><Image src={img(treatmentImage[s.slug])} alt={s.name} widths={[240, 400]} sizes="120px" class="absolute inset-0 w-full h-full object-cover" /></div><div><div class="flex items-baseline justify-between gap-3"><h3 class="display-sm">{s.name}</h3><span class="font-display font-600">{s.price}</span></div><p class="text-sm text-plum/75 mt-1.5">{s.summary}</p><p class="text-xs text-mute mt-2">{s.durationMins} min · {s.includes?.slice(0, 3).join(' · ')}</p></div></a>)}</div></section>)}
+</Base>

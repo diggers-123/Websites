@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { concerns } from '@/site.config';
+import { img } from '@/images';
+---
+<Base title="Free skin consultation" description="A free 30-minute skin consultation in Brighton with imaging: we scan your skin, map your concerns and write a plan with honest prices. No obligation.">
+  <section class="light rounded-b-[40px]"><div class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 pt-12 lg:pt-20 pb-14 grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+    <div><p class="eyebrow">Free · 30 minutes · no obligation</p><h1 class="display-xl mt-3">Let's look at your skin properly.</h1><p class="mt-4 text-lg text-plum/80 max-w-lg">A skin-imaging scan, an honest conversation, and a written plan with prices. Tell us what's bothering you and we'll book you in.</p></div>
+    <div class="relative aspect-square max-w-[400px] w-full justify-self-center rounded-full overflow-hidden"><Image src={img('facialist')} alt="Amara in the treatment room" widths={[480, 800]} sizes="(min-width:1024px) 30vw, 80vw" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" /></div>
+  </div></section>
+  <section class="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10 py-14 lg:py-20 grid lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-16">
+    <div><h2 class="display-lg">What happens</h2><ol class="mt-6 grid gap-4">{[['Scan', 'Five minutes under the imaging lamp: pigment, dehydration, congestion, sun damage — the things you can\'t see in a mirror.'], ['Talk', 'What bothers you, what you\'ve tried, what you actually want. Bring your products; we\'ll tell you what to keep.'], ['Plan', 'A written plan: which treatments, how many, what it costs, what to expect. Yours to take away, no pressure.']].map(([t, b], i) => <li class="flex gap-4"><span class="size-9 shrink-0 rounded-full bg-[radial-gradient(circle,#ff7a1a,#ff9ecf)] text-white font-display font-600 grid place-items-center">{i + 1}</span><div><h3 class="display-sm">{t}</h3><p class="text-sm text-plum/75 mt-1">{b}</p></div></li>)}</ol><p class="mt-8 text-sm text-mute">Prefer to pick a time yourself? <a class="underline" href="/book?treatment=skin-consultation">Book the consultation directly</a>.</p></div>
+    <form class="panel p-6 sm:p-8 grid gap-5" data-consult-form name="consultation" method="post" novalidate>
+      <h2 class="display-md">Tell us about your skin</h2>
+      <fieldset><legend class="label">What would you like to improve? <span class="font-normal text-mute">(pick any)</span></legend><div class="flex flex-wrap gap-2 mt-2">{concerns.map((c) => <label class="chip relative"><input type="checkbox" name="concerns" value={c} />{c}</label>)}</div></fieldset>
+      <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="s-name">Name</label><input class="field" id="s-name" name="name" autocomplete="name" required /><span data-error-for="name" hidden></span></div><div><label class="label" for="s-phone">Mobile</label><input class="field" id="s-phone" name="phone" type="tel" autocomplete="tel" required /><span data-error-for="phone" hidden></span></div><div class="sm:col-span-2"><label class="label" for="s-email">Email</label><input class="field" id="s-email" name="email" type="email" autocomplete="email" required /><span data-error-for="email" hidden></span></div></div>
+      <div><label class="label" for="s-when">When suits you?</label><select class="field" id="s-when" name="when"><option>Weekday daytime</option><option>Thursday evening</option><option>Saturday</option><option>Anything</option></select></div>
+      <div><label class="label" for="s-msg">Anything else? <span class="font-normal text-mute">(optional)</span></label><textarea class="field" id="s-msg" name="message" rows="3" placeholder="What you've tried, medication, pregnancy, anything we should know."></textarea></div>
+      <p class="hidden" aria-hidden="true"><label>Leave empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="flex items-center gap-4 flex-wrap"><button type="submit" class="btn btn-tang">Request my consultation</button><p data-form-status role="status" aria-live="polite" class="text-sm max-w-sm"></p></div>
+      <p class="text-xs text-mute">Only used to arrange your visit. <a class="underline" href="/privacy">Privacy</a>.</p>
+    </form>
+  </section>
+  <script>
+    import { enhanceForm } from '@site/core';
+    import { site } from '@/site.config';
+    const form = document.querySelector<HTMLFormElement>('[data-consult-form]');
+    if (form) enhanceForm(form, { config: site.forms, formName: 'consultation', rules: { name: [{ type: 'required', message: 'Your name' }], phone: [{ type: 'required', message: 'A mobile to confirm the time' }, { type: 'ukPhone' }], email: [{ type: 'required', message: 'An email for the confirmation' }, { type: 'email' }] } });
+  </script>
+</Base>

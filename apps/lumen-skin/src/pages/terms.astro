@@ -1,0 +1,12 @@
+---
+import Legal from '@/layouts/Legal.astro';
+import { site } from '@/site.config';
+---
+<Legal title="Terms" description={`Booking, cancellation, course and treatment terms for ${site.name}.`} reviewed={site.legal.policiesReviewed}>
+  <h2>Bookings and cancellations</h2><p>{site.booking.policy} Arriving more than 15 minutes late may mean a shortened treatment or rebooking.</p>
+  <h2>Consultation and suitability</h2><p>Peels and microneedling require a consultation and a patch test 48 hours before the first treatment. You must tell us about medication (including retinoids and isotretinoin), pregnancy, breastfeeding, recent sun exposure and any skin conditions. We may decline or adapt a treatment on the day for your safety.</p>
+  <h2>Courses</h2><p>Courses are valid for 12 months from purchase, are non-transferable, and can be paid in three monthly instalments. Unused treatments are refundable within 14 days of purchase; after that, refunds are at our discretion except where we cannot provide the treatment.</p>
+  <h2>Results</h2><p>Skin responds individually. We describe typical outcomes honestly and never guarantee results. Aftercare instructions must be followed for the best outcome.</p>
+  <h2>Gift vouchers</h2><p>Valid 12 months; not exchangeable for cash; treated as cash if lost.</p>
+  <h2>Company</h2><p>{site.legal.legalName}, {site.legal.companyNumber}. {site.address.line1}, {site.address.town} {site.address.postcode}.</p>
+</Legal>
