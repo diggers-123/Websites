@@ -148,7 +148,7 @@ if (!noBrowser) {
       if (m.type() === 'error') errors.push(`${m.text()}`);
     });
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
-    page.on('requestfailed', (r) => errors.push(`requestfailed: ${r.url()}`));
+    page.on('requestfailed', (r) => { const t = r.failure()?.errorText ?? ''; if (t !== 'net::ERR_ABORTED') errors.push(`requestfailed: ${r.url()} (${t})`); });
     for (const p of pages) {
       errors.length = 0;
       await page.goto(`http://localhost:${port}${p}`, { waitUntil: 'networkidle' });

@@ -25,7 +25,7 @@ const sectors = [...new Set(projects.map((p) => p.sector))];
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pt-8 flex items-baseline justify-between gap-6">
       <p class="mono-label">Studio portfolio · {built.length} of {projects.length} built</p>
-      <nav class="mono-label flex gap-6"><a href="#built" class="hover:text-electric">Built</a><a href="#planned" class="hover:text-electric">In the pipeline</a><a href="#about" class="hover:text-electric">About</a></nav>
+      <nav class="mono-label flex gap-6"><a href="#built" class="hover:text-electric">Built</a>{planned.length > 0 && <a href="#planned" class="hover:text-electric">In the pipeline</a>}<a href="#about" class="hover:text-electric">About</a></nav>
     </header>
     <main id="main" tabindex="-1">
       <section class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pt-16 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-[3fr_2fr] gap-10 items-end">
@@ -74,7 +74,7 @@ const sectors = [...new Set(projects.map((p) => p.sector))];
         </div>
       </section>
 
-      <section id="planned" class="bg-ink text-paper py-20">
+      {planned.length > 0 && <section id="planned" class="bg-ink text-paper py-20">
         <div class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12">
           <h2 class="serif-lg mb-10">In the pipeline</h2>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -89,7 +89,7 @@ const sectors = [...new Set(projects.map((p) => p.sector))];
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       <section id="about" class="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 py-20 grid lg:grid-cols-[1fr_2fr] gap-10">
         <h2 class="serif-lg">How they're built</h2>

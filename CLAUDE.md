@@ -57,7 +57,7 @@ Playwright is pre-installed globally at `/opt/node-tools/node_modules/playwright
 
 ## Quality gate per site (all must pass before "complete")
 1. `build` + `check` clean. 2. `smoke.mjs` passes at mobile + desktop. 3. Booking/enquiry flow
-driven end-to-end in a browser script. 4. Screenshots reviewed as a design director; weaknesses
+driven end-to-end in a browser script (`packages/core/scripts/flows/<slug>.mjs`). 4. Screenshots reviewed as a design director; weaknesses
 fixed, not just noted. 5. README written. 6. `PROJECT_STATUS.md` + `HANDOVER.md` updated. 7. Commit.
 
 ## Imagery

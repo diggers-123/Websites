@@ -13,9 +13,9 @@ businesses. Astro 5 + Tailwind v4 monorepo; Preact islands only for booking/quot
 | 5 | `apps/bramley-electrical` | Electrician, Sheffield | 4305 | ✅ |
 | 6 | `apps/nell-ashworth` | Wedding & family photographer, Edinburgh | 4306 | ✅ |
 | 7 | `apps/northgate-garage` | Garage & MOT, Stockport | 4309 | ✅ |
-| 8 | `apps/forge-fitness` | Personal trainer, Cardiff | 4308 | 🟡 in progress |
-| 9 | `apps/lumen-skin` | Skin studio, Brighton | 4307 | ⬜ |
-| 10 | `apps/bright-spark` | Tutor, Cambridge | 4310 | ⬜ |
+| 8 | `apps/forge-fitness` | Personal trainer, Cardiff | 4308 | ✅ |
+| 9 | `apps/lumen-skin` | Skin studio, Brighton | 4307 | ✅ |
+| 10 | `apps/bright-spark` | Tutor, Cambridge & online | 4310 | ✅ |
 | — | `apps/portfolio` | Studio index of all ten | 4300 | ✅ |
 
 ## Run it
@@ -27,6 +27,7 @@ pnpm build                             # build every site
 pnpm --filter <slug> check             # TypeScript / Astro diagnostics
 pnpm --filter <slug> test              # smoke test the built site
 pnpm --filter portfolio shots          # recapture portfolio thumbnails from built sites
+node packages/core/scripts/flows/<slug>.mjs apps/<slug>/dist <shots-dir>   # drive the booking flow
 ```
 
 ## Documents

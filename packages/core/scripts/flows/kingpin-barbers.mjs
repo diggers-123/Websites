@@ -1,0 +1,46 @@
+import pw from '/opt/node-tools/node_modules/playwright/index.js'; const { chromium } = pw;
+import { createServer } from 'node:http';
+import { readFileSync, existsSync, statSync } from 'node:fs';
+import { join, extname } from 'node:path';
+const dist = process.argv[2]; const shots = process.argv[3];
+const MIME = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2'};
+const server = createServer((req,res)=>{let p=decodeURIComponent(req.url.split('?')[0]);let f=join(dist,p);if(existsSync(f)&&statSync(f).isDirectory())f=join(f,'index.html');if(!existsSync(f))f=join(dist,p+'.html');if(!existsSync(f)){res.writeHead(404);res.end();return;}res.writeHead(200,{'Content-Type':MIME[extname(f)]||'application/octet-stream'});res.end(readFileSync(f));});
+await new Promise(r=>server.listen(0,r)); const port=server.address().port;
+const browser = await chromium.launch(); const page = await browser.newPage({ viewport:{width:1280,height:900}});
+const errors=[]; page.on('pageerror',e=>errors.push(e.message)); page.on('console',m=>m.type()==='error'&&errors.push(m.text()));
+await page.goto(`http://localhost:${port}/book?barber=Marcus`);
+await page.waitForSelector('text=What are we doing?');
+await page.click('text=Skin fade');
+await page.click('text=Next: date & time');
+// pick first selectable date
+const dateBtn = page.locator('[role=gridcell]:not([disabled])').first();
+console.log('first date:', await dateBtn.getAttribute('aria-label'));
+await dateBtn.click();
+await page.waitForTimeout(200);
+const slots = page.locator('button[aria-pressed]:not([disabled])');
+console.log('available slots:', await slots.count(), 'unavailable:', await page.locator('button[aria-pressed][disabled]').count());
+await page.screenshot({path: shots+'/flow-1-date.png'});
+await slots.first().click();
+await page.click('text=Next: your details');
+await page.click('button[type=submit]');
+await page.waitForTimeout(100);
+console.log('validation errors shown:', await page.locator('.text-error').count());
+await page.screenshot({path: shots+'/flow-2-errors.png'});
+await page.fill('#bk-name','Test Person'); await page.fill('#bk-phone','07700 900123'); await page.fill('#bk-email','test@example.com');
+await page.click('button[type=submit]');
+await page.waitForSelector('text=That\'s how it works');
+console.log('confirmation:', await page.locator('.font-mono.text-2xl').first().textContent());
+await page.screenshot({path: shots+'/flow-3-confirm.png', fullPage:true});
+// mobile nav test
+const m = await browser.newPage({viewport:{width:390,height:844}});
+await m.goto(`http://localhost:${port}/`); await m.click('[data-nav-toggle]'); await m.waitForTimeout(300);
+await m.screenshot({path: shots+'/mobile-nav.png'});
+console.log('nav expanded:', await m.getAttribute('[data-nav-toggle]','aria-expanded'));
+// contact form demo
+await m.goto(`http://localhost:${port}/contact`); await m.click('button[type=submit]');
+console.log('contact errors:', await m.locator('[data-error-for]:not([hidden])').count());
+await m.fill('#c-name','A'); await m.fill('#c-email','a@b.co'); await m.fill('#c-msg','Hello there, this is a message');
+await m.click('button[type=submit]'); await m.waitForTimeout(800);
+console.log('status:', await m.locator('[data-form-status]').textContent());
+console.log('errors:', errors);
+await browser.close(); server.close();

@@ -1,21 +1,21 @@
 # HANDOVER.md — Fable → Opus
 
-_Written 2026-11-10 21:40 UTC at the end of the Fable session. This is the one-way handover.
-Everything Opus needs is in the filesystem; do not assume any conversation history._
+_Written 2026-11-10 21:40 UTC; updated 2026-11-11 12:30 UTC with all ten sites complete. This is the
+one-way handover. Everything Opus needs is in the filesystem; do not assume any conversation history._
 
 ## 0. Opus: start here
 1. Read `CLAUDE.md` (rules), `PROJECT_STATUS.md` (where we are), this file, then
-   `BUSINESS_PORTFOLIO.md` briefs #8 (Forge), #7 (Lumen), #10 (Bright Spark).
-2. Confirm the toolchain: `pnpm install` at the root, then `pnpm build` (all 9 apps should build)
-   and `pnpm --filter kingpin-barbers test`.
-3. Finish **Forge** first (§2 has the exact state). Then Lumen and Bright Spark, each following
-   the recipe in §3. Generate imagery with the Figma pipeline (§5) once credits reset.
-4. Do not rebuild or restyle sites 1–7. Use them as *engineering* references only. Every remaining
-   site must look like a different studio made it — the briefs specify type, palette, hero,
-   section order, shape language and motion.
-5. After each site: README, `PROJECT_STATUS.md`, this file, `apps/portfolio/src/projects.ts`
-   (`status: 'built'`, `pages`), `pnpm --filter portfolio shots`, commit.
-6. Finish with the side-by-side review (§8), root README polish, and push (§9).
+   `BUSINESS_PORTFOLIO.md` for the brief of any site you touch.
+2. Confirm the toolchain: `pnpm install` at the root, then `pnpm build` (11 apps, 173 pages) and
+   `pnpm test` (all smoke tests pass).
+3. **All ten sites are complete and reviewed.** The only outstanding action is the push (§9),
+   which needs the user to grant GitHub access. After that, any work is customisation for real
+   clients (each site's README) or the optional items in `PROJECT_STATUS.md`.
+4. Do not restyle any site. Every one must keep looking like a different studio made it — §7 lists
+   the motifs each one owns.
+5. If you change a home page: `pnpm --filter <slug> build`, `pnpm --filter <slug> test`, run its
+   flow script (`packages/core/scripts/flows/<slug>.mjs`), `pnpm --filter portfolio shots`,
+   update `PROJECT_STATUS.md`, commit.
 
 ## 1. Project overview
 Ten fictional UK small-business websites, each a standalone Astro static site in a pnpm monorepo,
@@ -25,55 +25,25 @@ website products. Seven are complete and verified; the eighth is scaffolded; two
 ## 2. Exact current state
 
 ### Complete (build ✓ · `astro check` 0 errors · smoke ✓ mobile+desktop · browser flow ✓ · README ✓)
-`kingpin-barbers`, `hollowell-gardens`, `cinder-and-salt`, `muddy-paws`, `bramley-electrical`,
-`nell-ashworth`, `northgate-garage`, plus `portfolio` (index page).
+All ten: `kingpin-barbers`, `hollowell-gardens`, `cinder-and-salt`, `muddy-paws`,
+`bramley-electrical`, `nell-ashworth`, `northgate-garage`, `forge-fitness`, `lumen-skin`,
+`bright-spark`, plus `portfolio` (index page, 10 of 10 built, thumbnails current).
 
-### `apps/forge-fitness` — IN PROGRESS (builds with 0 pages)
-Written and correct:
-- `package.json` (port 4308, fonts `@fontsource/archivo-black`, `@fontsource-variable/archivo`),
-  `tsconfig.json`, `astro.config.mjs` (site URL `https://forgept.example.co.uk`), `public/robots.txt`.
-- `src/site.config.ts` — full content: services (free consult, 1:1, 10/20 blocks, small group,
-  unlimited, online), team, testimonials, FAQs, booking (30-min slots, 21-day horizon, 3h notice),
-  SEO (`HealthClub`), legal, credentials; plus exports `timetable` (Mon–Sat small-group sessions)
-  and `results` (four stats for count-ups).
-- `src/styles/theme.css` — tokens bone/cobalt/volt/coal, Archivo Black + Archivo, utilities
-  `display-xl/lg/md/sm`, `stat`, `kicker`, diagonal cuts `cut-tl/cut-br/cut-both`, `stripes`,
-  cobalt `.duo` duotone, skew-on-hover `btn-volt/cobalt/coal/outline`, `card`/`card-volt`
-  (hard cobalt/volt shadow index cards), form `.field/.label/.choice`.
-- `src/images.ts` — keys `hero, coach, group, hands, client` → all five JPEGs exist in
-  `src/assets/photos/` (hero via Figma; others via Canva; reviewed, all good).
-- `src/layouts/Base.astro` — Head, DemoBanner, Header, Footer (not yet written!), mobile sticky
-  CTA, reveal/nav init, and a `[data-count]` count-up script (`data-count="600" data-suffix="+"`).
-- `src/components/Logo.astro` (FORGE with weight-plate O), `src/components/Header.astro`
-  (nav shows at `xl`, cobalt mobile panel).
-Missing (Base.astro imports Footer, so the build will fail as soon as a page exists):
-- `src/components/Footer.astro` (coal background, volt kicker labels, hours, nav, credentials).
-- `src/components/booking/ConsultBooking.tsx` — Preact island: date (buildMonth with
-  `minNoticeHours`/`now`) → 30-min slot (buildSlots, demoBusyPeriods density ~0.3) → studio or
-  video call choice → details (name, mobile, email, goal radio: strength / fat loss / return from
-  injury / sport / not sure) → demo confirmation with `demoReference('FG', …)`. Copy the hydration
-  pattern from `northgate-garage/src/components/booking/GarageBooking.tsx` (URL presets in a
-  `useEffect`). Accept `?type=studio|call`.
-- Pages per brief #8: `index` (diagonal split hero: bone top-left with headline "STRONGER IN 12
-  WEEKS. NO NONSENSE." and volt CTA; cobalt `.duo` hero photo bottom-right using `cut-tl`), "Who I
-  train" (3 audience cards), programmes with prices (index cards), timetable grid (from
-  `timetable`), results stats with count-ups (from `results`), testimonials, consult CTA;
-  `personal-training`, `small-group`, `online`, `pricing`, `timetable` (full grid + "join a
-  session" enquiry form via `enhanceForm`), `results`, `about`, `book`, `contact`, `privacy`,
-  `terms`, `credits`, `404`.
-- `public/favicon.svg`, `public/og.jpg` (make-og.mjs from `hero.jpg`), `README.md`.
-- Keep the mobile nav rule (header `relative`, panel `absolute top-full h-[calc(100dvh-100%)]`).
-
-### `apps/lumen-skin` and `apps/bright-spark` — NOT STARTED
-Scaffold from `apps/northgate-garage` (it has the latest conventions). Ports 4307 and 4310.
-Fonts: Lumen → `@fontsource-variable/outfit` + `@fontsource-variable/dm-sans`;
-Bright Spark → `@fontsource-variable/plus-jakarta-sans` + `@fontsource/caveat` (all verified on npm).
-Imagery prompts to generate (§5): Lumen — skin close-ups in lilac/warm light, treatment room,
-LED mask, facialist portrait (diverse), product textures, Brighton Lanes exterior, before/after
-pairs (same person, subtle), hands with serum. Bright Spark — tutor portrait at a desk, teen
-student at laptop with equations on screen (abstract), exercise books + highlighters flat-lay,
-online lesson on screen, parent + child at kitchen table, Cambridge street exterior, whiteboard
-with maths (abstract), stack of past papers.
+### Latest additions (11 Nov)
+- `lumen-skin` (4307, 18 pages): Outfit/DM Sans; lilac/plum/tangerine single "light" gradient;
+  circular treatment carousel (scroll-snap with matching `scroll-padding` so the first orb isn't
+  clipped); `TreatmentBooking.tsx` (treatment → date & time → details, `?treatment=` preset,
+  ref `LU-xxxx`); consultation form with concern chips; voucher form; results stories (one
+  before/after pair reused with per-story mirror/crop — see README). Ten Figma photos.
+- `bright-spark` (4310, 22 pages): Plus Jakarta Sans/Caveat; paper/ink/highlighter; grid-paper
+  sections, ruled `sheet` with red margin (`leading-8` keeps text on the lines), `hl` highlighter
+  swipes drawn in by an IntersectionObserver in `Base.astro`, sticky notes, `Note.astro` margin
+  annotations; `CallBooking.tsx` (student → when (20-min slots) → details, `?subject=&year=`
+  presets, ref `BS-xxxx`); enquiry form with year group + subject chips; safeguarding template
+  flagged for review. Eight Figma photos. Lesson: on dark backgrounds use a filled
+  `bg-hi text-ink` box, not the swipe (ink text on ink before the animation).
+- `packages/core/scripts/flows/<slug>.mjs` — all ten browser flow scripts saved in the repo.
+- `smoke.mjs` ignores `net::ERR_ABORTED` (srcset candidate aborted on navigation).
 
 ## 3. How to build a site (the working recipe — ~1 session each)
 1. Scaffold: `mkdir -p apps/<slug>/{public,src/{styles,layouts,components,pages,assets/photos}}`;
@@ -130,7 +100,7 @@ load tools via ToolSearch `select:mcp__Figma__generate_image,mcp__Figma__create_
 first; model `gpt-image-2.5-flare`; sizes 1024×1280 / 1536×1024 / 1024×1024. Each result has
 `image.url` (PNG, expires in 7 days) — download at once with curl, convert to JPEG q82 with sharp
 (`require('/home/user/Websites/node_modules/.pnpm/node_modules/sharp')`), delete PNGs.
-**Credits were exhausted at 21:30 UTC 10 Nov; the error says they reset at 2026-11-11T00:00:00Z.**
+Credits reset daily at 00:00 UTC (confirmed 11 Nov: 18 images generated in one morning).
 
 **Fallback — Canva create-design → export** (slower, ~60 s/image, 2688×3840 or 1123×794):
 `mcp__Canva__create-design` with brief "A single full-bleed photograph filling the whole page, no
@@ -138,8 +108,8 @@ text, no overlays, no borders: <photo description>" and `format` "Poster (Portra
 "Flyer (Landscape A4)" / "Instagram Post (Square)"; poll `get-create-design-async-job` with the
 job_id + latest continuation_token; then `export-design` `{type:'jpg', quality:90}`; download the
 URL(s). Landscape flyers came back as 2 pages with page 1 blank — use the second URL. Canva
-generates its own photo from the brief (it does not use `generate-image` media). Quota also
-exhausted at 21:35 UTC; reset time unknown.
+generates its own photo from the brief (it does not use `generate-image` media). Quota reset
+time unknown.
 
 Prompt style that works: "Documentary photograph … [UK place] … [lighting] … [brand grading] …
 no readable text or logos"; ask for specific, diverse, realistic people. Keep grading consistent
@@ -153,8 +123,7 @@ the static-server snippet. Pattern: goto `/book?…` → click options → first
 count `.text-error` → fill → submit → `waitForSelector(confirmation text)`; plus mobile nav
 (`[data-nav-toggle]` → `aria-expanded`) and the contact form via `[data-form-status]`.
 Use `button:has-text("…")` rather than `text=…` (the latter matches labels too).
-The seven scripts used live only in the session scratchpad; consider saving new ones under
-`packages/core/scripts/flows/<slug>.mjs`.
+All ten scripts live in `packages/core/scripts/flows/<slug>.mjs` (see the README there).
 
 ## 7. Design decisions already made (do not reuse motifs across sites)
 - Kingpin: Anton/Space Grotesk/JetBrains Mono; jet/chalk/chartreuse; hazard stripes; marquee;
@@ -171,15 +140,18 @@ The seven scripts used live only in the session scratchpad; consider saving new 
   film-frame numbering; asymmetric 12-col galleries; hover image-reveal text nav; cursor "View" label.
 - Northgate: IBM Plex Condensed/Sans/Mono; white/navy/signal red + plate yellow; job-card panels
   with 4px top border; status chips; UK reg-plate input; grid-lines background; checklist ticks.
-- Forge (planned, tokens written): Archivo Black/Archivo; bone/cobalt/volt; diagonal clip-path
-  cuts; cobalt duotone photos; stripes; hard-shadow index cards; skew-on-hover buttons; count-ups.
-- Lumen (planned): Outfit/DM Sans; lilac/plum/tangerine single light gradient; full-round pills;
-  circular treatment carousel; results cards.
-- Bright Spark (planned): Plus Jakarta Sans/Caveat; paper/ink blue/highlighter yellow; exercise-
-  book grid; highlighter swipes; margin annotations; sticky-note tabs.
+- Forge: Archivo Black/Archivo; bone/cobalt/volt; diagonal clip-path cuts; cobalt duotone
+  photos; stripes; hard-shadow index cards; skew-on-hover buttons; count-ups.
+- Lumen: Outfit/DM Sans; lilac/plum/tangerine single light gradient (drifts); full-round pills;
+  circular treatment carousel; before/after results cards; concern chips; tilt-on-hover panels.
+- Bright Spark: Plus Jakarta Sans/Caveat; paper/ink blue/highlighter yellow; exercise-book grid;
+  ruled A4 sheets with red margin; highlighter swipes that draw in; handwritten margin
+  annotations with arrows; sticky notes with tape; polaroid-style photo prints; red tick marks.
 - Portfolio: Instrument Serif/Sans; paper/ink/electric blue — intentionally unlike all ten.
 
 ## 8. Final side-by-side review checklist
+**Done 11 Nov 2026** (contact sheets of all ten home pages at desktop and mobile; every item below
+checked). Re-run after any visual change.
 `pnpm build && pnpm --filter portfolio shots && pnpm --filter portfolio build`; open the
 portfolio. For all ten: different primary typeface, hero composition, section order, shape
 language, motion; suits its industry; no placeholder text; smoke passes; README present; demo
