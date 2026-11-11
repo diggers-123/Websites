@@ -66,7 +66,7 @@ const sectors = [...new Set(projects.map((p) => p.sector))];
                 </dl>
                 <div class="mt-4 flex gap-4 text-sm">
                   <a href={p.liveUrl ?? p.devUrl} class="underline hover:text-electric">Open site ↗</a>
-                  <span class="text-mute">{p.pages} pages · dev {p.devUrl.replace('http://', '')}</span>
+                  <span class="text-mute">{p.pages} pages{p.liveUrl ? ` · ${p.liveUrl.replace('https://', '')}` : ` · dev ${p.devUrl.replace('http://', '')}`}</span>
                 </div>
               </article>
             );

@@ -158,7 +158,8 @@ language, motion; suits its industry; no placeholder text; smoke passes; README 
 labels visible; mobile nav works; accent-on-background contrast checked; every booking/enquiry
 flow driven end to end.
 
-## 9. Push
-`git push -u origin claude/uk-small-business-websites-my7lc2` returns 403 until the Claude GitHub
-App is installed on `diggers-123/Websites` (https://github.com/apps/claude/installations/select_target)
-or GitHub is reconnected. Retry with exponential backoff only for network errors, not for 403.
+## 9. Push & hosting
+Pushed 11 Nov after the Claude GitHub App was installed. All eleven apps are live on Vercel
+(team Digbyc, one project per app; URLs and the redeploy recipe are in the root README). The
+Vercel token is a network secret on the "Websites" cloud environment, injected by the proxy for
+`api.vercel.com`; pass any hyphen-free placeholder to `--token`.

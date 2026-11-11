@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — live progress tracker
 
-_Last updated: 2026-11-11 12:30 UTC. **All ten sites complete.** Remaining: push (blocked on GitHub access)._
+_Last updated: 2026-11-11 22:40 UTC. **All ten sites complete, pushed and live on Vercel.**_
 
 ## Overall
 | Area | Status |
@@ -13,7 +13,8 @@ _Last updated: 2026-11-11 12:30 UTC. **All ten sites complete.** Remaining: push
 | Sites complete | **10 / 10** |
 | Root `pnpm build` / `pnpm test` | ✅ 11 apps build (173 pages); all smoke tests pass |
 | Side-by-side review (HANDOVER §8) | ✅ done 11 Nov — ten distinct typefaces, palettes, heroes, section orders, motifs |
-| Push to GitHub | ⛔ 403 — see Known issues |
+| Push to GitHub | ✅ pushed 11 Nov (Claude GitHub App installed) |
+| Live hosting | ✅ all ten sites + portfolio on Vercel (team Digbyc); URLs in README |
 
 ## Per-site status
 Legend: ✅ complete & tested
@@ -32,17 +33,16 @@ Legend: ✅ complete & tested
 | 10 | bright-spark | 4310 | 22 | Free assessment call (20-min slots), enquiry w/ year group + subjects | 8 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
 
 ## Remaining / optional
-1. **Push** once GitHub access is granted (see below).
+1. Connect each Vercel project to the GitHub repo (`vercel git connect`) if automatic deploys on
+   push are wanted; today deploys are manual from `dist/`.
 2. Lumen results stories share one before/after pair (mirrored/cropped per story); generate two
    more pairs if the demo is shown to buyers — see `apps/lumen-skin/README.md`.
 3. Nice-to-haves, not blockers: Lighthouse pass per site; a `flows` runner script at the root;
    favicon PNG fallbacks for very old browsers.
 
 ## Known issues / notes
-- `git push` returns 403: the Claude GitHub App is not installed on `diggers-123/Websites`. All work
-  is committed locally on `claude/uk-small-business-websites-my7lc2`. The user must install the
-  app (https://github.com/apps/claude/installations/select_target) or reconnect GitHub; then
-  `git push -u origin claude/uk-small-business-websites-my7lc2`.
+- Four plain `<slug>.vercel.app` names were already taken by other users, so those projects have
+  suffixed production domains (see README). A custom domain per client replaces these.
 - Figma AI credits reset daily at 00:00 UTC; Canva quota reset time unknown. All generated image
   URLs have been downloaded; nothing depends on them.
 - `smoke.mjs` ignores `net::ERR_ABORTED` request failures (the browser dropping a srcset candidate

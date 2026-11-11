@@ -30,6 +30,29 @@ pnpm --filter portfolio shots          # recapture portfolio thumbnails from bui
 node packages/core/scripts/flows/<slug>.mjs apps/<slug>/dist <shots-dir>   # drive the booking flow
 ```
 
+## Live sites (Vercel, team Digbyc)
+Each site is a separate Vercel project deployed from its built `dist/` folder with
+`vercel deploy --prod` (static, framework "Other"). `public/vercel.json` turns on clean URLs.
+
+| Site | URL |
+|------|-----|
+| Portfolio index | https://uk-sites-portfolio.vercel.app |
+| Kingpin Barber Co. | https://kingpin-barbers.vercel.app |
+| Hollowell Garden Design | https://hollowell-gardens.vercel.app |
+| Cinder & Salt | https://cinder-and-salt.vercel.app |
+| Muddy Paws Dog Grooming | https://muddy-paws-chi.vercel.app |
+| Bramley Electrical | https://bramley-electrical.vercel.app |
+| Nell Ashworth Photography | https://nell-ashworth.vercel.app |
+| Northgate Motor Works | https://northgate-garage-tau.vercel.app |
+| Forge Personal Training | https://forge-fitness-three-omega.vercel.app |
+| Lumen Skin Studio | https://lumen-skin-alpha.vercel.app |
+| Bright Spark Tutoring | https://bright-spark-olive.vercel.app |
+
+To redeploy a site after a change: `pnpm --filter <slug> build`, then from `apps/<slug>/dist`
+run `vercel link --yes --project <slug>` and `vercel deploy --prod --yes` (the Vercel token is a
+network secret on the "Websites" cloud environment; the CLI accepts any placeholder `--token`
+with no hyphens). Project names match the app slugs; the portfolio index is `uk-sites-portfolio`.
+
 ## Documents
 - `CLAUDE.md` — permanent rules, standards and commands.
 - `PROJECT_STATUS.md` — live progress tracker.
