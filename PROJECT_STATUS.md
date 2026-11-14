@@ -33,8 +33,7 @@ Legend: ✅ complete & tested
 | 10 | bright-spark | 4310 | 22 | Free assessment call (20-min slots), enquiry w/ year group + subjects | 8 | ✓ ✓ ✓ ✓ | ✅ | ✅ |
 
 ## Remaining / optional
-1. Connect each Vercel project to the GitHub repo (`vercel git connect`) if automatic deploys on
-   push are wanted; today deploys are manual from `dist/`.
+1. (done 14 Nov) Vercel projects are connected to GitHub; pushes to the claude branch auto-deploy.
 2. Lumen results stories share one before/after pair (mirrored/cropped per story); generate two
    more pairs if the demo is shown to buyers — see `apps/lumen-skin/README.md`.
 3. Nice-to-haves, not blockers: Lighthouse pass per site; a `flows` runner script at the root;

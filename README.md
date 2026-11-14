@@ -31,8 +31,10 @@ node packages/core/scripts/flows/<slug>.mjs apps/<slug>/dist <shots-dir>   # dri
 ```
 
 ## Live sites (Vercel, team Digbyc)
-Each site is a separate Vercel project deployed from its built `dist/` folder with
-`vercel deploy --prod` (static, framework "Other"). `public/vercel.json` turns on clean URLs.
+Each app is its own Vercel project, **connected to this GitHub repo** with Root Directory
+`apps/<slug>` and production branch `claude/uk-small-business-websites-my7lc2`. Every push to that
+branch rebuilds and redeploys the apps whose files changed; other branches get preview URLs.
+Build settings live in each app's `vercel.json` (Astro, `pnpm build`, `dist`, clean URLs).
 
 | Site | URL |
 |------|-----|
@@ -48,10 +50,10 @@ Each site is a separate Vercel project deployed from its built `dist/` folder wi
 | Lumen Skin Studio | https://lumen-skin-alpha.vercel.app |
 | Bright Spark Tutoring | https://bright-spark-olive.vercel.app |
 
-To redeploy a site after a change: `pnpm --filter <slug> build`, then from `apps/<slug>/dist`
-run `vercel link --yes --project <slug>` and `vercel deploy --prod --yes` (the Vercel token is a
-network secret on the "Websites" cloud environment; the CLI accepts any placeholder `--token`
-with no hyphens). Project names match the app slugs; the portfolio index is `uk-sites-portfolio`.
+Manual deploy (rarely needed): from `apps/<slug>` run `vercel link --yes --project <slug>` then
+`vercel deploy --prod --yes`. The Vercel token is a network secret on the "Websites" cloud
+environment; the CLI accepts any hyphen-free placeholder `--token`. Project names match the app
+slugs; the portfolio index is `uk-sites-portfolio`.
 
 ## Documents
 - `CLAUDE.md` — permanent rules, standards and commands.
